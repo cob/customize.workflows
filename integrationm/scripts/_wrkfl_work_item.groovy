@@ -43,50 +43,57 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.field('State').ch
 
     //Update Workitem dates and times
     Map wiUpdates = [:]
-    def now = new Date();
-    def nowDateTime = now.time;
+    def nowDateTime = msg._timestamp_;
     def oldState = msg.oldInstance.value('State')
 
-    def dateCreation = msg.value("Date of Creation")
-    def dateAssign = msg.value("Date of Assignment")
-    def dateStart = msg.value("Date of Start")
-    def datePending = msg.value("")
-    def dateDone = msg.value("Date of Done")
-    def dateCanceling = msg.value("Date of Canceling")
+    def dateCreation = msg.value("Date of Creation", Long.class)
+    def dateAssign = msg.value("Date of Assignment", Long.class)
+    def dateStart = msg.value("Date of Start", Long.class)
+    def dateFirstPending = msg.value("Date of first Pending", Long.class)
+    def datePending = msg.value("Date of Pending", Long.class)
+    def totalTimePendingHours = msg.value("Time of Pending", Double.class) ?: 0
+    def dateDone = msg.value("Date of Done", Long.class)
+    def dateCanceling = msg.value("Date of Canceling", Long.class)
 
+    def isUnassigned = (msg.value('User') == null)
+    if (isUnassigned && state != "To Assign") {
+        def currentUser = userm.getUser(msg.user).getBody()
+        wiUpdates["User"] = currentUser._links.self
+    }
+
+    //Casos em que estou a entrar no estado:
     switch (state) {
         case "Pending":
-            wiUpdates["Date of first Pending"] = nowDateTime
+            if (!dateFirstPending) wiUpdates["Date of first Pending"] = nowDateTime
             wiUpdates["Date of Pending"] = nowDateTime
-            wiUpdates["Time of Pending"] = getDiifHOurs(date, nowDateTime)
             break;
         case "Canceled":
             wiUpdates["Date of Canceling"] = nowDateTime
-            wiUpdates["Time of Execution"] = getDiifHOurs(dateStart, nowDateTime)
+            break;
+        case "Done":
+            wiUpdates["Date of Done"] = nowDateTime
+            wiUpdates["Time of Execution"] = getDiifHOurs(dateStart ?: dateCreation, nowDateTime)
             wiUpdates["Time Overall"] = getDiifHOurs(dateCreation, nowDateTime)
             break;
     }
 
+    //Casos em que estou a sair do estado:
     switch (oldState) {
         case "To Assign":
             wiUpdates["Date of Assignment"] = nowDateTime
             wiUpdates["Time of Assignment"] = getDiifHOurs(dateCreation, nowDateTime)
             break;
         case "To Do":
-            wiUpdates["Date of Start"] = nowDateTime
-            wiUpdates["Time of Start"] = getDiifHOurs(dateCreation, nowDateTime)
-            break;
-        case "Done":
-            wiUpdates["Date of Done"] = nowDateTime
-            wiUpdates["Time of Execution"] = getDiifHOurs(dateStart, nowDateTime)
-            wiUpdates["Time Overall"] = getDiifHOurs(dateCreation, nowDateTime)
+            //se vier de pendente já tenho esta data preenchida
+            if(!dateStart){
+                wiUpdates["Date of Start"] = nowDateTime
+                wiUpdates["Time of Start"] = getDiifHOurs(dateCreation, nowDateTime)
+            }
             break;
         case "Pending":
-            wiUpdates["Time of Pending"] = getDiifHOurs(datePending, nowDateTime)
+            wiUpdates["Time of Pending"] = totalTimePendingHours + getDiifHOurs(datePending, nowDateTime)
             break;
     }
-    
-
 
     def wiUpdateResponse = recordm.update(msg.type, msg.instance.id, wiUpdates)
 
@@ -98,6 +105,6 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.field('State').ch
 
 static def getDiifHOurs(startTime, endTime) {
     def elapsed = (new BigDecimal(endTime) - new BigDecimal(startTime))
-    return elapsed.divide(new BigDecimal(60 * 60 * 1000), 8, RoundingMode.HALF_UP)
+    return elapsed.divide(new BigDecimal(60 * 60 * 1000), 2, RoundingMode.HALF_UP)
 
 }

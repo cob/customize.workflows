@@ -9,11 +9,10 @@ cob.custom.customize.push(async function (core, utils, ui) {
 
     const STATES_DEFINITION = [
         {label: "To Assign", next: ["To Do"]},
-        {label: "To Do", next: ["Pending", "In Progress", "Canceled", "Done", "Error"]},
-        {label: "In Progress", next: ["Pending", "Canceled", "Done", "Error"]},
+        {label: "To Do", next: ["Pending", "In Progress", "Done", "Canceled", "Error"]},
+        {label: "In Progress", next: ["Pending", "Done", "Canceled", "Error"]},
+        {label: "Pending", next: ["To Do", "Canceled", "Error"]},
         {label: "Done"},
-        {label: "Pending", next: ["To Do", "Canceled", "Done", "Error"]},
-        {label: "Snoozed", next: ["To Do"]},
         {label: "Canceled"},
         {label: "Error"},
     ];
@@ -31,7 +30,6 @@ cob.custom.customize.push(async function (core, utils, ui) {
       "In Progress -> Error": "Fail",
       "Pending -> To Do": "Resume",
       "Pending -> Canceled": "Cancel",
-      "Pending -> Done": "Complete",
       "Pending -> Error": "Fail"
     }
 
@@ -86,7 +84,7 @@ cob.custom.customize.push(async function (core, utils, ui) {
         const workItemId = workItemInstance.attr("data-workitem-id")
         const nextState = workItemInstance.attr("data-next-state")
 
-        axios.post("/integrationm/concurrent/change-work-item-state", {workItemId, nextState})
+        axios.post("/integrationm/concurrent/_wrkfl_change-work-item-state", {workItemId, nextState})
             .then(() => {
                 setTimeout(() => {
                     $(".js-form-search").find(".btn-search").click()
@@ -119,11 +117,23 @@ cob.custom.customize.push(async function (core, utils, ui) {
                 : possibleStates[0]
 
             const nextStateButtons = (currentState.next?.filter(s => workQueueStates.indexOf(s) !== -1) || [])
-              .map(s => `<button type="button" data-workitem-id="${esDoc.instanceId}" data-next-state="${s}" class="js-change-state px-3 py-0 text-xs text-center text-white rounded-md focus:ring-4 bg-sky-400">${ACTIONS[currentState.label + " -> " + s]}</button>`)
+              .map(s => `
+                <button 
+                    type="button" 
+                    data-workitem-id="${esDoc.instanceId}" 
+                    data-next-state="${s}" 
+                    class="js-change-state px-3 py-0 text-xs text-center text-white rounded-md focus:ring-4 bg-sky-400"
+                >
+                    ${ACTIONS[currentState.label + " -> " + s]}
+                </button>`)
               .join("");
 
-            const nodeContent = $(`<div class="js-work-item-${esDoc.instanceId} flex w-full mx-2 text-left"><div class="w-20">${currentState.label}</div><div class="pl-2 flex-1 flex gap-1 bg-white">${nextStateButtons}</div></div>`)
-            $(node).html(nodeContent)
+              const nodeContent = $(`
+                <div class="js-work-item-${esDoc.instanceId} -m-1 flex">
+                    <div class="min-w-[80px] p-1 w-20">${currentState.label} ${nextStateButtons ? ' ->' : ''}</div>
+                    <div class="flex-1 text-left p-1 pl-2 flex gap-1 bg-white">${nextStateButtons}</div>
+                </div>`)
+              $(node).html(nodeContent)
         }
     });
 
