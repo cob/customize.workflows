@@ -81,8 +81,7 @@ cob.custom.customize.push(async function (core, utils, ui) {
                 options = [currentState.label, ...(currentState.next ? currentState.next.filter(s => workQueueStates.indexOf(s) !== -1) : [])];
             }
 
-            //There should always be canceled and Error options available
-            if(!options.includes("Canceled")) options.push("Canceled")
+            //There should always be the Error option available
             if(!options.includes("Error")) options.push("Error")
 
             // Reset all options when setting a work queue
