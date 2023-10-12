@@ -7,96 +7,17 @@
   "fieldDefinitions": [
     {
       "id": null,
-      "name": "Work Execution",
+      "name": "Work Specification",
       "required": null,
-      "description": "$group $expanded",
+      "description": "$group $expanded(id=-1)",
       "configuration": {
         "description": "",
         "keys": {
           "Expanded": {
-            "args": {}
-          },
-          "Group": {}
-        },
-        "extensions": {}
-      },
-      "condition": null,
-      "duplicable": false,
-      "fields": [
-        {
-          "id": null,
-          "name": "State",
-          "required": null,
-          "description": "$instanceDescription $styleResultColumn(To Assign:BgDimOrange,To Do:BgDimBlue,In Progress:BgDimBlue,Pending:BgDimOrnage,Done:BgDimGreen,Canceled:BgDimGray,Error:BgDimRed) $groupEdit",
-          "configuration": {
-            "description": "",
-            "keys": {
-              "InstanceDescription": {}
-            },
-            "extensions": {
-              "$groupEdit": {},
-              "$styleResultColumn": {
-                "args": [
-                  "To Assign:BgDimOrange",
-                  "To Do:BgDimBlue",
-                  "In Progress:BgDimBlue",
-                  "Pending:BgDimOrnage",
-                  "Done:BgDimGreen",
-                  "Canceled:BgDimGray",
-                  "Error:BgDimRed"
-                ]
-              }
+            "args": {
+              "condition": "id=-1"
             }
           },
-          "condition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 1,
-          "restricted": false,
-          "rootField": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "User",
-          "required": null,
-          "description": "$extRef(userm,/userm/user/search?q={{this}}*) $groupEdit",
-          "configuration": {
-            "description": "",
-            "keys": {
-              "ExternalReference": {
-                "args": {
-                  "product": "userm",
-                  "query": "/userm/user/search?q={{this}}*"
-                }
-              }
-            },
-            "extensions": {
-              "$groupEdit": {}
-            }
-          },
-          "condition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 2,
-          "restricted": false,
-          "rootField": false,
-          "defaultValue": null
-        }
-      ],
-      "order": 0,
-      "restricted": false,
-      "rootField": true,
-      "defaultValue": null
-    },
-    {
-      "id": null,
-      "name": "Work Specification",
-      "required": null,
-      "description": "$group",
-      "configuration": {
-        "description": "",
-        "keys": {
           "Group": {}
         },
         "extensions": {}
@@ -112,7 +33,6 @@
           "configuration": {
             "description": "",
             "keys": {
-              "InstanceDescription": {},
               "Reference": {
                 "args": {
                   "query": "*",
@@ -124,7 +44,8 @@
                   "source_field": "Work Queue",
                   "field_name": "Business Process"
                 }
-              }
+              },
+              "InstanceDescription": {}
             },
             "extensions": {}
           },
@@ -157,15 +78,15 @@
               "condition": null,
               "duplicable": false,
               "fields": [],
-              "order": 5,
-              "restricted": false,
+              "order": 2,
               "rootField": false,
+              "restricted": false,
               "defaultValue": null
             }
           ],
-          "order": 4,
-          "restricted": false,
+          "order": 1,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -195,9 +116,9 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 6,
-          "restricted": false,
+          "order": 3,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -220,35 +141,35 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 7,
-          "restricted": false,
+          "order": 4,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
           "id": null,
           "name": "Work Queue",
-          "required": null,
+          "required": "mandatory",
           "description": "$ref(Work Queues,*) $instanceDescription ",
           "configuration": {
             "description": "",
             "keys": {
-              "InstanceDescription": {},
               "Reference": {
                 "args": {
                   "query": "*",
                   "definition": "Work Queues"
                 }
-              }
+              },
+              "InstanceDescription": {}
             },
             "extensions": {}
           },
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 8,
-          "restricted": false,
+          "order": 5,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -259,6 +180,7 @@
           "configuration": {
             "description": "",
             "keys": {
+              "Multiple": {},
               "Select": {
                 "args": [
                   "To Assign",
@@ -277,8 +199,7 @@
                   "source_field": "Work Queue",
                   "field_name": "Possible States"
                 }
-              },
-              "Multiple": {}
+              }
             },
             "extensions": {
               "$style": {
@@ -291,15 +212,133 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 9,
-          "restricted": false,
+          "order": 6,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         }
       ],
-      "order": 3,
-      "restricted": false,
+      "order": 0,
       "rootField": true,
+      "restricted": false,
+      "defaultValue": null
+    },
+    {
+      "id": null,
+      "name": "Work Execution",
+      "required": null,
+      "description": "$group $expanded(id!=-1)",
+      "configuration": {
+        "description": "",
+        "keys": {
+          "Expanded": {
+            "args": {
+              "condition": "id!=-1"
+            }
+          },
+          "Group": {}
+        },
+        "extensions": {}
+      },
+      "condition": null,
+      "duplicable": false,
+      "fields": [
+        {
+          "id": null,
+          "name": "State",
+          "required": "mandatory",
+          "description": "$[To Assign,To Do,In Progress,Done,Pending,Error,Canceled] $instanceDescription $styleResultColumn(To Assign:BgDimOrange,To Do:BgDimBlue,In Progress:BgDimBlue,Pending:BgDimOrnage,Done:BgDimGreen,Canceled:BgDimGray,Error:BgDimRed) $groupEdit",
+          "configuration": {
+            "description": "",
+            "keys": {
+              "Select": {
+                "args": [
+                  "To Assign",
+                  "To Do",
+                  "In Progress",
+                  "Done",
+                  "Pending",
+                  "Error",
+                  "Canceled"
+                ],
+                "default": null
+              },
+              "InstanceDescription": {}
+            },
+            "extensions": {
+              "$groupEdit": {},
+              "$styleResultColumn": {
+                "args": [
+                  "To Assign:BgDimOrange",
+                  "To Do:BgDimBlue",
+                  "In Progress:BgDimBlue",
+                  "Pending:BgDimOrnage",
+                  "Done:BgDimGreen",
+                  "Canceled:BgDimGray",
+                  "Error:BgDimRed"
+                ]
+              }
+            }
+          },
+          "condition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 8,
+          "rootField": false,
+          "restricted": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "User",
+          "required": null,
+          "description": "$extRef(userm,/userm/user/search?q={{this}}*) $groupEdit",
+          "configuration": {
+            "description": "",
+            "keys": {
+              "ExternalReference": {
+                "args": {
+                  "product": "userm",
+                  "query": "/userm/user/search?q={{this}}*"
+                }
+              }
+            },
+            "extensions": {
+              "$groupEdit": {}
+            }
+          },
+          "condition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 9,
+          "rootField": false,
+          "restricted": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Automation Errors",
+          "required": null,
+          "description": "$text",
+          "configuration": {
+            "description": "",
+            "keys": {},
+            "extensions": {
+              "$text": {}
+            }
+          },
+          "condition": "State=Error",
+          "duplicable": false,
+          "fields": [],
+          "order": 10,
+          "rootField": false,
+          "restricted": false,
+          "defaultValue": null
+        }
+      ],
+      "order": 7,
+      "rootField": true,
+      "restricted": false,
       "defaultValue": null
     },
     {
@@ -325,13 +364,13 @@
           "configuration": {
             "description": "",
             "keys": {
+              "DateTime": {},
               "Default": {
                 "args": {
                   "value": "now"
                 }
               },
-              "InstanceDescription": {},
-              "DateTime": {}
+              "InstanceDescription": {}
             },
             "extensions": {
               "$style": {
@@ -344,10 +383,10 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 11,
-          "restricted": false,
+          "order": 12,
           "rootField": false,
-          "defaultValue": "1696954683785"
+          "restricted": false,
+          "defaultValue": "1697149401291"
         },
         {
           "id": null,
@@ -357,22 +396,22 @@
           "configuration": {
             "description": "",
             "keys": {
+              "DateTime": {},
               "Default": {
                 "args": {
                   "value": "now"
                 }
-              },
-              "DateTime": {}
+              }
             },
             "extensions": {}
           },
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 12,
-          "restricted": false,
+          "order": 13,
           "rootField": false,
-          "defaultValue": "1696954683785"
+          "restricted": false,
+          "defaultValue": "1697149401291"
         },
         {
           "id": null,
@@ -389,9 +428,9 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 13,
-          "restricted": false,
+          "order": 14,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -409,9 +448,9 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 14,
-          "restricted": false,
+          "order": 15,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -429,9 +468,9 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 15,
-          "restricted": false,
+          "order": 16,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -449,9 +488,9 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 16,
-          "restricted": false,
+          "order": 17,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -469,9 +508,9 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 17,
-          "restricted": false,
+          "order": 18,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -489,15 +528,15 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 18,
-          "restricted": false,
+          "order": 19,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         }
       ],
-      "order": 10,
-      "restricted": false,
+      "order": 11,
       "rootField": true,
+      "restricted": false,
       "defaultValue": null
     },
     {
@@ -536,9 +575,9 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 20,
-          "restricted": false,
+          "order": 21,
           "rootField": false,
+          "restricted": false,
           "defaultValue": "Yes"
         },
         {
@@ -560,9 +599,9 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 21,
-          "restricted": false,
+          "order": 22,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -584,9 +623,9 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 22,
-          "restricted": false,
+          "order": 23,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -608,9 +647,9 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 23,
-          "restricted": false,
+          "order": 24,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -632,9 +671,9 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 24,
-          "restricted": false,
+          "order": 25,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -656,15 +695,15 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 25,
-          "restricted": false,
+          "order": 26,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         }
       ],
-      "order": 19,
-      "restricted": false,
+      "order": 20,
       "rootField": true,
+      "restricted": false,
       "defaultValue": null
     }
   ],

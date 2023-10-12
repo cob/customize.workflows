@@ -37,8 +37,8 @@
           "duplicable": false,
           "fields": [],
           "order": 1,
-          "restricted": false,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -68,8 +68,8 @@
           "duplicable": false,
           "fields": [],
           "order": 2,
-          "restricted": false,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -80,16 +80,16 @@
           "configuration": {
             "description": "",
             "keys": {
-              "Help": {
-                "args": [
-                  "leave empty for <br> First Level"
-                ]
-              },
               "Reference": {
                 "args": {
                   "query": "*",
                   "definition": "Business Processes"
                 }
+              },
+              "Help": {
+                "args": [
+                  "leave empty for <br> First Level"
+                ]
               }
             },
             "extensions": {
@@ -105,8 +105,8 @@
           "duplicable": false,
           "fields": [],
           "order": 3,
-          "restricted": false,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -138,8 +138,8 @@
           "duplicable": false,
           "fields": [],
           "order": 4,
-          "restricted": false,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -156,8 +156,8 @@
           "duplicable": false,
           "fields": [],
           "order": 5,
-          "restricted": false,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -176,14 +176,14 @@
           "duplicable": false,
           "fields": [],
           "order": 6,
-          "restricted": false,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         }
       ],
       "order": 0,
-      "restricted": false,
       "rootField": true,
+      "restricted": false,
       "defaultValue": null
     },
     {
@@ -229,8 +229,8 @@
           "duplicable": false,
           "fields": [],
           "order": 8,
-          "restricted": false,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -254,8 +254,8 @@
           "duplicable": false,
           "fields": [],
           "order": 9,
-          "restricted": false,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -281,8 +281,8 @@
           "duplicable": false,
           "fields": [],
           "order": 10,
-          "restricted": false,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -298,13 +298,13 @@
                   "id"
                 ]
               },
-              "InstanceDescription": {},
               "Reference": {
                 "args": {
                   "query": "*",
                   "definition": "Business Processes"
                 }
-              }
+              },
+              "InstanceDescription": {}
             },
             "extensions": {}
           },
@@ -312,8 +312,8 @@
           "duplicable": false,
           "fields": [],
           "order": 11,
-          "restricted": false,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -343,8 +343,8 @@
           "duplicable": false,
           "fields": [],
           "order": 12,
-          "restricted": false,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -360,13 +360,13 @@
                   "id"
                 ]
               },
-              "InstanceDescription": {},
               "Reference": {
                 "args": {
                   "query": "*",
                   "definition": "Business Processes"
                 }
-              }
+              },
+              "InstanceDescription": {}
             },
             "extensions": {}
           },
@@ -374,8 +374,8 @@
           "duplicable": false,
           "fields": [],
           "order": 13,
-          "restricted": false,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -399,14 +399,14 @@
           "duplicable": false,
           "fields": [],
           "order": 14,
-          "restricted": false,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         }
       ],
       "order": 7,
-      "restricted": false,
       "rootField": true,
+      "restricted": false,
       "defaultValue": null
     },
     {
@@ -430,8 +430,8 @@
       "duplicable": false,
       "fields": [],
       "order": 15,
-      "restricted": false,
       "rootField": true,
+      "restricted": false,
       "defaultValue": null
     }
   ],
