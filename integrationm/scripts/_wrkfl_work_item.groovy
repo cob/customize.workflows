@@ -27,7 +27,19 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.field('State').ch
                 def data = cdSearchResult.getHits().get(0)
 
                 def binding = new Binding(data: data, updates: updates)
-                new GroovyShell(binding).evaluate(code)
+
+                try {
+                    new GroovyShell(binding).evaluate(code)
+                } catch (Exception e) {
+                    log.error("Error evaluating code {{ 'On ${state}' code: ${code} }}", e)
+                    def previousErrors = (wq.value("Automation Errors") ? wq.value("Automation Errors") + "\n\n" : "")
+                    recordm.update("Work Item", msg.instance.id, [
+                            "State"            : "Error",
+                            "Automation Errors": previousErrors +
+                                    "Error evaluating 'On ${state}' code: ${code} \n" +
+                                    "Error: " + e.getMessage()])
+                    return
+                }
 
                 log.info("updates: ${updates}")
 
@@ -59,6 +71,8 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.field('State').ch
     if (isUnassigned && state != "To Assign") {
         def currentUser = userm.getUser(msg.user).getBody()
         wiUpdates["User"] = currentUser._links.self
+        wiUpdates["Date of Assignment"] = nowDateTime
+        wiUpdates["Time of Assignment"] = getDiifHOurs(dateCreation, nowDateTime)
     }
 
     //Casos em que estou a entrar no estado:

@@ -18,19 +18,19 @@ cob.custom.customize.push(async function (core, utils, ui) {
     ];
 
     const ACTIONS = {
-      "To Assign -> To Do": "Assign",
-      "To Do -> Pending": "Suspend",
-      "To Do -> In Progress": "Start",
-      "To Do -> Canceled": "Cancel",
-      "To Do -> Done": "Complete",
-      "To Do -> Error": "Fail",
-      "In Progress -> Pending": "Suspend",
-      "In Progress -> Canceled": "Cancel",
-      "In Progress -> Done": "Complete",
-      "In Progress -> Error": "Fail",
-      "Pending -> To Do": "Resume",
-      "Pending -> Canceled": "Cancel",
-      "Pending -> Error": "Fail"
+        "To Assign -> To Do": "Assign",
+        "To Do -> Pending": "Suspend",
+        "To Do -> In Progress": "Start",
+        "To Do -> Canceled": "Cancel",
+        "To Do -> Done": "Complete",
+        "To Do -> Error": "Fail",
+        "In Progress -> Pending": "Suspend",
+        "In Progress -> Canceled": "Cancel",
+        "In Progress -> Done": "Complete",
+        "In Progress -> Error": "Fail",
+        "Pending -> To Do": "Resume",
+        "Pending -> Canceled": "Cancel",
+        "Pending -> Error": "Fail"
     }
 
     function loadWorkQueueInfo(workQueueId) {
@@ -39,41 +39,63 @@ cob.custom.customize.push(async function (core, utils, ui) {
     }
 
     core.customizeInstances(DEFINITION, async (instance, presenter) => {
-        const workQueueId = presenter.findFieldPs(fp => fp.field.fieldDefinition.name === WI_WORK_QUEUE_FIELD)?.[0].getValue();
+        const workQueueFP = presenter.findFieldPs(fp => fp.field.fieldDefinition.name === WI_WORK_QUEUE_FIELD)?.[0];
 
-        const workQueueStates = await loadWorkQueueInfo(workQueueId)
-            .then(resp => resp.data)
-            .then(data => data.hits.hits[0]._source.possible_states);
 
-        // Filter the object STATES_DEFINITION to contain only the states defined in the work queue
-        const possibleStates = workQueueStates.map(state => STATES_DEFINITION.find(s => s.label === state))
-            .filter(state => state);
+        const setState = async function() {
+            const workQueueId = workQueueFP?.getValue();
 
-        let options = [];
+            console.warn("JB workQueueId ", workQueueId)
+            //TODO jbarata : quando se corrigir o bug do auto ref com multiples pode usar-se este campo em vez de ir buscar à WQ (e mudar o onchange para usar este campo)
+            //   const _possibleStates = presenter.findFieldPs(fp => fp.field.fieldDefinition.name === "#_Work Queue States")?.[0];
+            //   console.warn("JB 1 ", _possibleStates.getValue())
 
-        const wiStatetFP = presenter.findFieldPs(fp => fp.field.fieldDefinition.name === WI_TARGET_STATE_FIELD)?.[0];
+            const workQueueStates = await loadWorkQueueInfo(workQueueId)
+                .then(resp => resp.data)
+                .then(data => data.hits.hits[0]._source.possible_states);
 
-        // If new instance set the state with the first one from the possible states
-        if (instance.id === -1 || !wiStatetFP.getValue()) {
-            wiStatetFP.setValue(possibleStates[0].label);
-            // Filter next states by showing only the states that are defined in the work queue
-            options = [possibleStates[0].label, ...(possibleStates[0].next ? possibleStates[0].next.filter(s => workQueueStates.indexOf(s) !== -1) : [])];
+            // Filter the object STATES_DEFINITION to contain only the states defined in the work queue
+            const possibleStates = workQueueStates.map(state => STATES_DEFINITION.find(s => s.label === state))
+                .filter(state => state);
 
-        } else {
-            const currentState = possibleStates.find(s => s.label === wiStatetFP.getValue());
-            // Filter next states by showing only the states that are defined in the work queue
-            options = [wiStatetFP.getValue(), ...(currentState.next ? currentState.next.filter(s => workQueueStates.indexOf(s) !== -1) : [])];
+            let options = [];
+
+            const wiStatetFP = presenter.findFieldPs(fp => fp.field.fieldDefinition.name === WI_TARGET_STATE_FIELD)?.[0];
+
+            const stateOrig = wiStatetFP.getValue();
+
+
+            // If new instance set the state with the first one from the possible states
+            if (instance.isNew() || !stateOrig) {
+                wiStatetFP.setValue(possibleStates[0].label);
+                // Filter next states by showing only the states that are defined in the work queue
+                options = [possibleStates[0].label, ...(possibleStates[0].next ? possibleStates[0].next.filter(s => workQueueStates.indexOf(s) !== -1) : [])];
+
+            } else {
+                let currentState = possibleStates.find(s => s.label === stateOrig);
+                if(currentState === undefined){ //WQ must have changed
+                    currentState = possibleStates[0];
+                    wiStatetFP.setValue(possibleStates[0].label);
+                }
+                // Filter next states by showing only the states that are defined in the work queue
+                options = [currentState.label, ...(currentState.next ? currentState.next.filter(s => workQueueStates.indexOf(s) !== -1) : [])];
+            }
+
+            //There should always be canceled and Error options available
+            if(!options.includes("Canceled")) options.push("Canceled")
+            if(!options.includes("Error")) options.push("Error")
+
+            // Reset all options when setting a work queue
+            $("option", wiStatetFP.content()).remove();
+            const $list = $(`select#${wiStatetFP.getId()}`, wiStatetFP.content());
+            options.forEach((state) => {
+                const $option = $(`<option value="${state}">${state}</option>`);
+                $list.append($option);
+            });
         }
 
-        const $input = wiStatetFP.content().find(".field-value");
-        $input.css("display", "none");
-        $input.after($(`<div><select class="js-wi-state">${options.map(opt => `<option value="${opt}">${opt}</option>`).join("")}</select></div>`).html());
+        presenter.onFieldChange(WI_WORK_QUEUE_FIELD, setState);
 
-        wiStatetFP.content().find(".js-wi-state")
-            .val(wiStatetFP.getValue())
-            .on("change", function () {
-                wiStatetFP.setValue(this.value);
-            });
     });
 
 
@@ -113,27 +135,32 @@ cob.custom.customize.push(async function (core, utils, ui) {
                 .filter(state => state);
 
             const currentState = esDoc[WI_TARGET_STATE_FIELD.toLowerCase()]?.length > 0
-                ? possibleStates.find(state => esDoc[WI_TARGET_STATE_FIELD.toLowerCase()][0] === state.label)
-                : possibleStates[0]
+                                 ? possibleStates.find(state => esDoc[WI_TARGET_STATE_FIELD.toLowerCase()][0] === state.label)
+                                 : possibleStates[0]
+
+            if(currentState==""){
+                console.error("Current state not set. Has invalid value for the WQ :",esDoc[WI_TARGET_STATE_FIELD.toLowerCase()][0])
+                return;
+            }
 
             const nextStateButtons = (currentState.next?.filter(s => workQueueStates.indexOf(s) !== -1) || [])
-              .map(s => `
-                <button 
-                    type="button" 
-                    data-workitem-id="${esDoc.instanceId}" 
-                    data-next-state="${s}" 
+                .map(s => `
+                <button
+                    type="button"
+                    data-workitem-id="${esDoc.instanceId}"
+                    data-next-state="${s}"
                     class="js-change-state px-3 py-0 text-xs text-center text-white rounded-md focus:ring-4 bg-sky-400"
                 >
                     ${ACTIONS[currentState.label + " -> " + s]}
                 </button>`)
-              .join("");
+                .join("");
 
-              const nodeContent = $(`
+            const nodeContent = $(`
                 <div class="js-work-item-${esDoc.instanceId} -m-1 flex">
                     <div class="min-w-[80px] p-1 w-20">${currentState.label} ${nextStateButtons ? ' ->' : ''}</div>
                     <div class="flex-1 text-left p-1 pl-2 flex gap-1 bg-white">${nextStateButtons}</div>
                 </div>`)
-              $(node).html(nodeContent)
+            $(node).html(nodeContent)
         }
     });
 

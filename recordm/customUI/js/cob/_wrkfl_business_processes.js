@@ -57,8 +57,8 @@ cob.custom.customize.push(async function (core, utils, ui) {
             //     startState = '[*]';
 
             // } else {
-                startState = /\s*msg\.field\(["']Estado['"]\)\.changedTo\(["']([^"']+)['"]\)/
-                    .exec(launch_condition)[1];
+            startState = /\s*msg\.field\(["']Estado['"]\)\.changedTo\(["']([^"']+)['"]\)/
+                .exec(launch_condition)[1];
             // }
             const startStateIdx = states.findIndex(s => s == startState);
             if(startStateIdx < 0) window.console.error("não consegui encontrar estado inicial " + startState)
@@ -128,7 +128,7 @@ cob.custom.customize.push(async function (core, utils, ui) {
         // Work Queues
         $(".field-def-id-881")
             .before('<pre class="mermaid" style="margin:0px 14px">' + diagramSrc.join("\n") + '</pre>')
-        
+
         mermaid.initialize({startOnLoad:false})
         setTimeout( () =>  mermaid.init() , 10)
     });

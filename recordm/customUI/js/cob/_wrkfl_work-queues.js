@@ -46,11 +46,11 @@ cob.custom.customize.push(async function(core, utils, ui) {
 
   async function updateMermaid(states) {
     const impossibleStates = STATES_DEFINITION.filter(s => states.indexOf(s.label) === -1)
-      .map(s => s.number);
+        .map(s => s.number);
 
     const actualProcess = FULL_PROCESS.split("\n")
-      .filter(l => impossibleStates.every(i => l.indexOf(" " + i) === -1))
-      .join("\n");
+        .filter(l => impossibleStates.every(i => l.indexOf(" " + i) === -1))
+        .join("\n");
 
     const { svg } = await mermaid.render("mermaid-container", actualProcess);
     document.getElementById("diagram-container").innerHTML = svg;
