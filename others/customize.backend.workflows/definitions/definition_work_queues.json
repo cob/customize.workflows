@@ -1,1 +1,386 @@
-{"id":null,"name":"Work Queues","description":"@BPO","duplicable":null,"state":"enabled","fieldDefinitions":[{"id":null,"name":"Work Identification","required":null,"description":"$group","configuration":{"description":"","keys":{"Group":{}},"extensions":{}},"condition":null,"duplicable":false,"fields":[],"order":0,"restricted":false,"rootField":true,"defaultValue":null},{"id":null,"name":"Business Process","required":"mandatory","description":"$ref(Business Processes,*)  $instanceDescription","configuration":{"description":"","keys":{"InstanceDescription":{},"Reference":{"args":{"query":"*","definition":"Business Processes"}}},"extensions":{}},"condition":null,"duplicable":false,"fields":[],"order":1,"restricted":false,"rootField":true,"defaultValue":null},{"id":null,"name":"Specific Data","required":null,"description":"$auto.ref(Business Process).field(Specific Data)","configuration":{"description":"","keys":{"AutoRefField":{"args":{"source_field":"Business Process","field_name":"Specific Data"}}},"extensions":{}},"condition":null,"duplicable":false,"fields":[],"order":2,"restricted":false,"rootField":true,"defaultValue":null},{"id":null,"name":"Code","required":null,"description":"$instanceDescription","configuration":{"description":"","keys":{"InstanceDescription":{}},"extensions":{}},"condition":null,"duplicable":false,"fields":[],"order":3,"restricted":false,"rootField":true,"defaultValue":null},{"id":null,"name":"Name","required":null,"description":"$instanceLabel","configuration":{"description":"","keys":{"InstanceLabel":{}},"extensions":{}},"condition":null,"duplicable":false,"fields":[],"order":4,"restricted":false,"rootField":true,"defaultValue":null},{"id":null,"name":"Work Specification","required":null,"description":"$group","configuration":{"description":"","keys":{"Group":{}},"extensions":{}},"condition":null,"duplicable":false,"fields":[],"order":5,"restricted":false,"rootField":true,"defaultValue":null},{"id":null,"name":"Description","required":null,"description":"$markdown","configuration":{"description":"","keys":{},"extensions":{"$markdown":{}}},"condition":null,"duplicable":false,"fields":[],"order":6,"restricted":false,"rootField":true,"defaultValue":null},{"id":null,"name":"Agent Type","required":null,"description":"$[*Human,RPA,AI]  $instanceDescription","configuration":{"description":"","keys":{"Select":{"args":["Human","RPA","AI"],"default":"Human"},"InstanceDescription":{}},"extensions":{}},"condition":null,"duplicable":false,"fields":[],"order":7,"restricted":false,"rootField":true,"defaultValue":"Human"},{"id":null,"name":"Possible States","required":null,"description":"$[To Assign,To Do,In Progress,Done,Pending,Error,Canceled] $multiple $style[radio-1line] $expanded","configuration":{"description":"","keys":{"Select":{"args":["To Assign","To Do","In Progress","Done","Pending","Error","Canceled"],"default":null},"Expanded":{"args":{}},"Multiple":{}},"extensions":{"$style":{"args":["radio-1line"]}}},"condition":null,"duplicable":false,"fields":[{"id":null,"name":"Launch Condition","required":null,"description":"$text Conditions that if met will create a new Work Item for the <b>Specific Data</b>","configuration":{"description":"Conditions that if met will create a new Work Item for the <b>Specific Data</b>","keys":{},"extensions":{"$text":{}}},"condition":null,"duplicable":false,"fields":[],"order":9,"restricted":false,"rootField":false,"defaultValue":null},{"id":null,"name":"Done Conditions","required":null,"description":"$text Conditions that need to be met in order for Done to be possible","configuration":{"description":"Conditions that need to be met in order for Done to be possible","keys":{},"extensions":{"$text":{}}},"condition":null,"duplicable":false,"fields":[],"order":10,"restricted":false,"rootField":false,"defaultValue":null},{"id":null,"name":"On Done","required":null,"description":"$text","configuration":{"description":"","keys":{},"extensions":{"$text":{}}},"condition":null,"duplicable":false,"fields":[],"order":11,"restricted":false,"rootField":false,"defaultValue":null},{"id":null,"name":"On Error","required":null,"description":"$text","configuration":{"description":"","keys":{},"extensions":{"$text":{}}},"condition":"=Error","duplicable":false,"fields":[],"order":12,"restricted":false,"rootField":false,"defaultValue":null},{"id":null,"name":"On Canceled","required":null,"description":"$text","configuration":{"description":"","keys":{},"extensions":{"$text":{}}},"condition":"=Canceled","duplicable":false,"fields":[],"order":13,"restricted":false,"rootField":false,"defaultValue":null}],"order":8,"restricted":false,"rootField":true,"defaultValue":null},{"id":null,"name":"Work Items","required":null,"description":"$group $style[use-reference-count,grupo] ","configuration":{"description":"","keys":{"Group":{}},"extensions":{"$style":{"args":["use-reference-count","grupo"]}}},"condition":null,"duplicable":false,"fields":[{"id":null,"name":"Work Items","required":null,"description":"$references(Work Item,Work Queue,[view:default],[Queue:count()])","configuration":{"description":"","keys":{"References":{"args":{"field":"Work Queue","options":"[view:default]","definition":"Work Item","aggs":"[Queue:count()]"}}},"extensions":{}},"condition":null,"duplicable":false,"fields":[],"order":15,"restricted":false,"rootField":false,"defaultValue":null}],"order":14,"restricted":false,"rootField":true,"defaultValue":null}],"version":null}
+{
+  "id": null,
+  "name": "Work Queues",
+  "description": "@BPO",
+  "duplicable": null,
+  "state": "enabled",
+  "fieldDefinitions": [
+    {
+      "id": null,
+      "name": "Work Identification",
+      "required": null,
+      "description": "$group",
+      "configuration": {
+        "description": "",
+        "keys": {
+          "Group": {}
+        },
+        "extensions": {}
+      },
+      "condition": null,
+      "duplicable": false,
+      "fields": [],
+      "order": 0,
+      "restricted": false,
+      "rootField": true,
+      "defaultValue": null
+    },
+    {
+      "id": null,
+      "name": "Business Process",
+      "required": "mandatory",
+      "description": "$ref(Business Processes,*)  $instanceDescription",
+      "configuration": {
+        "description": "",
+        "keys": {
+          "InstanceDescription": {},
+          "Reference": {
+            "args": {
+              "query": "*",
+              "definition": "Business Processes"
+            }
+          }
+        },
+        "extensions": {}
+      },
+      "condition": null,
+      "duplicable": false,
+      "fields": [],
+      "order": 1,
+      "restricted": false,
+      "rootField": true,
+      "defaultValue": null
+    },
+    {
+      "id": null,
+      "name": "Specific Data",
+      "required": null,
+      "description": "$auto.ref(Business Process).field(Specific Data)",
+      "configuration": {
+        "description": "",
+        "keys": {
+          "AutoRefField": {
+            "args": {
+              "source_field": "Business Process",
+              "field_name": "Specific Data"
+            }
+          }
+        },
+        "extensions": {}
+      },
+      "condition": null,
+      "duplicable": false,
+      "fields": [],
+      "order": 2,
+      "restricted": false,
+      "rootField": true,
+      "defaultValue": null
+    },
+    {
+      "id": null,
+      "name": "Code",
+      "required": null,
+      "description": "$instanceDescription",
+      "configuration": {
+        "description": "",
+        "keys": {
+          "InstanceDescription": {}
+        },
+        "extensions": {}
+      },
+      "condition": null,
+      "duplicable": false,
+      "fields": [],
+      "order": 3,
+      "restricted": false,
+      "rootField": true,
+      "defaultValue": null
+    },
+    {
+      "id": null,
+      "name": "Name",
+      "required": null,
+      "description": "$instanceLabel",
+      "configuration": {
+        "description": "",
+        "keys": {
+          "InstanceLabel": {}
+        },
+        "extensions": {}
+      },
+      "condition": null,
+      "duplicable": false,
+      "fields": [],
+      "order": 4,
+      "restricted": false,
+      "rootField": true,
+      "defaultValue": null
+    },
+    {
+      "id": null,
+      "name": "Work Specification",
+      "required": null,
+      "description": "$group",
+      "configuration": {
+        "description": "",
+        "keys": {
+          "Group": {}
+        },
+        "extensions": {}
+      },
+      "condition": null,
+      "duplicable": false,
+      "fields": [],
+      "order": 5,
+      "restricted": false,
+      "rootField": true,
+      "defaultValue": null
+    },
+    {
+      "id": null,
+      "name": "Description",
+      "required": null,
+      "description": "$markdown",
+      "configuration": {
+        "description": "",
+        "keys": {},
+        "extensions": {
+          "$markdown": {}
+        }
+      },
+      "condition": null,
+      "duplicable": false,
+      "fields": [],
+      "order": 6,
+      "restricted": false,
+      "rootField": true,
+      "defaultValue": null
+    },
+    {
+      "id": null,
+      "name": "Agent Type",
+      "required": null,
+      "description": "$[*Human,RPA,AI]  $instanceDescription",
+      "configuration": {
+        "description": "",
+        "keys": {
+          "Select": {
+            "args": [
+              "Human",
+              "RPA",
+              "AI"
+            ],
+            "default": "Human"
+          },
+          "InstanceDescription": {}
+        },
+        "extensions": {}
+      },
+      "condition": null,
+      "duplicable": false,
+      "fields": [],
+      "order": 7,
+      "restricted": false,
+      "rootField": true,
+      "defaultValue": "Human"
+    },
+    {
+      "id": null,
+      "name": "Possible States",
+      "required": null,
+      "description": "$[To Assign,To Do,In Progress,Done,Pending,Error,Canceled] $multiple $style[radio-1line] $expanded",
+      "configuration": {
+        "description": "",
+        "keys": {
+          "Select": {
+            "args": [
+              "To Assign",
+              "To Do",
+              "In Progress",
+              "Done",
+              "Pending",
+              "Error",
+              "Canceled"
+            ],
+            "default": null
+          },
+          "Expanded": {
+            "args": {}
+          },
+          "Multiple": {}
+        },
+        "extensions": {
+          "$style": {
+            "args": [
+              "radio-1line"
+            ]
+          }
+        }
+      },
+      "condition": null,
+      "duplicable": false,
+      "fields": [
+        {
+          "id": null,
+          "name": "Launch Condition",
+          "required": null,
+          "description": "$text Conditions that if met will create a new Work Item for the <b>Specific Data</b>",
+          "configuration": {
+            "description": "Conditions that if met will create a new Work Item for the <b>Specific Data</b>",
+            "keys": {},
+            "extensions": {
+              "$text": {}
+            }
+          },
+          "condition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 9,
+          "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Done Conditions",
+          "required": null,
+          "description": "$text Conditions that need to be met in order for Done to be possible",
+          "configuration": {
+            "description": "Conditions that need to be met in order for Done to be possible",
+            "keys": {},
+            "extensions": {
+              "$text": {}
+            }
+          },
+          "condition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 10,
+          "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "On Done",
+          "required": null,
+          "description": "$text",
+          "configuration": {
+            "description": "",
+            "keys": {},
+            "extensions": {
+              "$text": {}
+            }
+          },
+          "condition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 11,
+          "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "On Error",
+          "required": null,
+          "description": "$text",
+          "configuration": {
+            "description": "",
+            "keys": {},
+            "extensions": {
+              "$text": {}
+            }
+          },
+          "condition": "=Error",
+          "duplicable": false,
+          "fields": [],
+          "order": 12,
+          "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "On Canceled",
+          "required": null,
+          "description": "$text",
+          "configuration": {
+            "description": "",
+            "keys": {},
+            "extensions": {
+              "$text": {}
+            }
+          },
+          "condition": "=Canceled",
+          "duplicable": false,
+          "fields": [],
+          "order": 13,
+          "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        }
+      ],
+      "order": 8,
+      "restricted": false,
+      "rootField": true,
+      "defaultValue": null
+    },
+    {
+      "id": null,
+      "name": "Work Items",
+      "required": null,
+      "description": "$group $style[use-reference-count,grupo] ",
+      "configuration": {
+        "description": "",
+        "keys": {
+          "Group": {}
+        },
+        "extensions": {
+          "$style": {
+            "args": [
+              "use-reference-count",
+              "grupo"
+            ]
+          }
+        }
+      },
+      "condition": null,
+      "duplicable": false,
+      "fields": [
+        {
+          "id": null,
+          "name": "Work Items",
+          "required": null,
+          "description": "$references(Work Item,Work Queue,[view:default],[Queue:count()])",
+          "configuration": {
+            "description": "",
+            "keys": {
+              "References": {
+                "args": {
+                  "field": "Work Queue",
+                  "options": "[view:default]",
+                  "definition": "Work Item",
+                  "aggs": "[Queue:count()]"
+                }
+              }
+            },
+            "extensions": {}
+          },
+          "condition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 15,
+          "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        }
+      ],
+      "order": 14,
+      "restricted": false,
+      "rootField": true,
+      "defaultValue": null
+    }
+  ],
+  "version": null
+}
