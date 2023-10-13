@@ -32,7 +32,7 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.field('State').ch
                     new GroovyShell(binding).evaluate(code)
                 } catch (Exception e) {
                     log.error("Error evaluating code {{ 'On ${state}' code: ${code} }}", e)
-                    def previousErrors = (wq.value("Automation Errors") ? wq.value("Automation Errors") + "\n\n" : "")
+                    def previousErrors = (msg.value("Automation Errors") ? msg.value("Automation Errors") + "\n\n" : "")
                     recordm.update("Work Item", msg.instance.id, [
                             "State"            : "Error",
                             "Automation Errors": previousErrors +
