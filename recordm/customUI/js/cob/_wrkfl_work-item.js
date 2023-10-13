@@ -120,6 +120,15 @@ cob.custom.customize.push(async function (core, utils, ui) {
                     $(".js-references-refresh-btn").click()
                 }, 2000)
             })
+            .catch(error => {
+                ui.dialogs.InfoDialog(core, {
+                    "title": "Error",
+                    "message": " Could not complete task:<br><br>" + error.response.data.error + "<br><br> Check that all data is saved.",
+                    "closeBtnLabel": "OK"
+                });
+
+            })
+
     })
 
     core.customizeColumns(DEFINITION, {
