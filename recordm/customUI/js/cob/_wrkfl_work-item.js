@@ -128,7 +128,6 @@ cob.custom.customize.push(async function (core, utils, ui) {
                 });
 
             })
-
     })
 
     core.customizeColumns(DEFINITION, {

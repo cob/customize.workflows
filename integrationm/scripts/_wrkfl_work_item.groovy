@@ -5,31 +5,30 @@ import java.math.RoundingMode
 if (msg.product == "recordm" && msg.type == "Work Item" && msg.field('State').changed()) {
 
     def state = msg.value('State')
-    def wqId = msg.value('Work Queue')
-    def cdId = msg.value('Customer Data')
 
-    def wqQuery = "id.raw:${wqId}"
-    def wqSearchResult = recordm.search("Work Queues", wqQuery, [size: 1]);
+    def wqSearch = recordm.search("Work Queues", "id.raw:${msg.value('Work Queue')}", [size: 1]);
 
     //Run the relevant On XXX code pieces aonfigured on the WorkQueue (which make updates on the customer Data instance
-    if (wqSearchResult.success() && wqSearchResult.getTotal() > 0) {
-        def wq = wqSearchResult.getHits().get(0)
+    if (wqSearch.success() && wqSearch.getTotal() > 0) {
+        def wq = wqSearch.getHits().get(0)
 
         def code = wq.value("On " + state)
         if (code != null) {
-            log.info("CODE: " + code)
+            log.debug("On ${state} CODE: " + code)
 
             def defName = wq.value("Specific Data")
-            def cdQquery = "id.raw:${cdId}"
-            def cdSearchResult = recordm.search(defName, cdQquery, [size: 1]);
-            if (cdSearchResult.success() && cdSearchResult.getTotal() > 0) {
+            def cdQquery = "id.raw:${msg.value('Customer Data')}"
+            def cdSearch = recordm.search(defName, cdQquery, [size: 1]);
+
+            if (cdSearch.success() && cdSearch.getTotal() > 0) {
                 Map updates = [:]
-                def data = cdSearchResult.getHits().get(0)
+                def data = cdSearch.getHits().get(0)
 
                 def binding = new Binding(data: data, updates: updates)
 
                 try {
                     new GroovyShell(binding).evaluate(code)
+
                 } catch (Exception e) {
                     log.error("Error evaluating code {{ 'On ${state}' code: ${code} }}", e)
                     def previousErrors = (msg.value("Automation Errors") ? msg.value("Automation Errors") + "\n\n" : "")
@@ -40,8 +39,6 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.field('State').ch
                                     "Error: " + e.getMessage()])
                     return
                 }
-
-                log.info("updates: ${updates}")
 
                 def rmResponse = recordm.update(defName, cdQquery, updates)
 
@@ -99,7 +96,7 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.field('State').ch
             break;
         case "To Do":
             //se vier de pendente já tenho esta data preenchida
-            if(!dateStart){
+            if (!dateStart) {
                 wiUpdates["Date of Start"] = nowDateTime
                 wiUpdates["Time of Start"] = getDiifHOurs(dateCreation, nowDateTime)
             }

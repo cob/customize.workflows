@@ -7,42 +7,42 @@ if (workItemId == null || nextState == null) {
     return json(400, ["errorMsg": "Missing required parameters"])
 }
 
+//Check Done Conditions if next state is Done
 if (nextState == "Done") {
-    def wiSearchResult = recordm.search("Work Item", "id.raw:${workItemId}", [size: 1]);
+    def wiSearch = recordm.search("Work Item", "id.raw:${workItemId}", [size: 1]);
 
-    if (wiSearchResult.success() && wiSearchResult.getTotal() > 0) {
-        def wi = wiSearchResult.getHits().get(0)
-        def cdId = wi.value('Customer Data')
-        def defName = wi.value("Customer Data Definition")
+    if (wiSearch.success() && wiSearch.getTotal() > 0) {
+        def wi = wiSearch.getHits().get(0)
 
-        def cdQquery = "id.raw:${cdId}"
-        def cdSearchResult = recordm.search(defName, cdQquery, [size: 1]);
-        if (cdSearchResult.success() && cdSearchResult.getTotal() > 0) {
-            def wqId = wi.value('Work Queue')
-            def wqSearchResult = recordm.search("Work Queues", "id.raw:${wqId}", [size: 1]);
-            if (wqSearchResult.success() && wqSearchResult.getTotal() > 0) {
-                def wq = wqSearchResult.getHits().get(0)
-                def doneConditions = wq.value("Done Conditions")
+        def wqSearch = recordm.search("Work Queues", "id.raw:${wi.value('Work Queue')}", [size: 1]);
 
-                if (doneConditions != null) {
-                    def data = cdSearchResult.getHits().get(0)
+        if (wqSearch.success() && wqSearch.getTotal() > 0) {
+            def wq = wqSearch.getHits().get(0)
+            def doneConditions = wq.value("Done Conditions")
+
+            if (doneConditions != null) {
+                def cdSearch = recordm.search(wi.value("Customer Data Definition"), "id.raw:${wi.value('Customer Data')}", [size: 1]);
+
+                if (cdSearch.success() && cdSearch.getTotal() > 0) {
+                    def data = cdSearch.getHits().get(0)
 
                     def binding = new Binding(data: data)
-
                     try {
                         if (!new GroovyShell(binding).evaluate(doneConditions)) {
-                            return json(406, [success: false, error: "Done conditions returned false <br><code>{$doneConditions}</code>"])
+                            return json(406, [success: false,
+                                              error: "Done conditions returned false <br><code>{$doneConditions}</code>"])
                         }
                     } catch (Exception e) {
                         log.error("Error evaluating Done Conditions {{ code: ${doneConditions} }}", e)
                         def previousErrors = (wi.value("Automation Errors") ? wi.value("Automation Errors") + "\n\n" : "")
-                        recordm.update("Work Item", msg.instance.id, [
+                        recordm.update("Work Item", workItemId, [
                                 "State"            : "Error",
                                 "Automation Errors": previousErrors +
                                         "Error evaluating 'Done Conditions': ${doneConditions} \n" +
                                         "Error: " + e.getMessage()])
 
-                        return json(500, [success: false])
+                        return json(500, [success: false,
+                                          error: "Error evaluating 'Done Conditions': ${doneConditions} "])
                     }
                 }
             }
@@ -50,7 +50,9 @@ if (nextState == "Done") {
     }
 }
 
+//If validations passed, change the state
 def result = recordm.update("Work Item", "recordmInstanceId:${workItemId}", [(WORK_ITEM_STATE_FIELD): nextState], argsMap.user)
+
 if (result.success()) return {
     json(200, [success: true])
 
