@@ -109,11 +109,11 @@ cob.custom.customize.push(async function (core, utils, ui) {
             .then(() => {
                 setTimeout(() => {
                     $(".js-form-search").find(".btn-search").click()
-                }, 1000)
-
-                // AHAHAHAH
-                setTimeout(() => {
                     $(".js-references-refresh-btn").click()
+                    if(nextState === "Done"){
+                        //Refresh the enclosing instance if there is one and there is a refresh button
+                        $(".js-refresh-instance").click()
+                    }
                 }, 1000)
 
                 setTimeout(() => {
