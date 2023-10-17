@@ -13,7 +13,9 @@ cob.custom.customize.push(async function (core, utils, ui) {
         const specificData = instance.findFields("Specific Data")[0].value;
         if(!specificData) return;
 
-        let diagramSrc = [ 'stateDiagram-v2' ];
+        let diagram = [
+            {type: 'header', v: 'stateDiagram-v2'}
+        ];
 
         // ************
         //   Estados
@@ -33,7 +35,7 @@ cob.custom.customize.push(async function (core, utils, ui) {
         window.console.debug('JN', states)
 
         states.forEach((state, idx) => {
-            diagramSrc.push(`state "${state}" as ${idx}`);
+            diagram.push({type: 'state', v: `state "${state}" as ${idx}`})
         });
 
         // **************
@@ -42,44 +44,38 @@ cob.custom.customize.push(async function (core, utils, ui) {
 
         // obter WQs relevantes
 
+        const wqsQuery = `business_process:${instance.data.id}`;
         const wqs = (await axios.get(
-            `/recordm/recordm/definitions/search/name/Work Queues?size=50&q=business_process:${instance.data.id}`
+            `/recordm/recordm/definitions/search?def=Work Queues&size=50&sort=code:asc&q=${wqsQuery}`
         )).data.hits.hits.map((hit) => hit._source);
-        window.console.debug('JN', wqs)
 
         wqs.forEach((wq) => {
             const name = wq['name'][0];
 
             // identificar estado inicial
             const launch_condition = wq['launch_condition'][0];
-            let startState;
-            // if(/^\s*msg\.action\s*==\s*["']add['"]/.test(launch_condition)){
-            //     startState = '[*]';
-
-            // } else {
-            startState = /\s*msg\.field\(["']Estado['"]\)\.changedTo\(["']([^"']+)['"]\)/
+            const startState = /\s*msg\.field\(["']Estado['"]\)\.changedTo\(["']([^"']+)['"]\)/
                 .exec(launch_condition)[1];
-            // }
             const startStateIdx = states.findIndex(s => s == startState);
             if(startStateIdx < 0) window.console.error("não consegui encontrar estado inicial " + startState)
 
 
             // identificar estado final
             const mudaEstadoRE = /^updates\[["']Estado["']\]\s*=\s*["']([^"']+)["']/;
-            const detectaMudaEstadoRE = /\s*data\.value\(["'].*['"]\)\s*==\s*["']([^"']+)['"]/;
+            const detectaMudaEstadoRE = /\s*data\.value\(["'](.*)['"]\)\s*==\s*["']([^"']+)['"]/;
             const linhas = wq['on_done'][0].split('\n');
             const eDecisao = linhas.length > 1;
             if(eDecisao){
                 window.console.debug('JN', 'decisao', linhas)
-                diagramSrc.push(`state decision_${startStateIdx} <<choice>>`)
+                diagram.push({type: 'choice', v: `state decision_${startStateIdx} <<choice>>`})
                 if(startStateIdx >= 0){
-                    diagramSrc.push(`${startStateIdx} --> decision_${startStateIdx}: ${name}`)
+                    diagram.push({type: 'transition', v: `${startStateIdx} --> decision_${startStateIdx}: ${name}`})
                 }
             }
             linhas.forEach(on_done => {
 
                 let endState;
-                let targetName = name;
+                let decisionName = name;
                 const matchSimple = mudaEstadoRE.exec(on_done);
                 if(matchSimple){
                     window.console.debug('JN', 'matchSimple', matchSimple)
@@ -92,10 +88,10 @@ cob.custom.customize.push(async function (core, utils, ui) {
                         endState = mudaEstadoRE.exec(matchIf[2])[1];
                         const matchFrom = detectaMudaEstadoRE.exec(matchIf[1]);
                         if(matchFrom) {
-                            targetName = matchFrom[1];
+                            decisionName = "" + matchFrom[1] + ' = ' + matchFrom[2] + "";
                         } else {
                             window.console.error("não consegui extrair de " + matchIf[1]);
-                            targetName = "FALTA";
+                            decisionName = "FALTA";
                         }
                     } else {
                         window.console.error('não percebo a linha', on_done)
@@ -107,10 +103,10 @@ cob.custom.customize.push(async function (core, utils, ui) {
 
                 if(startStateIdx >= 0 && endStateIdx >= 0) {
                     if(eDecisao) {
-                        diagramSrc.push(`decision_${startStateIdx} --> ${endStateIdx}: ${targetName}`)
+                        diagram.push({type: 'decision', v: `decision_${startStateIdx} --> ${endStateIdx}: ${decisionName}`})
 
                     } else {
-                        diagramSrc.push(`${startStateIdx} --> ${endStateIdx}: ${name}`)
+                        diagram.push({type: 'transition', v: `${startStateIdx} --> ${endStateIdx}: ${name}`})
                     }
                 }
 
@@ -119,15 +115,50 @@ cob.custom.customize.push(async function (core, utils, ui) {
 
         });
 
+
+        // **********************
+        //    Processar Gráfico
+        // **********************
+
+        // transformar <<choice>> com >1 entradas num <<join>>
+        const joins = diagram
+            .filter(l => l.type == 'transition' && /--> decision/.test(l.v))
+            .map(l => /(decision_\d+):/.exec(l.v)[1])
+            .reduce(( acc, curr ) => { if(!acc[curr]){ acc[curr] = 1 } else { acc[curr] = acc[curr] + 1 }; return acc;}, {});
+
+        for(const stateId in joins){
+            if(joins[stateId] > 1) {
+                // trocar <<choice>> por <<join>>
+                diagram
+                    .filter(l => l.type == 'choice' && new RegExp(`state ${stateId} `).test(l.v))
+                    .forEach(l => l.v = l.v.replaceAll('<<choice>>', '<<join>>'))
+
+
+                // juntar condições que saem do <<join>>
+                const outgoingDecisions = diagram
+                    .filter(l => l.type == 'decision' && new RegExp(`^${stateId} --> `).test(l.v) );
+                const commonPart = outgoingDecisions[0].v.substring(0, outgoingDecisions[0].v.indexOf(':'));
+                const joinedCondition = outgoingDecisions
+                    .map(l => l.v.substring(commonPart.length + 1))
+                    .join(" && ")
+                window.console.debug('JN', 'choices', 'decisions',`^${stateId} --> `, joinedCondition );
+                diagram = diagram.filter(l => l.type != 'decision' || !l.v.startsWith(commonPart));
+                diagram.push({type: 'decision', v: `${commonPart}: ${joinedCondition}`})
+
+            }
+        }
+
+
         // *****************
         //   Gerar Gráfico
         // *****************
 
-        window.console.debug('JN', 'diagramSrc', diagramSrc.join('\n'))
+        const mermaidSrc = diagram.map(l => l.v).join('\n');
+        window.console.debug('JN', 'mermaidSrc', mermaidSrc)
 
         // Work Queues
         $(".field-def-id-881")
-            .before('<pre class="mermaid" style="margin:0px 14px">' + diagramSrc.join("\n") + '</pre>')
+            .before('<pre class="mermaid" style="margin:0px 14px">' + mermaidSrc + '</pre>')
 
         mermaid.initialize({startOnLoad:false})
         setTimeout( () =>  mermaid.init() , 10)
