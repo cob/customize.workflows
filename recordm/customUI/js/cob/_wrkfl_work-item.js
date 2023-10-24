@@ -71,6 +71,9 @@ cob.custom.customize.push(async function (core, utils, ui) {
                 // Filter next states by showing only the states that are defined in the work queue
                 options = [possibleStates[0].label, ...(possibleStates[0].next ? possibleStates[0].next.filter(s => workQueueStates.indexOf(s) !== -1) : [])];
 
+            } else if(stateOrig === "Error"){
+                options = ["Error"]; //The Error option is only available when the State is Error (System-Only state)
+
             } else {
                 let currentState = possibleStates.find(s => s.label === stateOrig);
                 if(currentState === undefined){ //WQ must have changed
@@ -80,9 +83,6 @@ cob.custom.customize.push(async function (core, utils, ui) {
                 // Filter next states by showing only the states that are defined in the work queue
                 options = [currentState.label, ...(currentState.next ? currentState.next.filter(s => workQueueStates.indexOf(s) !== -1) : [])];
             }
-
-            //There should always be the Error option available
-            if(!options.includes("Error")) options.push("Error")
 
             // Reset all options when setting a work queue
             $("option", wiStatetFP.content()).remove();
