@@ -97,20 +97,14 @@ cob.custom.customize.push(async function (core, utils, ui) {
 
     });
 
-
-    $(document).on("click", `button.js-change-state`, function (ev) {
-        ev.preventDefault();
-
-        const workItemInstance = $(ev.target)
-        const workItemId = workItemInstance.attr("data-workitem-id")
-        const nextState = workItemInstance.attr("data-next-state")
-
+    const callChangeWiStateConcurrent = function(workItemId, nextState){
         axios.post("/integrationm/concurrent/_wrkfl_change-work-item-state", {workItemId, nextState})
             .then(() => {
                 setTimeout(() => {
                     $(".js-form-search").find(".btn-search").click()
                     $(".js-references-refresh-btn").click()
-                    if(nextState === "Done"){
+
+                    if (nextState === "Done") {
                         //Refresh the enclosing instance if there is one and there is a refresh button
                         $(".js-refresh-instance").click()
                     }
@@ -121,14 +115,47 @@ cob.custom.customize.push(async function (core, utils, ui) {
                 }, 2000)
             })
             .catch(error => {
+                //need to refresh so the instance.data will be complete on next click (only happens inside instance details)
+                //without this, 2 consecutive clicks on the Complete will give an error on recordm complaining about missing _links in the instance.data
+                $(".js-refresh-instance").click()
+
                 ui.dialogs.InfoDialog(core, {
                     "title": "Error",
                     "message": " Could not complete task:<br><br>" + error.response.data.error + "<br><br> Check that all data is saved.",
                     "closeBtnLabel": "OK"
                 });
 
+
             })
+    }
+
+    core.customizeAllInstances(function(instance, presenter) {
+        const onStateChanged = function(ev) {
+            ev.preventDefault();
+            const workItemInstance = $(ev.target)
+            const workItemId = workItemInstance.attr("data-workitem-id")
+            const nextState = workItemInstance.attr("data-next-state")
+
+            console.log("JB in details")
+            console.log("JB ", instance)
+            if (nextState === "Done") {
+                ui.notification.showInfo("Saving '" + instance.data.jsonDefinition.name + "' And completing work item...", false);
+                presenter.saveInstance(function(instanceData) {
+                    callChangeWiStateConcurrent(workItemId, nextState)
+                })
+            } else {
+                callChangeWiStateConcurrent(workItemId, nextState)
+            }
+
+        }
+
+        //allways have to reattach the event so that we have the complete instance data (otherwise _links and instanceLabel would not come in the instance.data)
+        //Also, we attach the click to diferent eventnamespaces so that if an instance details is open inside a references, that os also saved
+        $(document).off("click.workflow." + instance.data.id, "div.references-wrapper button.js-change-state")
+        $(document).on("click.workflow." + instance.data.id, "div.references-wrapper button.js-change-state", onStateChanged)
+
     })
+
 
     core.customizeColumns(DEFINITION, {
         [WI_TARGET_STATE_FIELD]: function (node, esDoc, colDef) {
@@ -168,6 +195,19 @@ cob.custom.customize.push(async function (core, utils, ui) {
                     <div class="flex-1 text-left p-1 pl-2 flex gap-1 bg-white">${nextStateButtons}</div>
                 </div>`)
             $(node).html(nodeContent)
+
+
+            $(document).off("click.workflow.wiList", "section.search-definition button.js-change-state")
+            $(document).on("click.workflow.wiList", "section.search-definition button.js-change-state", function(ev){
+                ev.preventDefault();
+                const workItemInstance = $(ev.target)
+                const workItemId = workItemInstance.attr("data-workitem-id")
+                const nextState = workItemInstance.attr("data-next-state")
+
+                console.log("JB in workitem list")
+                callChangeWiStateConcurrent(workItemId, nextState)
+
+            })
         }
     });
 
