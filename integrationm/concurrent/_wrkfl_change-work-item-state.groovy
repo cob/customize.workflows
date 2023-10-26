@@ -26,7 +26,7 @@ if (nextState == "Done") {
                 if (cdSearch.success() && cdSearch.getTotal() > 0) {
                     def data = cdSearch.getHits().get(0)
 
-                    def binding = new Binding(data: data)
+                    def binding = new Binding(data: data, recordm:recordm)
                     try {
                         if (!new GroovyShell(binding).evaluate(doneConditions)) {
                             return json(406, [success: false,

@@ -24,7 +24,7 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.field('State').ch
                 Map updates = [:]
                 def data = cdSearch.getHits().get(0)
 
-                def binding = new Binding(data: data, updates: updates)
+                def binding = new Binding(data: data, updates: updates, recordm: recordm)
 
                 try {
                     new GroovyShell(binding).evaluate(code)
