@@ -168,14 +168,21 @@ cob.custom.customize.push(async function (core, utils, ui) {
             const possibleStates = workQueueStates.map(state => STATES_DEFINITION.find(s => s.label === state))
                 .filter(state => state);
 
-            const currentState = esDoc[WI_TARGET_STATE_FIELD.toLowerCase()]?.length > 0
-                                 ? possibleStates.find(state => esDoc[WI_TARGET_STATE_FIELD.toLowerCase()][0] === state.label)
-                                 : possibleStates[0]
+            let currentState = possibleStates[0];
 
-            if(currentState==""){
-                console.error("Current state not set. Has invalid value for the WQ :",esDoc[WI_TARGET_STATE_FIELD.toLowerCase()][0])
+            if (esDoc[WI_TARGET_STATE_FIELD.toLowerCase()]?.length > 0) {
+                if (esDoc[WI_TARGET_STATE_FIELD.toLowerCase()][0] === "Error") {
+                    currentState = {label: "Error"}
+                } else {
+                    currentState = possibleStates.find(state => esDoc[WI_TARGET_STATE_FIELD.toLowerCase()][0] === state.label)
+                }
+            }
+
+            if (currentState === "" || currentState === undefined) {
+                console.error("Current state not set. Has invalid value for the WQ :", esDoc[WI_TARGET_STATE_FIELD.toLowerCase()][0])
                 return;
             }
+
 
             const nextStateButtons = (currentState.next?.filter(s => workQueueStates.indexOf(s) !== -1) || [])
                 .map(s => `
@@ -198,7 +205,7 @@ cob.custom.customize.push(async function (core, utils, ui) {
 
 
             $(document).off("click.workflow.wiList", "section.search-definition button.js-change-state")
-            $(document).on("click.workflow.wiList", "section.search-definition button.js-change-state", function(ev){
+            $(document).on("click.workflow.wiList", "section.search-definition button.js-change-state", function(ev) {
                 ev.preventDefault();
                 const workItemInstance = $(ev.target)
                 const workItemId = workItemInstance.attr("data-workitem-id")
