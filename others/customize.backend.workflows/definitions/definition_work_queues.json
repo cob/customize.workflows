@@ -21,8 +21,8 @@
       "duplicable": false,
       "fields": [],
       "order": 0,
-      "rootField": true,
       "restricted": false,
+      "rootField": true,
       "defaultValue": null
     },
     {
@@ -33,13 +33,13 @@
       "configuration": {
         "description": "",
         "keys": {
+          "InstanceDescription": {},
           "Reference": {
             "args": {
               "query": "*",
               "definition": "Business Processes"
             }
-          },
-          "InstanceDescription": {}
+          }
         },
         "extensions": {}
       },
@@ -47,8 +47,8 @@
       "duplicable": false,
       "fields": [],
       "order": 1,
-      "rootField": true,
       "restricted": false,
+      "rootField": true,
       "defaultValue": null
     },
     {
@@ -72,8 +72,8 @@
       "duplicable": false,
       "fields": [],
       "order": 2,
-      "rootField": true,
       "restricted": false,
+      "rootField": true,
       "defaultValue": null
     },
     {
@@ -92,8 +92,8 @@
       "duplicable": false,
       "fields": [],
       "order": 3,
-      "rootField": true,
       "restricted": false,
+      "rootField": true,
       "defaultValue": null
     },
     {
@@ -112,8 +112,8 @@
       "duplicable": false,
       "fields": [],
       "order": 4,
-      "rootField": true,
       "restricted": false,
+      "rootField": true,
       "defaultValue": null
     },
     {
@@ -132,8 +132,8 @@
       "duplicable": false,
       "fields": [],
       "order": 5,
-      "rootField": true,
       "restricted": false,
+      "rootField": true,
       "defaultValue": null
     },
     {
@@ -152,8 +152,8 @@
       "duplicable": false,
       "fields": [],
       "order": 6,
-      "rootField": true,
       "restricted": false,
+      "rootField": true,
       "defaultValue": null
     },
     {
@@ -180,8 +180,8 @@
       "duplicable": false,
       "fields": [],
       "order": 7,
-      "rootField": true,
       "restricted": false,
+      "rootField": true,
       "defaultValue": "Human"
     },
     {
@@ -192,7 +192,6 @@
       "configuration": {
         "description": "",
         "keys": {
-          "Multiple": {},
           "Expanded": {
             "args": {}
           },
@@ -207,7 +206,8 @@
               "Canceled"
             ],
             "default": null
-          }
+          },
+          "Multiple": {}
         },
         "extensions": {
           "$style": {
@@ -236,8 +236,8 @@
           "duplicable": false,
           "fields": [],
           "order": 9,
-          "rootField": false,
           "restricted": false,
+          "rootField": false,
           "defaultValue": null
         },
         {
@@ -256,8 +256,28 @@
           "duplicable": false,
           "fields": [],
           "order": 10,
-          "rootField": false,
           "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Done Conditions Error Msg",
+          "required": null,
+          "description": "$text Friendly text to present when conditions are not met",
+          "configuration": {
+            "description": "Friendly text to present when conditions are not met",
+            "keys": {},
+            "extensions": {
+              "$text": {}
+            }
+          },
+          "condition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 11,
+          "restricted": false,
+          "rootField": false,
           "defaultValue": null
         },
         {
@@ -275,9 +295,9 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 11,
-          "rootField": false,
+          "order": 12,
           "restricted": false,
+          "rootField": false,
           "defaultValue": null
         },
         {
@@ -295,9 +315,9 @@
           "condition": "=Error",
           "duplicable": false,
           "fields": [],
-          "order": 12,
-          "rootField": false,
+          "order": 13,
           "restricted": false,
+          "rootField": false,
           "defaultValue": null
         },
         {
@@ -315,15 +335,15 @@
           "condition": "=Canceled",
           "duplicable": false,
           "fields": [],
-          "order": 13,
-          "rootField": false,
+          "order": 14,
           "restricted": false,
+          "rootField": false,
           "defaultValue": null
         }
       ],
       "order": 8,
-      "rootField": true,
       "restricted": false,
+      "rootField": true,
       "defaultValue": null
     },
     {
@@ -370,15 +390,15 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 15,
-          "rootField": false,
+          "order": 16,
           "restricted": false,
+          "rootField": false,
           "defaultValue": null
         }
       ],
-      "order": 14,
-      "rootField": true,
+      "order": 15,
       "restricted": false,
+      "rootField": true,
       "defaultValue": null
     }
   ],
