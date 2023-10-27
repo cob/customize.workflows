@@ -1,6 +1,6 @@
-cob.custom.customize.push(async function (core, utils, ui) {
+cob.custom.customize.push(async function(core, utils, ui) {
 
-    utils.loadScript("localresource/js/lib/axios.min.js", function () {
+    utils.loadScript("localresource/js/lib/axios.min.js", function() {
     });
 
     const DEFINITION = "Work Item";
@@ -71,12 +71,12 @@ cob.custom.customize.push(async function (core, utils, ui) {
                 // Filter next states by showing only the states that are defined in the work queue
                 options = [possibleStates[0].label, ...(possibleStates[0].next ? possibleStates[0].next.filter(s => workQueueStates.indexOf(s) !== -1) : [])];
 
-            } else if(stateOrig === "Error"){
+            } else if (stateOrig === "Error") {
                 options = ["Error"]; //The Error option is only available when the State is Error (System-Only state)
 
             } else {
                 let currentState = possibleStates.find(s => s.label === stateOrig);
-                if(currentState === undefined){ //WQ must have changed
+                if (currentState === undefined) { //WQ must have changed
                     currentState = possibleStates[0];
                     wiStatetFP.setValue(possibleStates[0].label);
                 }
@@ -97,7 +97,7 @@ cob.custom.customize.push(async function (core, utils, ui) {
 
     });
 
-    const callChangeWiStateConcurrent = function(workItemId, nextState){
+    const callChangeWiStateConcurrent = function(workItemId, nextState) {
         axios.post("/integrationm/concurrent/_wrkfl_change-work-item-state", {workItemId, nextState})
             .then(() => {
                 setTimeout(() => {
@@ -115,16 +115,17 @@ cob.custom.customize.push(async function (core, utils, ui) {
                 }, 2000)
             })
             .catch(error => {
-                //need to refresh so the instance.data will be complete on next click (only happens inside instance details)
-                //without this, 2 consecutive clicks on the Complete will give an error on recordm complaining about missing _links in the instance.data
-                $(".js-refresh-instance").click()
-
                 ui.dialogs.InfoDialog(core, {
-                    "title": "Error",
-                    "message": " Could not complete task:<br><br>" + error.response.data.error + "<br><br> Check that all data is saved.",
-                    "closeBtnLabel": "OK"
-                });
-
+                        "title": "Error",
+                        "message": " Could not complete task.<br><br>" + error.response.data.error + "<br>Check that all data is saved.",
+                        "closeBtnLabel": "OK"
+                    },
+                    {
+                        onClose: function() {
+                            //we need to refresh the enclosing instance because the instance was saved and the version changed
+                            $(".js-refresh-instance").click()
+                        }
+                    });
 
             })
     }
@@ -135,13 +136,26 @@ cob.custom.customize.push(async function (core, utils, ui) {
             const workItemInstance = $(ev.target)
             const workItemId = workItemInstance.attr("data-workitem-id")
             const nextState = workItemInstance.attr("data-next-state")
+            const workItemCustomerDataId = workItemInstance.attr("data-customer-data-id")
 
-            console.log("JB in details")
-            console.log("JB ", instance)
+            console.debug("JB in details")
+            console.debug("JB ", instance)
+            console.debug("JB wi ", workItemCustomerDataId)
             if (nextState === "Done") {
-                ui.notification.showInfo("Saving '" + instance.data.jsonDefinition.name + "' And completing work item...", false);
+                if (instance.data.id === +workItemCustomerDataId) {
+                    ui.notification.showInfo("Saving <b>" + instance.data.jsonDefinition.name + "</b> and completing work item...", false);
+                }else{
+                    ui.notification.showInfo("Saving <b>" + instance.data.jsonDefinition.name + "</b>", false);
+                }
+
                 presenter.saveInstance(function(instanceData) {
-                    callChangeWiStateConcurrent(workItemId, nextState)
+                    //there may be other instances being saved from references details and we just want to call the
+                    // concurrent once and when is the main instance being saved
+                    if (instance.data.id === +workItemCustomerDataId) {
+                        callChangeWiStateConcurrent(workItemId, nextState)
+                    }
+                    //after everything is saved we want to discard the several details listners that are attached whenever we opened a references details
+                    $(document).off(".workflow.details")
                 })
             } else {
                 callChangeWiStateConcurrent(workItemId, nextState)
@@ -149,21 +163,22 @@ cob.custom.customize.push(async function (core, utils, ui) {
 
         }
 
-        //allways have to reattach the event so that we have the complete instance data (otherwise _links and instanceLabel would not come in the instance.data)
-        //Also, we attach the click to diferent eventnamespaces so that if an instance details is open inside a references, that os also saved
-        $(document).off("click.workflow." + instance.data.id, "div.references-wrapper button.js-change-state")
-        $(document).on("click.workflow." + instance.data.id, "div.references-wrapper button.js-change-state", onStateChanged)
+        //allways reattach the event so we don't have duplicate events
+        //Also, we attach the click to diferent eventnamespaces so that if an instance details is open inside a references, that is also saved
+        $(document).off("click." + instance.data.id + ".workflow.details", "div.references-wrapper button.js-change-state")
+        $(document).on("click." + instance.data.id + ".workflow.details", "div.references-wrapper button.js-change-state", onStateChanged)
 
     })
 
 
     core.customizeColumns(DEFINITION, {
-        [WI_TARGET_STATE_FIELD]: function (node, esDoc, colDef) {
+        [WI_TARGET_STATE_FIELD]: function(node, esDoc, colDef) {
             if (!esDoc["#_work_queue_states"]) {
                 return
             }
 
             const workQueueStates = esDoc["#_work_queue_states"]
+            const worItemCustomerDataId = esDoc["customer_data"] ? esDoc["customer_data"][0] : undefined
 
             const possibleStates = workQueueStates.map(state => STATES_DEFINITION.find(s => s.label === state))
                 .filter(state => state);
@@ -190,6 +205,7 @@ cob.custom.customize.push(async function (core, utils, ui) {
                     type="button"
                     data-workitem-id="${esDoc.instanceId}"
                     data-next-state="${s}"
+                    data-customer-data-id="${worItemCustomerDataId}"
                     class="js-change-state px-3 py-0 text-xs text-center text-white rounded-md focus:ring-4 bg-sky-400"
                 >
                     ${ACTIONS[currentState.label + " -> " + s]}
@@ -211,7 +227,7 @@ cob.custom.customize.push(async function (core, utils, ui) {
                 const workItemId = workItemInstance.attr("data-workitem-id")
                 const nextState = workItemInstance.attr("data-next-state")
 
-                console.log("JB in workitem list")
+                console.debug("JB in workitem list")
                 callChangeWiStateConcurrent(workItemId, nextState)
 
             })
