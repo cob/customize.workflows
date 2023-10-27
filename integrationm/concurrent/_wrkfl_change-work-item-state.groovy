@@ -19,6 +19,7 @@ if (nextState == "Done") {
         if (wqSearch.success() && wqSearch.getTotal() > 0) {
             def wq = wqSearch.getHits().get(0)
             def doneConditions = wq.value("Done Conditions")
+            def doneConditionsErrorMsg = wq.value("Done Conditions Error Msg") ?: doneConditions
 
             if (doneConditions != null) {
                 def cdSearch = recordm.search(wi.value("Customer Data Definition"), "id.raw:${wi.value('Customer Data')}", [size: 1]);
@@ -30,7 +31,10 @@ if (nextState == "Done") {
                     try {
                         if (!new GroovyShell(binding).evaluate(doneConditions)) {
                             return json(406, [success: false,
-                                              error: "Done conditions returned false <br><code>{$doneConditions}</code>"])
+                                              error: "Done conditions returned false. <br>" +
+                                                      "<div style=\"text-wrap: balance;font-style: italic;font-size: 1.2em;padding: 5px;\">" +
+                                                      "$doneConditionsErrorMsg" +
+                                                      "</div>"])
                         }
                     } catch (Exception e) {
                         log.error("Error evaluating Done Conditions {{ code: ${doneConditions} }}", e)
