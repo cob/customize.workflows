@@ -141,6 +141,7 @@ cob.custom.customize.push(async function(core, utils, ui) {
             console.debug("JB in details")
             console.debug("JB ", instance)
             console.debug("JB wi ", workItemCustomerDataId)
+
             if (nextState === "Done") {
                 if (instance.data.id === +workItemCustomerDataId) {
                     ui.notification.showInfo("Saving <b>" + instance.data.jsonDefinition.name + "</b> and completing work item...", false);
@@ -167,6 +168,13 @@ cob.custom.customize.push(async function(core, utils, ui) {
         //Also, we attach the click to diferent eventnamespaces so that if an instance details is open inside a references, that is also saved
         $(document).off("click." + instance.data.id + ".workflow.details", "div.references-wrapper button.js-change-state")
         $(document).on("click." + instance.data.id + ".workflow.details", "div.references-wrapper button.js-change-state", onStateChanged)
+
+
+        //detach the click event on this instance when it is actively saved (otherwise will give a version error when completing a tatsk)
+        core.subscribe("recordm:saved:instance:"+instance.data.id, function () {
+            $(document).off("click." + instance.data.id + ".workflow.details")
+        });
+
 
     })
 
