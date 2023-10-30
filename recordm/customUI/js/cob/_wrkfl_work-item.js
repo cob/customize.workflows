@@ -145,19 +145,26 @@ cob.custom.customize.push(async function(core, utils, ui) {
             if (nextState === "Done") {
                 if (instance.data.id === +workItemCustomerDataId) {
                     ui.notification.showInfo("Saving <b>" + instance.data.jsonDefinition.name + "</b> and completing work item...", false);
-                }else{
+                } else {
                     ui.notification.showInfo("Saving <b>" + instance.data.jsonDefinition.name + "</b>", false);
                 }
 
-                presenter.saveInstance(function(instanceData) {
-                    //there may be other instances being saved from references details and we just want to call the
-                    // concurrent once and when is the main instance being saved
-                    if (instance.data.id === +workItemCustomerDataId) {
-                        callChangeWiStateConcurrent(workItemId, nextState)
-                    }
-                    //after everything is saved we want to discard the several details listners that are attached whenever we opened a references details
-                    $(document).off(".workflow.details")
-                })
+                if (instance.data.id > 0 && instance.data._links.update === "recordm/instances/-1") {
+                    //this is an already saved instace and it would give an error if saved again. It's an error condition that must be fixed in ui-all
+                    console.warn("ERROR in data: an instace with id>0 has wrong update hateos link. This should not happpen ", instance.data.id, instance.data._links)
+
+                }else{
+                    presenter.saveInstance(function(instanceData) {
+                        //there may be other instances being saved from references details and we just want to call the
+                        // concurrent once and when is the main instance being saved
+                        if (instance.data.id === +workItemCustomerDataId) {
+                            callChangeWiStateConcurrent(workItemId, nextState)
+                        }
+                        //after everything is saved we want to discard the several details listners that are attached whenever we opened a references details
+                        $(document).off(".workflow.details")
+                    })
+                }
+
             } else {
                 callChangeWiStateConcurrent(workItemId, nextState)
             }
@@ -171,7 +178,7 @@ cob.custom.customize.push(async function(core, utils, ui) {
 
 
         //detach the click event on this instance when it is actively saved (otherwise will give a version error when completing a tatsk)
-        core.subscribe("recordm:saved:instance:"+instance.data.id, function () {
+        core.subscribe("recordm:saved:instance:" + instance.data.id, function() {
             $(document).off("click." + instance.data.id + ".workflow.details")
         });
 
