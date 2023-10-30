@@ -69,7 +69,7 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.field('State').ch
         def currentUser = userm.getUser(msg.user).getBody()
         wiUpdates["User"] = currentUser._links.self
         wiUpdates["Date of Assignment"] = nowDateTime
-        wiUpdates["Time of Assignment"] = getDiifHOurs(dateCreation, nowDateTime)
+        wiUpdates["Time of Assignment"] = 0.01
     }
 
     //Casos em que estou a entrar no estado:
@@ -83,7 +83,7 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.field('State').ch
             break;
         case "Done":
             wiUpdates["Date of Done"] = nowDateTime
-            wiUpdates["Time of Execution"] = getDiifHOurs(dateStart ?: dateCreation, nowDateTime)
+            wiUpdates["Time of Execution"] = dateStart ? getDiifHOurs(dateStart, nowDateTime) : 0.01
             wiUpdates["Time Overall"] = getDiifHOurs(dateCreation, nowDateTime)
             break;
     }
