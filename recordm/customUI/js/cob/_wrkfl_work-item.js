@@ -158,7 +158,10 @@ cob.custom.customize.push(async function(core, utils, ui) {
                         //there may be other instances being saved from references details and we just want to call the
                         // concurrent once and when is the main instance being saved
                         if (instance.data.id === +workItemCustomerDataId) {
-                            callChangeWiStateConcurrent(workItemId, nextState)
+                            //give it 1 sec for the save to take effect in ES and the done conditions can be checked correctly
+                            setTimeout(() => {
+                                callChangeWiStateConcurrent(workItemId, nextState)
+                            }, 1000)
                         }
                         //after everything is saved we want to discard the several details listners that are attached whenever we opened a references details
                         $(document).off(".workflow.details")
