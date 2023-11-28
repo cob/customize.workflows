@@ -2,12 +2,12 @@
 
 ## Install
 
-`cob-cli customize worflow`
+`cob-cli customize workflow`
 
 ## Setup:
 
 ### IntegrationM
-* Add new rest action pack for integrationm
+* Add new rest action pack for integrationm in `integrationm/services/com.cultofbits.integrationm.service.properties`
 
 ```properties
 action.name=...,imRest
