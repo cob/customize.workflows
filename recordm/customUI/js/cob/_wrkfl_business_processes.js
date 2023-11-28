@@ -157,7 +157,7 @@ cob.custom.customize.push(async function (core, utils, ui) {
         window.console.debug('JN', 'mermaidSrc', mermaidSrc)
 
         // Work Queues
-        $(".field-def-id-881")
+        $(".custom-workQueues")
             .before('<pre class="mermaid" style="margin:0px 14px">' + mermaidSrc + '</pre>')
 
         mermaid.initialize({startOnLoad:false})
