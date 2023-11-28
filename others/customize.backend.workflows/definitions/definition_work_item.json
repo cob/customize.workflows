@@ -1,13 +1,205 @@
 {
   "id": null,
   "name": "Work Item",
-  "description": "@BPO",
+  "description": "@BPO v0.11.0",
   "duplicable": null,
   "state": "enabled",
   "fieldDefinitions": [
     {
       "id": null,
-      "name": "Work Specification",
+      "name": "Execution Status",
+      "required": null,
+      "description": "$group $expanded(id!=-1) $style[hide-in-new-instance]",
+      "configuration": {
+        "description": "",
+        "keys": {
+          "Expanded": {
+            "args": {
+              "condition": "id!=-1"
+            }
+          },
+          "Group": {}
+        },
+        "extensions": {
+          "$style": {
+            "args": [
+              "hide-in-new-instance"
+            ]
+          }
+        }
+      },
+      "condition": null,
+      "duplicable": false,
+      "fields": [
+        {
+          "id": null,
+          "name": "Customer Data Definition",
+          "required": null,
+          "description": "$auto.ref(Customer Data).field(definitionName) $style[hide-inline]",
+          "configuration": {
+            "description": "",
+            "keys": {
+              "AutoRefField": {
+                "args": {
+                  "source_field": "Customer Data",
+                  "field_name": "definitionName"
+                }
+              }
+            },
+            "extensions": {
+              "$style": {
+                "args": [
+                  "hide-inline"
+                ]
+              }
+            }
+          },
+          "condition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 1,
+          "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Customer Data",
+          "required": null,
+          "description": "$ref(Work Queues,*) $readonly  $readonly $alert(a def é uma qualquer só para conseguirmos ter o ref; o instanceId será preenchido por quem criar o WI) $style[hide-inline]",
+          "configuration": {
+            "description": "",
+            "keys": {
+              "Reference": {
+                "args": {
+                  "query": "*",
+                  "definition": "Work Queues"
+                }
+              }
+            },
+            "extensions": {
+              "$readonly": {},
+              "$style": {
+                "args": [
+                  "hide-inline"
+                ]
+              },
+              "$alert": {
+                "args": [
+                  "a def é uma qualquer só para conseguirmos ter o ref; o instanceId será preenchido por quem criar o WI"
+                ]
+              }
+            }
+          },
+          "condition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 2,
+          "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "State",
+          "required": "mandatory",
+          "description": "$[To Assign,To Do,In Progress,Done,Pending,Error,Canceled] $instanceDescription $styleResultColumn(To Assign:BgDimOrange,To Do:BgDimBlue,In Progress:BgDimBlue,Pending:BgDimOrnage,Done:BgDimGreen,Canceled:BgDimGray,Error:BgDimRed) $groupEdit",
+          "configuration": {
+            "description": "",
+            "keys": {
+              "InstanceDescription": {},
+              "Select": {
+                "args": [
+                  "To Assign",
+                  "To Do",
+                  "In Progress",
+                  "Done",
+                  "Pending",
+                  "Error",
+                  "Canceled"
+                ],
+                "default": null
+              }
+            },
+            "extensions": {
+              "$groupEdit": {},
+              "$styleResultColumn": {
+                "args": [
+                  "To Assign:BgDimOrange",
+                  "To Do:BgDimBlue",
+                  "In Progress:BgDimBlue",
+                  "Pending:BgDimOrnage",
+                  "Done:BgDimGreen",
+                  "Canceled:BgDimGray",
+                  "Error:BgDimRed"
+                ]
+              }
+            }
+          },
+          "condition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 3,
+          "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "User",
+          "required": null,
+          "description": "$extRef(userm,/userm/user/search?q={{this}}*) $groupEdit",
+          "configuration": {
+            "description": "",
+            "keys": {
+              "ExternalReference": {
+                "args": {
+                  "product": "userm",
+                  "query": "/userm/user/search?q={{this}}*"
+                }
+              }
+            },
+            "extensions": {
+              "$groupEdit": {}
+            }
+          },
+          "condition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 4,
+          "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Automation Errors",
+          "required": null,
+          "description": "$text",
+          "configuration": {
+            "description": "",
+            "keys": {},
+            "extensions": {
+              "$text": {}
+            }
+          },
+          "condition": "State=Error",
+          "duplicable": false,
+          "fields": [],
+          "order": 5,
+          "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        }
+      ],
+      "order": 0,
+      "restricted": false,
+      "rootField": true,
+      "defaultValue": null
+    },
+    {
+      "id": null,
+      "name": "Business Process & Work Queue",
       "required": null,
       "description": "$group $expanded(id=-1)",
       "configuration": {
@@ -27,6 +219,32 @@
       "fields": [
         {
           "id": null,
+          "name": "Work Queue",
+          "required": "mandatory",
+          "description": "$ref(Work Queues, specific_data:__Customer Data Definition__) $instanceDescription ",
+          "configuration": {
+            "description": "",
+            "keys": {
+              "Reference": {
+                "args": {
+                  "query": "specific_data:__Customer Data Definition__",
+                  "definition": "Work Queues"
+                }
+              },
+              "InstanceDescription": {}
+            },
+            "extensions": {}
+          },
+          "condition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 7,
+          "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
           "name": "Business Process",
           "required": null,
           "description": "$auto.ref(Work Queue).field(Business Process) $ref(Business Processes,*)  $instanceDescription",
@@ -39,100 +257,42 @@
                   "definition": "Business Processes"
                 }
               },
+              "InstanceDescription": {},
               "AutoRefField": {
                 "args": {
                   "source_field": "Work Queue",
                   "field_name": "Business Process"
                 }
-              },
-              "InstanceDescription": {}
+              }
             },
             "extensions": {}
           },
           "condition": null,
           "duplicable": false,
-          "fields": [
-            {
-              "id": null,
-              "name": "Main Business Process",
-              "required": null,
-              "description": "$ref(Business Processes,*) $auto.ref(Business Process).field(Level 1)",
-              "configuration": {
-                "description": "",
-                "keys": {
-                  "Reference": {
-                    "args": {
-                      "query": "*",
-                      "definition": "Business Processes"
-                    }
-                  },
-                  "AutoRefField": {
-                    "args": {
-                      "source_field": "Business Process",
-                      "field_name": "Level 1"
-                    }
-                  }
-                },
-                "extensions": {}
-              },
-              "condition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 2,
-              "rootField": false,
-              "restricted": false,
-              "defaultValue": null
-            }
-          ],
-          "order": 1,
-          "rootField": false,
+          "fields": [],
+          "order": 8,
           "restricted": false,
+          "rootField": false,
           "defaultValue": null
         },
         {
           "id": null,
-          "name": "Customer Data",
+          "name": "Main Business Process",
           "required": null,
-          "description": "$ref(Work Queues,*) $readonly  $readonly $alert(a def é uma qualquer só para conseguirmos ter o ref; o instanceId será preenchido por quem criar o WI)",
+          "description": "$ref(Business Processes,*) $auto.ref(Business Process).field(Level 1)",
           "configuration": {
             "description": "",
             "keys": {
               "Reference": {
                 "args": {
                   "query": "*",
-                  "definition": "Work Queues"
+                  "definition": "Business Processes"
                 }
-              }
-            },
-            "extensions": {
-              "$readonly": {},
-              "$alert": {
-                "args": [
-                  "a def é uma qualquer só para conseguirmos ter o ref; o instanceId será preenchido por quem criar o WI"
-                ]
-              }
-            }
-          },
-          "condition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 3,
-          "rootField": false,
-          "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Customer Data Definition",
-          "required": null,
-          "description": "$auto.ref(Customer Data).field(definitionName)",
-          "configuration": {
-            "description": "",
-            "keys": {
+              },
               "AutoRefField": {
                 "args": {
-                  "source_field": "Customer Data",
-                  "field_name": "definitionName"
+                  "source_field": "Business Process",
+                  "field_name": "Level 1"
                 }
               }
             },
@@ -141,42 +301,16 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 4,
-          "rootField": false,
+          "order": 9,
           "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Work Queue",
-          "required": "mandatory",
-          "description": "$ref(Work Queues,*) $instanceDescription ",
-          "configuration": {
-            "description": "",
-            "keys": {
-              "Reference": {
-                "args": {
-                  "query": "*",
-                  "definition": "Work Queues"
-                }
-              },
-              "InstanceDescription": {}
-            },
-            "extensions": {}
-          },
-          "condition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 5,
           "rootField": false,
-          "restricted": false,
           "defaultValue": null
         },
         {
           "id": null,
           "name": "#_Work Queue States",
           "required": null,
-          "description": "$auto.ref(Work Queue).field(Possible States) $[To Assign,To Do,In Progress,Done,Pending,Snoozed,Error,Canceled] $multiple $style[radio-1line] $style[hide]",
+          "description": "$auto.ref(Work Queue).field(Possible States) $[To Assign,To Do,In Progress,Done,Pending,Snoozed,Error,Canceled] $multiple $style[radio-1line,hide-in-new-instance]",
           "configuration": {
             "description": "",
             "keys": {
@@ -204,352 +338,43 @@
             "extensions": {
               "$style": {
                 "args": [
-                  "hide"
+                  "radio-1line",
+                  "hide-in-new-instance"
                 ]
               }
             }
           },
           "condition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 6,
-          "rootField": false,
-          "restricted": false,
-          "defaultValue": null
-        }
-      ],
-      "order": 0,
-      "rootField": true,
-      "restricted": false,
-      "defaultValue": null
-    },
-    {
-      "id": null,
-      "name": "Work Execution",
-      "required": null,
-      "description": "$group $expanded(id!=-1)",
-      "configuration": {
-        "description": "",
-        "keys": {
-          "Expanded": {
-            "args": {
-              "condition": "id!=-1"
-            }
-          },
-          "Group": {}
-        },
-        "extensions": {}
-      },
-      "condition": null,
-      "duplicable": false,
-      "fields": [
-        {
-          "id": null,
-          "name": "State",
-          "required": "mandatory",
-          "description": "$[To Assign,To Do,In Progress,Done,Pending,Error,Canceled] $instanceDescription $styleResultColumn(To Assign:BgDimOrange,To Do:BgDimBlue,In Progress:BgDimBlue,Pending:BgDimOrnage,Done:BgDimGreen,Canceled:BgDimGray,Error:BgDimRed) $groupEdit",
-          "configuration": {
-            "description": "",
-            "keys": {
-              "Select": {
-                "args": [
-                  "To Assign",
-                  "To Do",
-                  "In Progress",
-                  "Done",
-                  "Pending",
-                  "Error",
-                  "Canceled"
-                ],
-                "default": null
-              },
-              "InstanceDescription": {}
-            },
-            "extensions": {
-              "$groupEdit": {},
-              "$styleResultColumn": {
-                "args": [
-                  "To Assign:BgDimOrange",
-                  "To Do:BgDimBlue",
-                  "In Progress:BgDimBlue",
-                  "Pending:BgDimOrnage",
-                  "Done:BgDimGreen",
-                  "Canceled:BgDimGray",
-                  "Error:BgDimRed"
-                ]
-              }
-            }
-          },
-          "condition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 8,
-          "rootField": false,
-          "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "User",
-          "required": null,
-          "description": "$extRef(userm,/userm/user/search?q={{this}}*) $groupEdit",
-          "configuration": {
-            "description": "",
-            "keys": {
-              "ExternalReference": {
-                "args": {
-                  "product": "userm",
-                  "query": "/userm/user/search?q={{this}}*"
-                }
-              }
-            },
-            "extensions": {
-              "$groupEdit": {}
-            }
-          },
-          "condition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 9,
-          "rootField": false,
-          "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Automation Errors",
-          "required": null,
-          "description": "$text",
-          "configuration": {
-            "description": "",
-            "keys": {},
-            "extensions": {
-              "$text": {}
-            }
-          },
-          "condition": "State=Error",
           "duplicable": false,
           "fields": [],
           "order": 10,
-          "rootField": false,
           "restricted": false,
+          "rootField": false,
           "defaultValue": null
         }
       ],
-      "order": 7,
-      "rootField": true,
+      "order": 6,
       "restricted": false,
+      "rootField": true,
       "defaultValue": null
     },
     {
       "id": null,
-      "name": "Dates",
+      "name": "Execution Info",
       "required": null,
-      "description": "$group",
+      "description": "$group $style[hide-in-new-instance]",
       "configuration": {
         "description": "",
         "keys": {
           "Group": {}
         },
-        "extensions": {}
-      },
-      "condition": null,
-      "duplicable": false,
-      "fields": [
-        {
-          "id": null,
-          "name": "Date of Request",
-          "required": null,
-          "description": "$datetime $default(now) $instanceDescription $style[dateDiffBefore]",
-          "configuration": {
-            "description": "",
-            "keys": {
-              "DateTime": {},
-              "Default": {
-                "args": {
-                  "value": "now"
-                }
-              },
-              "InstanceDescription": {}
-            },
-            "extensions": {
-              "$style": {
-                "args": [
-                  "dateDiffBefore"
-                ]
-              }
-            }
-          },
-          "condition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 12,
-          "rootField": false,
-          "restricted": false,
-          "defaultValue": "1697149401291"
-        },
-        {
-          "id": null,
-          "name": "Date of Creation",
-          "required": null,
-          "description": "$datetime $default(now)  ",
-          "configuration": {
-            "description": "",
-            "keys": {
-              "DateTime": {},
-              "Default": {
-                "args": {
-                  "value": "now"
-                }
-              }
-            },
-            "extensions": {}
-          },
-          "condition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 13,
-          "rootField": false,
-          "restricted": false,
-          "defaultValue": "1697149401291"
-        },
-        {
-          "id": null,
-          "name": "Date of Assignment",
-          "required": null,
-          "description": "$datetime",
-          "configuration": {
-            "description": "",
-            "keys": {
-              "DateTime": {}
-            },
-            "extensions": {}
-          },
-          "condition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 14,
-          "rootField": false,
-          "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Date of Start",
-          "required": null,
-          "description": "$datetime",
-          "configuration": {
-            "description": "",
-            "keys": {
-              "DateTime": {}
-            },
-            "extensions": {}
-          },
-          "condition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 15,
-          "rootField": false,
-          "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Date of first Pending",
-          "required": null,
-          "description": "$datetime",
-          "configuration": {
-            "description": "",
-            "keys": {
-              "DateTime": {}
-            },
-            "extensions": {}
-          },
-          "condition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 16,
-          "rootField": false,
-          "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Date of Pending",
-          "required": null,
-          "description": "$datetime",
-          "configuration": {
-            "description": "",
-            "keys": {
-              "DateTime": {}
-            },
-            "extensions": {}
-          },
-          "condition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 17,
-          "rootField": false,
-          "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Date of Done",
-          "required": null,
-          "description": "$datetime",
-          "configuration": {
-            "description": "",
-            "keys": {
-              "DateTime": {}
-            },
-            "extensions": {}
-          },
-          "condition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 18,
-          "rootField": false,
-          "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Date of Canceling",
-          "required": null,
-          "description": "$datetime",
-          "configuration": {
-            "description": "",
-            "keys": {
-              "DateTime": {}
-            },
-            "extensions": {}
-          },
-          "condition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 19,
-          "rootField": false,
-          "restricted": false,
-          "defaultValue": null
+        "extensions": {
+          "$style": {
+            "args": [
+              "hide-in-new-instance"
+            ]
+          }
         }
-      ],
-      "order": 11,
-      "rootField": true,
-      "restricted": false,
-      "defaultValue": null
-    },
-    {
-      "id": null,
-      "name": "Statistics",
-      "required": null,
-      "description": "$group",
-      "configuration": {
-        "description": "",
-        "keys": {
-          "Group": {}
-        },
-        "extensions": {}
       },
       "condition": null,
       "duplicable": false,
@@ -575,135 +400,372 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 21,
-          "rootField": false,
+          "order": 12,
           "restricted": false,
+          "rootField": false,
           "defaultValue": "Yes"
         },
         {
           "id": null,
-          "name": "Time of Execution",
+          "name": "Dates",
           "required": null,
-          "description": "$number(2)",
+          "description": "$group $expanded $style[subgroup]",
           "configuration": {
             "description": "",
             "keys": {
-              "Number": {
-                "args": {
-                  "decimal_places": "2"
-                }
-              }
+              "Expanded": {
+                "args": {}
+              },
+              "Group": {}
             },
-            "extensions": {}
+            "extensions": {
+              "$style": {
+                "args": [
+                  "subgroup"
+                ]
+              }
+            }
           },
           "condition": null,
           "duplicable": false,
-          "fields": [],
+          "fields": [
+            {
+              "id": null,
+              "name": "Date of Request",
+              "required": null,
+              "description": "$datetime $default(now) $instanceDescription $style[dateDiffBefore]",
+              "configuration": {
+                "description": "",
+                "keys": {
+                  "DateTime": {},
+                  "InstanceDescription": {},
+                  "Default": {
+                    "args": {
+                      "value": "now"
+                    }
+                  }
+                },
+                "extensions": {
+                  "$style": {
+                    "args": [
+                      "dateDiffBefore"
+                    ]
+                  }
+                }
+              },
+              "condition": null,
+              "duplicable": false,
+              "fields": [],
+              "order": 14,
+              "restricted": false,
+              "rootField": false,
+              "defaultValue": "1701178293914"
+            },
+            {
+              "id": null,
+              "name": "Date of Creation",
+              "required": null,
+              "description": "$datetime $default(now)  ",
+              "configuration": {
+                "description": "",
+                "keys": {
+                  "DateTime": {},
+                  "Default": {
+                    "args": {
+                      "value": "now"
+                    }
+                  }
+                },
+                "extensions": {}
+              },
+              "condition": null,
+              "duplicable": false,
+              "fields": [],
+              "order": 15,
+              "restricted": false,
+              "rootField": false,
+              "defaultValue": "1701178293914"
+            },
+            {
+              "id": null,
+              "name": "Date of Assignment",
+              "required": null,
+              "description": "$datetime",
+              "configuration": {
+                "description": "",
+                "keys": {
+                  "DateTime": {}
+                },
+                "extensions": {}
+              },
+              "condition": null,
+              "duplicable": false,
+              "fields": [],
+              "order": 16,
+              "restricted": false,
+              "rootField": false,
+              "defaultValue": null
+            },
+            {
+              "id": null,
+              "name": "Date of Start",
+              "required": null,
+              "description": "$datetime",
+              "configuration": {
+                "description": "",
+                "keys": {
+                  "DateTime": {}
+                },
+                "extensions": {}
+              },
+              "condition": null,
+              "duplicable": false,
+              "fields": [],
+              "order": 17,
+              "restricted": false,
+              "rootField": false,
+              "defaultValue": null
+            },
+            {
+              "id": null,
+              "name": "Date of first Pending",
+              "required": null,
+              "description": "$datetime",
+              "configuration": {
+                "description": "",
+                "keys": {
+                  "DateTime": {}
+                },
+                "extensions": {}
+              },
+              "condition": null,
+              "duplicable": false,
+              "fields": [],
+              "order": 18,
+              "restricted": false,
+              "rootField": false,
+              "defaultValue": null
+            },
+            {
+              "id": null,
+              "name": "Date of Pending",
+              "required": null,
+              "description": "$datetime",
+              "configuration": {
+                "description": "",
+                "keys": {
+                  "DateTime": {}
+                },
+                "extensions": {}
+              },
+              "condition": null,
+              "duplicable": false,
+              "fields": [],
+              "order": 19,
+              "restricted": false,
+              "rootField": false,
+              "defaultValue": null
+            },
+            {
+              "id": null,
+              "name": "Date of Done",
+              "required": null,
+              "description": "$datetime",
+              "configuration": {
+                "description": "",
+                "keys": {
+                  "DateTime": {}
+                },
+                "extensions": {}
+              },
+              "condition": null,
+              "duplicable": false,
+              "fields": [],
+              "order": 20,
+              "restricted": false,
+              "rootField": false,
+              "defaultValue": null
+            },
+            {
+              "id": null,
+              "name": "Date of Canceling",
+              "required": null,
+              "description": "$datetime",
+              "configuration": {
+                "description": "",
+                "keys": {
+                  "DateTime": {}
+                },
+                "extensions": {}
+              },
+              "condition": null,
+              "duplicable": false,
+              "fields": [],
+              "order": 21,
+              "restricted": false,
+              "rootField": false,
+              "defaultValue": null
+            }
+          ],
+          "order": 13,
+          "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Times",
+          "required": null,
+          "description": "$group $expanded $style[subgroup]",
+          "configuration": {
+            "description": "",
+            "keys": {
+              "Expanded": {
+                "args": {}
+              },
+              "Group": {}
+            },
+            "extensions": {
+              "$style": {
+                "args": [
+                  "subgroup"
+                ]
+              }
+            }
+          },
+          "condition": null,
+          "duplicable": false,
+          "fields": [
+            {
+              "id": null,
+              "name": "Time of Execution",
+              "required": null,
+              "description": "$number(2)",
+              "configuration": {
+                "description": "",
+                "keys": {
+                  "Number": {
+                    "args": {
+                      "decimal_places": "2"
+                    }
+                  }
+                },
+                "extensions": {}
+              },
+              "condition": null,
+              "duplicable": false,
+              "fields": [],
+              "order": 23,
+              "restricted": false,
+              "rootField": false,
+              "defaultValue": null
+            },
+            {
+              "id": null,
+              "name": "Time Overall",
+              "required": null,
+              "description": "$number(2)",
+              "configuration": {
+                "description": "",
+                "keys": {
+                  "Number": {
+                    "args": {
+                      "decimal_places": "2"
+                    }
+                  }
+                },
+                "extensions": {}
+              },
+              "condition": null,
+              "duplicable": false,
+              "fields": [],
+              "order": 24,
+              "restricted": false,
+              "rootField": false,
+              "defaultValue": null
+            },
+            {
+              "id": null,
+              "name": "Time of Assignment",
+              "required": null,
+              "description": "$number(2)",
+              "configuration": {
+                "description": "",
+                "keys": {
+                  "Number": {
+                    "args": {
+                      "decimal_places": "2"
+                    }
+                  }
+                },
+                "extensions": {}
+              },
+              "condition": null,
+              "duplicable": false,
+              "fields": [],
+              "order": 25,
+              "restricted": false,
+              "rootField": false,
+              "defaultValue": null
+            },
+            {
+              "id": null,
+              "name": "Time of Start",
+              "required": null,
+              "description": "$number(2)",
+              "configuration": {
+                "description": "",
+                "keys": {
+                  "Number": {
+                    "args": {
+                      "decimal_places": "2"
+                    }
+                  }
+                },
+                "extensions": {}
+              },
+              "condition": null,
+              "duplicable": false,
+              "fields": [],
+              "order": 26,
+              "restricted": false,
+              "rootField": false,
+              "defaultValue": null
+            },
+            {
+              "id": null,
+              "name": "Time of Pending",
+              "required": null,
+              "description": "$number(2)",
+              "configuration": {
+                "description": "",
+                "keys": {
+                  "Number": {
+                    "args": {
+                      "decimal_places": "2"
+                    }
+                  }
+                },
+                "extensions": {}
+              },
+              "condition": null,
+              "duplicable": false,
+              "fields": [],
+              "order": 27,
+              "restricted": false,
+              "rootField": false,
+              "defaultValue": null
+            }
+          ],
           "order": 22,
-          "rootField": false,
           "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Time Overall",
-          "required": null,
-          "description": "$number(2)",
-          "configuration": {
-            "description": "",
-            "keys": {
-              "Number": {
-                "args": {
-                  "decimal_places": "2"
-                }
-              }
-            },
-            "extensions": {}
-          },
-          "condition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 23,
           "rootField": false,
-          "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Time of Assignment",
-          "required": null,
-          "description": "$number(2)",
-          "configuration": {
-            "description": "",
-            "keys": {
-              "Number": {
-                "args": {
-                  "decimal_places": "2"
-                }
-              }
-            },
-            "extensions": {}
-          },
-          "condition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 24,
-          "rootField": false,
-          "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Time of Start",
-          "required": null,
-          "description": "$number(2)",
-          "configuration": {
-            "description": "",
-            "keys": {
-              "Number": {
-                "args": {
-                  "decimal_places": "2"
-                }
-              }
-            },
-            "extensions": {}
-          },
-          "condition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 25,
-          "rootField": false,
-          "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Time of Pending",
-          "required": null,
-          "description": "$number(2)",
-          "configuration": {
-            "description": "",
-            "keys": {
-              "Number": {
-                "args": {
-                  "decimal_places": "2"
-                }
-              }
-            },
-            "extensions": {}
-          },
-          "condition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 26,
-          "rootField": false,
-          "restricted": false,
           "defaultValue": null
         }
       ],
-      "order": 20,
-      "rootField": true,
+      "order": 11,
       "restricted": false,
+      "rootField": true,
       "defaultValue": null
     }
   ],

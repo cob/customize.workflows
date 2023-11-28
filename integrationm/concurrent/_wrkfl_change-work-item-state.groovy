@@ -27,7 +27,7 @@ if (nextState == "Done") {
                 if (cdSearch.success() && cdSearch.getTotal() > 0) {
                     def data = cdSearch.getHits().get(0)
 
-                    def binding = new Binding(data: data, recordm:recordm)
+                    def binding = new Binding(data: data, recordm: recordm)
                     try {
                         if (!new GroovyShell(binding).evaluate(doneConditions)) {
                             return json(406, [success: false,
@@ -38,12 +38,12 @@ if (nextState == "Done") {
                         }
                     } catch (Exception e) {
                         log.error("Error evaluating Done Conditions {{ code: ${doneConditions} }}", e)
+
                         def previousErrors = (wi.value("Automation Errors") ? wi.value("Automation Errors") + "\n\n" : "")
                         recordm.update("Work Item", workItemId, [
                                 "State"            : "Error",
-                                "Automation Errors": previousErrors +
-                                        "Error evaluating 'Done Conditions': ${doneConditions} \n" +
-                                        "Error: " + e.getMessage()])
+                                "Automation Errors": previousErrors + "Error evaluating 'Done Conditions': ${doneConditions} \n" + "Error: " + e.getMessage()
+                        ])
 
                         return json(500, [success: false,
                                           error: "Error evaluating 'Done Conditions': ${doneConditions} "])
@@ -55,7 +55,7 @@ if (nextState == "Done") {
 }
 
 //If validations passed, change the state
-def result = recordm.update("Work Item", "recordmInstanceId:${workItemId}", [(WORK_ITEM_STATE_FIELD): nextState], argsMap.user)
+def result = recordm.update("Work Item", workItemId.toInteger(), [(WORK_ITEM_STATE_FIELD): nextState], argsMap.user)
 
 if (result.success()) return {
     json(200, [success: true])

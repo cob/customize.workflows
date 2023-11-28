@@ -1,7 +1,7 @@
 {
   "id": null,
   "name": "Work Queues",
-  "description": "@BPO",
+  "description": "@BPO v0.11.0",
   "duplicable": null,
   "state": "enabled",
   "fieldDefinitions": [
@@ -33,13 +33,13 @@
       "configuration": {
         "description": "",
         "keys": {
-          "InstanceDescription": {},
           "Reference": {
             "args": {
               "query": "*",
               "definition": "Business Processes"
             }
-          }
+          },
+          "InstanceDescription": {}
         },
         "extensions": {}
       },
@@ -160,10 +160,11 @@
       "id": null,
       "name": "Agent Type",
       "required": null,
-      "description": "$[*Human,RPA,AI]  $instanceDescription",
+      "description": "$[*Human,RPA,AI]  $instanceDescription $expanded(Agent Type=RPA) $styleResultColumn(Human:BgDimGreen,RPA:BgDimBlue,AI:BgDimOrange)",
       "configuration": {
         "description": "",
         "keys": {
+          "InstanceDescription": {},
           "Select": {
             "args": [
               "Human",
@@ -172,13 +173,130 @@
             ],
             "default": "Human"
           },
-          "InstanceDescription": {}
+          "Expanded": {
+            "args": {
+              "condition": "Agent Type=RPA"
+            }
+          }
         },
-        "extensions": {}
+        "extensions": {
+          "$styleResultColumn": {
+            "args": [
+              "Human:BgDimGreen",
+              "RPA:BgDimBlue",
+              "AI:BgDimOrange"
+            ]
+          }
+        }
       },
       "condition": null,
       "duplicable": false,
-      "fields": [],
+      "fields": [
+        {
+          "id": null,
+          "name": "Group",
+          "required": null,
+          "description": null,
+          "configuration": {
+            "description": null,
+            "keys": {},
+            "extensions": {}
+          },
+          "condition": "=Human",
+          "duplicable": false,
+          "fields": [],
+          "order": 8,
+          "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "RPA Action",
+          "required": null,
+          "description": "$ref(Work RPAs,*)",
+          "configuration": {
+            "description": "",
+            "keys": {
+              "Reference": {
+                "args": {
+                  "query": "*",
+                  "definition": "Work RPAs"
+                }
+              }
+            },
+            "extensions": {}
+          },
+          "condition": "=RPA",
+          "duplicable": false,
+          "fields": [],
+          "order": 9,
+          "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "RPA Description",
+          "required": null,
+          "description": "$auto.ref(RPA Action).field(Description)",
+          "configuration": {
+            "description": "",
+            "keys": {
+              "AutoRefField": {
+                "args": {
+                  "source_field": "RPA Action",
+                  "field_name": "Description"
+                }
+              }
+            },
+            "extensions": {}
+          },
+          "condition": "=RPA",
+          "duplicable": false,
+          "fields": [],
+          "order": 10,
+          "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Algoritm Name",
+          "required": null,
+          "description": null,
+          "configuration": {
+            "description": null,
+            "keys": {},
+            "extensions": {}
+          },
+          "condition": "=AI",
+          "duplicable": false,
+          "fields": [],
+          "order": 11,
+          "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Fallback Group",
+          "required": null,
+          "description": null,
+          "configuration": {
+            "description": null,
+            "keys": {},
+            "extensions": {}
+          },
+          "condition": "=AI",
+          "duplicable": false,
+          "fields": [],
+          "order": 12,
+          "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        }
+      ],
       "order": 7,
       "restricted": false,
       "rootField": true,
@@ -192,9 +310,7 @@
       "configuration": {
         "description": "",
         "keys": {
-          "Expanded": {
-            "args": {}
-          },
+          "Multiple": {},
           "Select": {
             "args": [
               "To Assign",
@@ -207,7 +323,9 @@
             ],
             "default": null
           },
-          "Multiple": {}
+          "Expanded": {
+            "args": {}
+          }
         },
         "extensions": {
           "$style": {
@@ -235,7 +353,7 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 9,
+          "order": 14,
           "restricted": false,
           "rootField": false,
           "defaultValue": null
@@ -255,7 +373,7 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 10,
+          "order": 15,
           "restricted": false,
           "rootField": false,
           "defaultValue": null
@@ -275,7 +393,7 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 11,
+          "order": 16,
           "restricted": false,
           "rootField": false,
           "defaultValue": null
@@ -295,7 +413,7 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 12,
+          "order": 17,
           "restricted": false,
           "rootField": false,
           "defaultValue": null
@@ -315,7 +433,7 @@
           "condition": "=Error",
           "duplicable": false,
           "fields": [],
-          "order": 13,
+          "order": 18,
           "restricted": false,
           "rootField": false,
           "defaultValue": null
@@ -335,13 +453,13 @@
           "condition": "=Canceled",
           "duplicable": false,
           "fields": [],
-          "order": 14,
+          "order": 19,
           "restricted": false,
           "rootField": false,
           "defaultValue": null
         }
       ],
-      "order": 8,
+      "order": 13,
       "restricted": false,
       "rootField": true,
       "defaultValue": null
@@ -372,7 +490,7 @@
           "id": null,
           "name": "Work Items",
           "required": null,
-          "description": "$references(Work Item,Work Queue,[view:default],[Queue:count()])",
+          "description": "$references(Work Item,Work Queue,[view:default])",
           "configuration": {
             "description": "",
             "keys": {
@@ -380,8 +498,7 @@
                 "args": {
                   "field": "Work Queue",
                   "options": "[view:default]",
-                  "definition": "Work Item",
-                  "aggs": "[Queue:count()]"
+                  "definition": "Work Item"
                 }
               }
             },
@@ -390,13 +507,13 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 16,
+          "order": 21,
           "restricted": false,
           "rootField": false,
           "defaultValue": null
         }
       ],
-      "order": 15,
+      "order": 20,
       "restricted": false,
       "rootField": true,
       "defaultValue": null

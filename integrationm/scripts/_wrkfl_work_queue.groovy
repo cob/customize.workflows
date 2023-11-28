@@ -23,13 +23,7 @@ if (msg.product == "recordm" && !DEFS_TO_IGNORE.contains(msg.type)) {
             updates["State"] = possibleStates[0]
 
             log.info("updates: ${updates}")
-
-            def rmResponse = recordm.create("Work Item", updates)
-
-            if (!rmResponse.ok()) {
-                log.error(rmResponse.getBody(String.class))
-            }
-
+            recordm.create("Work Item", updates)
         }
     })
 

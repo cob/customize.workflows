@@ -1,7 +1,7 @@
 {
   "id": null,
   "name": "Business Processes",
-  "description": "@BPO",
+  "description": "@BPO v0.11.0",
   "duplicable": null,
   "state": "enabled",
   "fieldDefinitions": [
@@ -413,18 +413,25 @@
       "id": null,
       "name": "Work Queues",
       "required": null,
-      "description": "$references(Work Queues,Business Process)",
+      "description": "$references(Work Queues,Business Process,[view:vBusinessProcess]) $style[workQueues]",
       "configuration": {
         "description": "",
         "keys": {
           "References": {
             "args": {
               "field": "Business Process",
+              "options": "[view:vBusinessProcess]",
               "definition": "Work Queues"
             }
           }
         },
-        "extensions": {}
+        "extensions": {
+          "$style": {
+            "args": [
+              "workQueues"
+            ]
+          }
+        }
       },
       "condition": null,
       "duplicable": false,
