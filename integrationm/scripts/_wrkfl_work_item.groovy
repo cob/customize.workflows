@@ -63,11 +63,12 @@ if (msg.product == "recordm" && msg.type == "Work Item") {
                         return
                     }
 
-                    def rmResponse = recordm.update(defName, cdQquery, updates)
-
-                    if (!rmResponse.ok()) {
-                        log.error(rmResponse.getBody(String.class))
+                    def rmOptions = [:]
+                    if (msg.user != "integrationm") {
+                        rmOptions = [runAs: "integrationm", "substituting": msg.user]
                     }
+
+                    recordm.update(defName, cdQquery, updates, rmOptions)
                 }
             }
         }
@@ -126,11 +127,7 @@ if (msg.product == "recordm" && msg.type == "Work Item") {
                 break;
         }
 
-        def wiUpdateResponse = recordm.update(msg.type, msg.instance.id, wiUpdates)
-
-        if (!wiUpdateResponse.ok()) {
-            log.error(wiUpdateResponse.getBody(String.class))
-        }
+        recordm.update(msg.type, msg.instance.id, wiUpdates)
     }
 }
 
