@@ -14,13 +14,21 @@ cob.custom.customize.push(async function (core, utils, ui) {
         if(!specificData) return;
 
         let diagram = [
-            {type: 'header', v: 'stateDiagram-v2'}
+            {type: 'header', v: 'stateDiagram-v2'},
+            {type: 'style', v: 'classDef RPA         color:#99c240, padding:0px 3px, border-radius:10px, border: 1px solid gray, background-color: white, font-size: 10px'},
+            {type: 'style', v: 'classDef Human       color:#1e80ba, padding:0px 5px, border-radius:10px, border: 1px solid gray, background-color: white, font-size: 10px'},
+            {type: 'style', v: 'classDef AI          color:#d15802, padding:0px 4px, border-radius:10px, border: 1px solid gray, background-color: white, font-size: 10px'},
+            {type: 'style', v: 'classDef BgDimGreen  fill:#C1FA77'},
+            {type: 'style', v: 'classDef BgDimOrange fill:#FFE0D2'},
+            {type: 'style', v: 'classDef BgDimRed    fill:lightpink'},
+            {type: 'style', v: 'classDef Green       color:green,fill:white'},
+            {type: 'style', v: 'classDef Red         color:red,fill:white'},
+            {type: 'style', v: 'classDef Gray        color:gray,fill:white'},
         ];
 
         // ************
         //   Estados
         // ************
-
 
         // obter estados possíveis
         const specificDataDef = (await axios.get(
@@ -34,8 +42,21 @@ cob.custom.customize.push(async function (core, utils, ui) {
         const states = stateFieldDef.configuration.keys.Select.args;
         window.console.debug('JN', states)
 
+        const statesColors = stateFieldDef.configuration.extensions.$styleResultColumn 
+                             && stateFieldDef
+                                .configuration
+                                .extensions
+                                .$styleResultColumn
+                                .args
+                                .map(c => {let [state,color] = c.split(":"); return( {state:state,color:color} ) }  );
+
+                             
+        window.console.debug('JN', statesColors)
+
         states.forEach((state, idx) => {
-            diagram.push({type: 'state', v: `state "${state}" as ${idx}`})
+            diagram.push({type: 'state', v: `state "${state}" as ${idx}`, id: idx})
+            const stateColor = statesColors.find(c => c.state == state) || "none"
+            if(stateColor) diagram.push({type: 'stateColor', v: `class ${idx} ${stateColor.color}`})
         });
 
         // **************
@@ -51,6 +72,7 @@ cob.custom.customize.push(async function (core, utils, ui) {
 
         wqs.forEach((wq) => {
             const name = wq['name'][0];
+            const agent = wq['agent_type'][0];
 
             // identificar estado inicial
             const launch_condition = wq['launch_condition'][0];
@@ -67,9 +89,9 @@ cob.custom.customize.push(async function (core, utils, ui) {
             const eDecisao = linhas.length > 1;
             if(eDecisao){
                 window.console.debug('JN', 'decisao', linhas)
-                diagram.push({type: 'choice', v: `state decision_${startStateIdx} <<choice>>`})
+                diagram.push({type: 'choice', v: `state d_${startStateIdx} <<choice>>`})
                 if(startStateIdx >= 0){
-                    diagram.push({type: 'transition', v: `${startStateIdx} --> decision_${startStateIdx}: ${name}`})
+                    diagram.push({type: 'transition', from: startStateIdx, to: `d_${startStateIdx}`, name: name, agent: agent})
                 }
             }
             linhas.forEach(on_done => {
@@ -103,10 +125,10 @@ cob.custom.customize.push(async function (core, utils, ui) {
 
                 if(startStateIdx >= 0 && endStateIdx >= 0) {
                     if(eDecisao) {
-                        diagram.push({type: 'decision', v: `decision_${startStateIdx} --> ${endStateIdx}: ${decisionName}`})
+                        diagram.push({type: 'decision', v: `d_${startStateIdx} --> ${endStateIdx}: ${decisionName}`, to:endStateIdx})
 
                     } else {
-                        diagram.push({type: 'transition', v: `${startStateIdx} --> ${endStateIdx}: ${name}`})
+                        diagram.push({type: 'transition', from: startStateIdx, to: endStateIdx, name: name, agent: agent})
                     }
                 }
 
@@ -122,8 +144,8 @@ cob.custom.customize.push(async function (core, utils, ui) {
 
         // transformar <<choice>> com >1 entradas num <<join>>
         const joins = diagram
-            .filter(l => l.type == 'transition' && /--> decision/.test(l.v))
-            .map(l => /(decision_\d+):/.exec(l.v)[1])
+            .filter(l => l.type == 'transition' && /d_/.test(l.to))
+            .map(l => l.to)
             .reduce(( acc, curr ) => { if(!acc[curr]){ acc[curr] = 1 } else { acc[curr] = acc[curr] + 1 }; return acc;}, {});
 
         for(const stateId in joins){
@@ -141,24 +163,48 @@ cob.custom.customize.push(async function (core, utils, ui) {
                 const joinedCondition = outgoingDecisions
                     .map(l => l.v.substring(commonPart.length + 1))
                     .join(" && ")
-                window.console.debug('JN', 'choices', 'decisions',`^${stateId} --> `, joinedCondition );
+                window.console.debug('JN', 'choices', 'decisions',`^d_${stateId} --> `, joinedCondition );
                 diagram = diagram.filter(l => l.type != 'decision' || !l.v.startsWith(commonPart));
-                diagram.push({type: 'decision', v: `${commonPart}: ${joinedCondition}`})
+                diagram.push({type: 'decision', v: `${commonPart}: ${joinedCondition}`, to: outgoingDecisions[0].to})
 
             }
         }
+
+        // Gerar transições
+        const icons = { Human: 'fa-person', RPA: 'fa-robot', AI: 'fa-street-view'}
+        diagram.filter(l => l.type == 'transition').forEach(t => {
+            const desc = `<div class="${t.agent}"><span><i class="fa-solid ${icons[t.agent]}"></i></span> ${t.name}</div>`;
+            t.v = `${t.from} --> ${t.to}: ${desc}`;
+        });
 
 
         // *****************
         //   Gerar Gráfico
         // *****************
 
-        const mermaidSrc = diagram.map(l => l.v).join('\n');
+        let mermaidSrc = "stateDiagram-v2 \n\n"
+        // Adicionar só estilos
+        mermaidSrc += diagram.filter(l => l.type == "style").map(l => l.v).join('\n') + "\n\n";
+        // Adicionar só cores
+        mermaidSrc += diagram.filter(l => l.type == "stateColor").map(l => l.v).join('\n') + "\n\n";
+        // Adicionar só estados (mas sem estados não usados)
+        mermaidSrc += diagram.filter(l => l.type == "state").filter(s => diagram.find(l => s.id == l.to || s.id == l.from)).map(l => l.v).join('\n') + "\n\n";
+        // Adicionar só estados decisões e junções
+        mermaidSrc += diagram.filter(l => l.type == "choice").map(l => l.v).join('\n') + "\n\n";
+        // Adicionar o resto, transições e decisões
+        mermaidSrc += diagram.filter(l => l.type == "decision" 
+                                       || l.type == "transition").map(l => l.v).join('\n');
+        
         window.console.debug('JN', 'mermaidSrc', mermaidSrc)
+
+        const mermaidStringified = JSON.stringify({code: mermaidSrc, mermaid: {theme: "default"} });
+        const mermaidEncoded = new TextEncoder().encode(mermaidStringified);
+        const mermaidLink = `https://mermaid.live/edit#base64:${btoa(String.fromCodePoint(...mermaidEncoded))}`;
 
         // Work Queues
         $(".custom-workQueues")
-            .before('<pre class="mermaid" style="margin:0px 14px">' + mermaidSrc + '</pre>')
+            .after('<pre class="mermaid" style="margin:0px 14px; ">' + mermaidSrc + '</pre>')
+            .after(`<a href="${mermaidLink}" style="margin:0px 14px;" target=_blank>Editor Mermaid</a>`)
 
         mermaid.initialize({startOnLoad:false})
         setTimeout( () =>  mermaid.init() , 10)
