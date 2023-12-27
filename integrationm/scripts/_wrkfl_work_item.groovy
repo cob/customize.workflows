@@ -1,11 +1,26 @@
 import org.codehaus.jettison.json.JSONObject
+import com.google.common.cache.*
 
+import java.util.concurrent.ExecutionException
+import java.util.concurrent.TimeUnit
+import groovy.transform.Field
 import java.math.RoundingMode
+
+
+@Field static workQueuesCache = CacheBuilder.newBuilder()
+        .expireAfterWrite(5, TimeUnit.MINUTES)
+        .build();
+
+if (msg.product == "recordm" && msg.type == "Work Queues") {
+    log.info("Invalidating WorkQueues cache")
+    workQueuesCache.invalidateAll()
+}
+
 
 if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete") {
 
     if (msg.action == "add") {
-        def workQueue = recordm.get(msg.value("Work Queue")).getBody()
+    def workQueue = recordm.get(msg.value("Work Queue")).getBody()
         switch (workQueue.value("Agent Type")) {
             case "RPA":
                 def script = recordm.get(workQueue.value("RPA Action")).getBody().value("Script")
@@ -29,12 +44,13 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
     } else if (msg.field('State').changed()) {
         def state = msg.value('State')
 
-        def wqSearch = recordm.search("Work Queues", "id.raw:${msg.value('Work Queue')}", [size: 1]);
+        def wq = getWorkQueueInstance(msg.value('Work Queue'))
 
         //Run the relevant On XXX code pieces aonfigured on the WorkQueue (which make updates on the customer Data instance
-        if (wqSearch.success() && wqSearch.getTotal() > 0) {
-            def wq = wqSearch.getHits().get(0)
+        if (wq == null) {
+            log.error("Work Item refers non-existing Work Queue {{workItemId:${msg.instance.id}, WorkQueueId:${msg.value('Work Queue')} }}")
 
+        } else {
             def code = wq.value("On " + state)
             if (code != null) {
                 log.debug("On ${state} CODE: " + code)
@@ -134,4 +150,16 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
 static def getDiifHOurs(startTime, endTime) {
     def elapsed = (new BigDecimal(endTime) - new BigDecimal(startTime))
     return elapsed.divide(new BigDecimal(60 * 60 * 1000), 2, RoundingMode.HALF_UP)
+}
+
+
+def getWorkQueueInstance(wqId) {
+    try {
+        return workQueuesCache.get(
+                wqId,
+                { recordm.get(wqId).getBody() }
+        )
+    } catch (ExecutionException ignore) {
+        return null;
+    }
 }
