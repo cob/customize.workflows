@@ -2,7 +2,7 @@ import org.codehaus.jettison.json.JSONObject
 
 import java.math.RoundingMode
 
-if (msg.product == "recordm" && msg.type == "Work Item") {
+if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete") {
 
     if (msg.action == "add") {
         def workQueue = recordm.get(msg.value("Work Queue")).getBody()
