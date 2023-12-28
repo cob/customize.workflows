@@ -37,6 +37,10 @@ if (msg.product == "recordm" && !DEFS_TO_IGNORE.contains(msg.type)) {
 
                 Map updates = [:]
                 updates["Customer Data"] = msg.instance.id
+                // log.info("MMM>>>"+hit.value("Specific Data Main Customer Data Field"))
+                if (hit.value("Specific Data Main Customer Data Field")) {
+                    updates["Main Customer Data"] = "" + msg.value(hit.value("Specific Data Main Customer Data Field"))
+                }
                 updates["Work Queue"] = hit.value("id")
                 updates["State"] = possibleStates[0]
 
