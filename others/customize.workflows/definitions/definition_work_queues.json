@@ -1,7 +1,7 @@
 {
   "id": null,
   "name": "Work Queues",
-  "description": "@BPO v0.11.0",
+  "description": "@BPO v.0.14.0",
   "duplicable": null,
   "state": "enabled",
   "fieldDefinitions": [
@@ -18,11 +18,12 @@
         "extensions": {}
       },
       "condition": null,
+      "visibilityCondition": null,
       "duplicable": false,
       "fields": [],
       "order": 0,
-      "restricted": false,
       "rootField": true,
+      "restricted": false,
       "defaultValue": null
     },
     {
@@ -33,22 +34,262 @@
       "configuration": {
         "description": "",
         "keys": {
+          "InstanceDescription": {},
           "Reference": {
             "args": {
               "query": "*",
               "definition": "Business Processes"
             }
-          },
-          "InstanceDescription": {}
+          }
         },
         "extensions": {}
       },
       "condition": null,
+      "visibilityCondition": null,
       "duplicable": false,
-      "fields": [],
+      "fields": [
+        {
+          "id": null,
+          "name": "Level",
+          "required": null,
+          "description": "$auto.ref(Business Process).field(Level)",
+          "configuration": {
+            "description": "",
+            "keys": {
+              "AutoRefField": {
+                "args": {
+                  "source_field": "Business Process",
+                  "field_name": "Level"
+                }
+              }
+            },
+            "extensions": {}
+          },
+          "condition": null,
+          "visibilityCondition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 2,
+          "rootField": false,
+          "restricted": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Business Process Name",
+          "required": null,
+          "description": "$auto.ref(Business Process).field(Enclosing Business Process Full Name)",
+          "configuration": {
+            "description": "",
+            "keys": {
+              "AutoRefField": {
+                "args": {
+                  "source_field": "Business Process",
+                  "field_name": "Enclosing Business Process Full Name"
+                }
+              }
+            },
+            "extensions": {}
+          },
+          "condition": null,
+          "visibilityCondition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 3,
+          "rootField": false,
+          "restricted": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Level 1",
+          "required": null,
+          "description": "$auto.ref(Business Process).field(Level 1) $ref(Business Processes,*)",
+          "configuration": {
+            "description": "",
+            "keys": {
+              "AutoRefField": {
+                "args": {
+                  "source_field": "Business Process",
+                  "field_name": "Level 1"
+                }
+              },
+              "Reference": {
+                "args": {
+                  "query": "*",
+                  "definition": "Business Processes"
+                }
+              }
+            },
+            "extensions": {}
+          },
+          "condition": null,
+          "visibilityCondition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 4,
+          "rootField": false,
+          "restricted": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Level 2",
+          "required": null,
+          "description": "$auto.ref(Business Process).field(Level 2) $ref(Business Processes,*)",
+          "configuration": {
+            "description": "",
+            "keys": {
+              "AutoRefField": {
+                "args": {
+                  "source_field": "Business Process",
+                  "field_name": "Level 2"
+                }
+              },
+              "Reference": {
+                "args": {
+                  "query": "*",
+                  "definition": "Business Processes"
+                }
+              }
+            },
+            "extensions": {}
+          },
+          "condition": null,
+          "visibilityCondition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 5,
+          "rootField": false,
+          "restricted": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Level 3",
+          "required": null,
+          "description": "$auto.ref(Business Process).field(Level 3) $ref(Business Processes,*)",
+          "configuration": {
+            "description": "",
+            "keys": {
+              "AutoRefField": {
+                "args": {
+                  "source_field": "Business Process",
+                  "field_name": "Level 3"
+                }
+              },
+              "Reference": {
+                "args": {
+                  "query": "*",
+                  "definition": "Business Processes"
+                }
+              }
+            },
+            "extensions": {}
+          },
+          "condition": null,
+          "visibilityCondition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 6,
+          "rootField": false,
+          "restricted": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Level 4",
+          "required": null,
+          "description": "$auto.ref(Business Process).field(Level 4) $ref(Business Processes,*)",
+          "configuration": {
+            "description": "",
+            "keys": {
+              "AutoRefField": {
+                "args": {
+                  "source_field": "Business Process",
+                  "field_name": "Level 4"
+                }
+              },
+              "Reference": {
+                "args": {
+                  "query": "*",
+                  "definition": "Business Processes"
+                }
+              }
+            },
+            "extensions": {}
+          },
+          "condition": null,
+          "visibilityCondition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 7,
+          "rootField": false,
+          "restricted": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Level 5",
+          "required": null,
+          "description": "$auto.ref(Business Process).field(Level 5) $ref(Business Processes,*)",
+          "configuration": {
+            "description": "",
+            "keys": {
+              "AutoRefField": {
+                "args": {
+                  "source_field": "Business Process",
+                  "field_name": "Level 5"
+                }
+              },
+              "Reference": {
+                "args": {
+                  "query": "*",
+                  "definition": "Business Processes"
+                }
+              }
+            },
+            "extensions": {}
+          },
+          "condition": null,
+          "visibilityCondition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 8,
+          "rootField": false,
+          "restricted": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Visibility Groups",
+          "required": null,
+          "description": "$auto.ref(Business Process).field(Group Name)",
+          "configuration": {
+            "description": "",
+            "keys": {
+              "AutoRefField": {
+                "args": {
+                  "source_field": "Business Process",
+                  "field_name": "Group Name"
+                }
+              }
+            },
+            "extensions": {}
+          },
+          "condition": null,
+          "visibilityCondition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 9,
+          "rootField": false,
+          "restricted": false,
+          "defaultValue": null
+        }
+      ],
       "order": 1,
-      "restricted": false,
       "rootField": true,
+      "restricted": false,
       "defaultValue": null
     },
     {
@@ -69,11 +310,38 @@
         "extensions": {}
       },
       "condition": null,
+      "visibilityCondition": null,
       "duplicable": false,
       "fields": [],
-      "order": 2,
-      "restricted": false,
+      "order": 10,
       "rootField": true,
+      "restricted": false,
+      "defaultValue": null
+    },
+    {
+      "id": null,
+      "name": "Specific Data Main Customer Data Field",
+      "required": null,
+      "description": "$auto.ref(Business Process).field(Specific Data Main Customer Data Field)",
+      "configuration": {
+        "description": "",
+        "keys": {
+          "AutoRefField": {
+            "args": {
+              "source_field": "Business Process",
+              "field_name": "Specific Data Main Customer Data Field"
+            }
+          }
+        },
+        "extensions": {}
+      },
+      "condition": null,
+      "visibilityCondition": null,
+      "duplicable": false,
+      "fields": [],
+      "order": 11,
+      "rootField": true,
+      "restricted": false,
       "defaultValue": null
     },
     {
@@ -89,11 +357,12 @@
         "extensions": {}
       },
       "condition": null,
+      "visibilityCondition": null,
       "duplicable": false,
       "fields": [],
-      "order": 3,
-      "restricted": false,
+      "order": 12,
       "rootField": true,
+      "restricted": false,
       "defaultValue": null
     },
     {
@@ -109,11 +378,12 @@
         "extensions": {}
       },
       "condition": null,
+      "visibilityCondition": null,
       "duplicable": false,
       "fields": [],
-      "order": 4,
-      "restricted": false,
+      "order": 13,
       "rootField": true,
+      "restricted": false,
       "defaultValue": null
     },
     {
@@ -129,11 +399,12 @@
         "extensions": {}
       },
       "condition": null,
+      "visibilityCondition": null,
       "duplicable": false,
       "fields": [],
-      "order": 5,
-      "restricted": false,
+      "order": 14,
       "rootField": true,
+      "restricted": false,
       "defaultValue": null
     },
     {
@@ -149,18 +420,19 @@
         }
       },
       "condition": null,
+      "visibilityCondition": null,
       "duplicable": false,
       "fields": [],
-      "order": 6,
-      "restricted": false,
+      "order": 15,
       "rootField": true,
+      "restricted": false,
       "defaultValue": null
     },
     {
       "id": null,
       "name": "Agent Type",
       "required": null,
-      "description": "$[*Human,RPA,AI]  $instanceDescription $expanded(Agent Type=RPA) $styleResultColumn(Human:BgDimGreen,RPA:BgDimBlue,AI:BgDimOrange)",
+      "description": "$[*Human,RPA,AI,Wait]  $instanceDescription $expanded $groupEdit $styleResultColumn(Human:BgDimBlue,RPA:BgDimGreen,AI:BgDimOrange,Wait:BgDimGreen) $groupEdit",
       "configuration": {
         "description": "",
         "keys": {
@@ -169,113 +441,197 @@
             "args": [
               "Human",
               "RPA",
-              "AI"
+              "AI",
+              "Wait"
             ],
             "default": "Human"
           },
           "Expanded": {
-            "args": {
-              "condition": "Agent Type=RPA"
-            }
+            "args": {}
           }
         },
         "extensions": {
+          "$groupEdit": {},
           "$styleResultColumn": {
             "args": [
-              "Human:BgDimGreen",
-              "RPA:BgDimBlue",
-              "AI:BgDimOrange"
+              "Human:BgDimBlue",
+              "RPA:BgDimGreen",
+              "AI:BgDimOrange",
+              "Wait:BgDimGreen"
             ]
           }
         }
       },
       "condition": null,
+      "visibilityCondition": null,
       "duplicable": false,
       "fields": [
         {
           "id": null,
-          "name": "Group",
+          "name": "Human Type",
           "required": null,
-          "description": null,
+          "description": "$[*Group,User] $expanded $groupEdit",
           "configuration": {
-            "description": null,
-            "keys": {},
-            "extensions": {}
+            "description": "",
+            "keys": {
+              "Select": {
+                "args": [
+                  "Group",
+                  "User"
+                ],
+                "default": "Group"
+              },
+              "Expanded": {
+                "args": {}
+              }
+            },
+            "extensions": {
+              "$groupEdit": {}
+            }
           },
           "condition": "=Human",
+          "visibilityCondition": {
+            "type": "Equal",
+            "value": [
+              "Human"
+            ],
+            "matcher": {
+              "type": "Parent"
+            }
+          },
           "duplicable": false,
-          "fields": [],
-          "order": 8,
-          "restricted": false,
+          "fields": [
+            {
+              "id": null,
+              "name": "Group",
+              "required": null,
+              "description": "$extRef(userm,/userm/group/search?q={{this}}) $groupEdit",
+              "configuration": {
+                "description": "",
+                "keys": {
+                  "ExternalReference": {
+                    "args": {
+                      "product": "userm",
+                      "query": "/userm/group/search?q={{this}}"
+                    }
+                  }
+                },
+                "extensions": {
+                  "$groupEdit": {}
+                }
+              },
+              "condition": "=Group",
+              "visibilityCondition": {
+                "type": "Equal",
+                "value": [
+                  "Group"
+                ],
+                "matcher": {
+                  "type": "Parent"
+                }
+              },
+              "duplicable": true,
+              "fields": [
+                {
+                  "id": null,
+                  "name": "Group Name",
+                  "required": null,
+                  "description": "$auto.ref(Group).field(name) $style[hide]",
+                  "configuration": {
+                    "description": "",
+                    "keys": {
+                      "AutoRefField": {
+                        "args": {
+                          "source_field": "Group",
+                          "field_name": "name"
+                        }
+                      }
+                    },
+                    "extensions": {
+                      "$style": {
+                        "args": [
+                          "hide"
+                        ]
+                      }
+                    }
+                  },
+                  "condition": null,
+                  "visibilityCondition": null,
+                  "duplicable": false,
+                  "fields": [],
+                  "order": 19,
+                  "rootField": false,
+                  "restricted": false,
+                  "defaultValue": null
+                }
+              ],
+              "order": 18,
+              "rootField": false,
+              "restricted": false,
+              "defaultValue": null
+            },
+            {
+              "id": null,
+              "name": "User Field",
+              "required": null,
+              "description": "$groupEdit Identifies the field with the user value from customer data instance. This field should be an \\$extRef pointing to UserM.",
+              "configuration": {
+                "description": "Identifies the field with the user value from customer data instance. This field should be an $extRef pointing to UserM.",
+                "keys": {},
+                "extensions": {
+                  "$groupEdit": {}
+                }
+              },
+              "condition": "=User",
+              "visibilityCondition": {
+                "type": "Equal",
+                "value": [
+                  "User"
+                ],
+                "matcher": {
+                  "type": "Parent"
+                }
+              },
+              "duplicable": false,
+              "fields": [],
+              "order": 20,
+              "rootField": false,
+              "restricted": false,
+              "defaultValue": null
+            }
+          ],
+          "order": 17,
           "rootField": false,
-          "defaultValue": null
+          "restricted": false,
+          "defaultValue": "Group"
         },
         {
           "id": null,
-          "name": "RPA Action",
+          "name": "Concurrent",
           "required": null,
-          "description": "$ref(Work RPAs,*)",
+          "description": "$groupEdit",
           "configuration": {
             "description": "",
-            "keys": {
-              "Reference": {
-                "args": {
-                  "query": "*",
-                  "definition": "Work RPAs"
-                }
-              }
-            },
-            "extensions": {}
-          },
-          "condition": "=RPA",
-          "duplicable": false,
-          "fields": [],
-          "order": 9,
-          "restricted": false,
-          "rootField": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "RPA Description",
-          "required": null,
-          "description": "$auto.ref(RPA Action).field(Description)",
-          "configuration": {
-            "description": "",
-            "keys": {
-              "AutoRefField": {
-                "args": {
-                  "source_field": "RPA Action",
-                  "field_name": "Description"
-                }
-              }
-            },
-            "extensions": {}
-          },
-          "condition": "=RPA",
-          "duplicable": false,
-          "fields": [],
-          "order": 10,
-          "restricted": false,
-          "rootField": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Algoritm Name",
-          "required": null,
-          "description": null,
-          "configuration": {
-            "description": null,
             "keys": {},
-            "extensions": {}
+            "extensions": {
+              "$groupEdit": {}
+            }
           },
-          "condition": "=AI",
+          "condition": "=RPA",
+          "visibilityCondition": {
+            "type": "Equal",
+            "value": [
+              "RPA"
+            ],
+            "matcher": {
+              "type": "Parent"
+            }
+          },
           "duplicable": false,
           "fields": [],
-          "order": 11,
-          "restricted": false,
+          "order": 21,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -289,17 +645,123 @@
             "extensions": {}
           },
           "condition": "=AI",
+          "visibilityCondition": {
+            "type": "Equal",
+            "value": [
+              "AI"
+            ],
+            "matcher": {
+              "type": "Parent"
+            }
+          },
           "duplicable": false,
           "fields": [],
-          "order": 12,
-          "restricted": false,
+          "order": 22,
           "rootField": false,
+          "restricted": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Algoritm Name",
+          "required": null,
+          "description": null,
+          "configuration": {
+            "description": null,
+            "keys": {},
+            "extensions": {}
+          },
+          "condition": "=AI",
+          "visibilityCondition": {
+            "type": "Equal",
+            "value": [
+              "AI"
+            ],
+            "matcher": {
+              "type": "Parent"
+            }
+          },
+          "duplicable": false,
+          "fields": [],
+          "order": 23,
+          "rootField": false,
+          "restricted": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Wait Generic Condition",
+          "required": null,
+          "description": "$text $help[tested against every event]",
+          "configuration": {
+            "description": "",
+            "keys": {
+              "Help": {
+                "args": [
+                  "tested against every event"
+                ]
+              }
+            },
+            "extensions": {
+              "$text": {}
+            }
+          },
+          "condition": "=Wait",
+          "visibilityCondition": {
+            "type": "Equal",
+            "value": [
+              "Wait"
+            ],
+            "matcher": {
+              "type": "Parent"
+            }
+          },
+          "duplicable": false,
+          "fields": [],
+          "order": 24,
+          "rootField": false,
+          "restricted": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Wait Work Item Query",
+          "required": null,
+          "description": "$text $help[tested against every WorkItem]",
+          "configuration": {
+            "description": "",
+            "keys": {
+              "Help": {
+                "args": [
+                  "tested against every WorkItem"
+                ]
+              }
+            },
+            "extensions": {
+              "$text": {}
+            }
+          },
+          "condition": "=Wait",
+          "visibilityCondition": {
+            "type": "Equal",
+            "value": [
+              "Wait"
+            ],
+            "matcher": {
+              "type": "Parent"
+            }
+          },
+          "duplicable": false,
+          "fields": [],
+          "order": 25,
+          "rootField": false,
+          "restricted": false,
           "defaultValue": null
         }
       ],
-      "order": 7,
-      "restricted": false,
+      "order": 16,
       "rootField": true,
+      "restricted": false,
       "defaultValue": "Human"
     },
     {
@@ -336,6 +798,7 @@
         }
       },
       "condition": null,
+      "visibilityCondition": null,
       "duplicable": false,
       "fields": [
         {
@@ -351,11 +814,12 @@
             }
           },
           "condition": null,
+          "visibilityCondition": null,
           "duplicable": false,
           "fields": [],
-          "order": 14,
-          "restricted": false,
+          "order": 27,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -371,11 +835,12 @@
             }
           },
           "condition": null,
+          "visibilityCondition": null,
           "duplicable": false,
           "fields": [],
-          "order": 15,
-          "restricted": false,
+          "order": 28,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -391,11 +856,12 @@
             }
           },
           "condition": null,
+          "visibilityCondition": null,
           "duplicable": false,
           "fields": [],
-          "order": 16,
-          "restricted": false,
+          "order": 29,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -411,11 +877,12 @@
             }
           },
           "condition": null,
+          "visibilityCondition": null,
           "duplicable": false,
           "fields": [],
-          "order": 17,
-          "restricted": false,
+          "order": 30,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -431,11 +898,20 @@
             }
           },
           "condition": "=Error",
+          "visibilityCondition": {
+            "type": "Equal",
+            "value": [
+              "Error"
+            ],
+            "matcher": {
+              "type": "Parent"
+            }
+          },
           "duplicable": false,
           "fields": [],
-          "order": 18,
-          "restricted": false,
+          "order": 31,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -451,17 +927,26 @@
             }
           },
           "condition": "=Canceled",
+          "visibilityCondition": {
+            "type": "Equal",
+            "value": [
+              "Canceled"
+            ],
+            "matcher": {
+              "type": "Parent"
+            }
+          },
           "duplicable": false,
           "fields": [],
-          "order": 19,
-          "restricted": false,
+          "order": 32,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         }
       ],
-      "order": 13,
-      "restricted": false,
+      "order": 26,
       "rootField": true,
+      "restricted": false,
       "defaultValue": null
     },
     {
@@ -484,13 +969,14 @@
         }
       },
       "condition": null,
+      "visibilityCondition": null,
       "duplicable": false,
       "fields": [
         {
           "id": null,
           "name": "Work Items",
           "required": null,
-          "description": "$references(Work Item,Work Queue,[view:default])",
+          "description": "$references(Work Item,Work Queue,[view:default],[Queue:count()])",
           "configuration": {
             "description": "",
             "keys": {
@@ -498,24 +984,26 @@
                 "args": {
                   "field": "Work Queue",
                   "options": "[view:default]",
-                  "definition": "Work Item"
+                  "definition": "Work Item",
+                  "aggs": "[Queue:count()]"
                 }
               }
             },
             "extensions": {}
           },
           "condition": null,
+          "visibilityCondition": null,
           "duplicable": false,
           "fields": [],
-          "order": 21,
-          "restricted": false,
+          "order": 34,
           "rootField": false,
+          "restricted": false,
           "defaultValue": null
         }
       ],
-      "order": 20,
-      "restricted": false,
+      "order": 33,
       "rootField": true,
+      "restricted": false,
       "defaultValue": null
     }
   ],
