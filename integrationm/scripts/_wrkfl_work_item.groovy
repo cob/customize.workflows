@@ -23,10 +23,10 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
     def workQueue = recordm.get(msg.value("Work Queue")).getBody()
         switch (workQueue.value("Agent Type")) {
             case "RPA":
-                def script = recordm.get(workQueue.value("RPA Action")).getBody().value("Script")
-                log.info("The new workm item is a RPA Action {{action: ${script} }}")
+                def concurrent = workQueue.value("Concurrent")
+                log.info("The new workm item is a RPA Action {{concurrent: ${concurrent} }}")
 
-                def actionResponse = actionPacks.imRest.post("/concurrent/${script}", [id: msg.value("Customer Data")], "cob-bot")
+                def actionResponse = actionPacks.imRest.post("/concurrent/${concurrent}", [id: msg.value("Customer Data")], "cob-bot")
                 // TODO Era bom se podessemos usar o ReusableResponse
                 if (new JSONObject(actionResponse).getString("success") == "true") {
                     recordm.update("Work Item", msg.id, ["State": "Done"], "cob-bot")
@@ -151,7 +151,6 @@ static def getDiifHOurs(startTime, endTime) {
     def elapsed = (new BigDecimal(endTime) - new BigDecimal(startTime))
     return elapsed.divide(new BigDecimal(60 * 60 * 1000), 2, RoundingMode.HALF_UP)
 }
-
 
 def getWorkQueueInstance(wqId) {
     try {
