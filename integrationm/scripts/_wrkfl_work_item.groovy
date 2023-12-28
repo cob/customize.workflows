@@ -19,8 +19,10 @@ if (msg.product == "recordm" && msg.type == "Work Queues") {
 
 if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete") {
 
-    if (msg.action == "add") {
     def workQueue = recordm.get(msg.value("Work Queue")).getBody()
+    def customerData = recordm.get(msg.value("Customer Data")).getBody()
+
+    if (msg.action == "add") {
         switch (workQueue.value("Agent Type")) {
             case "RPA":
                 def concurrent = workQueue.value("Concurrent")
@@ -30,6 +32,19 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                 // TODO Era bom se podessemos usar o ReusableResponse
                 if (new JSONObject(actionResponse).getString("success") == "true") {
                     recordm.update("Work Item", msg.id, ["State": "Done"], "cob-bot")
+                }
+
+                return
+            case "Human":
+                def humanType = msg.value("Human Type")
+                if (humanType == "User") {
+                    def fieldWithUserValue = workQueue.value("User Field")
+                    if (fieldWithUserValue != null) {
+                        def user = customerData.value(fieldWithUserValue)
+                        if (user != null) {
+                            recordm.update("Work Item", msg.id, ["User": user])
+                        }
+                    }
                 }
 
                 return
