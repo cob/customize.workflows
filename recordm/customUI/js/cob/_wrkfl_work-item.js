@@ -133,6 +133,13 @@ cob.custom.customize.push(async function(core, utils, ui) {
     core.customizeAllInstances(function(instance, presenter) {
         const onStateChanged = function(ev) {
             ev.preventDefault();
+
+            // HACK: this is an already saved instace and it would give an error if saved again. It's an error condition that must be fixed in ui-all
+            if (instance.data.id > 0 && instance.data._links && instance.data._links.update === "recordm/instances/-1") {
+                console.warn("ERROR in data: an instace with id>0 has wrong update hateos link. This should not happpen ", instance.data.id, instance.data._links)
+                return
+            } 
+
             const workItemInstance = $(ev.target)
             const workItemId = workItemInstance.attr("data-workitem-id")
             const nextState = workItemInstance.attr("data-next-state")
@@ -140,33 +147,33 @@ cob.custom.customize.push(async function(core, utils, ui) {
 
             console.debug("JB in details")
             console.debug("JB ", instance)
-            console.debug("JB wi ", workItemCustomerDataId)
+            console.debug("JB wi customer data ", workItemCustomerDataId)
+
+            const isInstanceVisible = $(`div#service-${workItemCustomerDataId}`).length > 0;
+            const idOfDirectContainerInstance = ev.target.closest('div.js-recordm-instance').querySelector('div').id.substring(8);
+            const isCorrectInstance = instance.data.id == idOfDirectContainerInstance;
+
+            if(!isCorrectInstance && !isInstanceVisible) return;
 
             if (nextState === "Done") {
-                if (instance.data.id === +workItemCustomerDataId) {
+                if (isCorrectInstance) {
                     ui.notification.showInfo("Saving <b>" + instance.data.jsonDefinition.name + "</b> and completing work item...", false);
                 } else {
                     ui.notification.showInfo("Saving <b>" + instance.data.jsonDefinition.name + "</b>", false);
                 }
 
-                if (instance.data.id > 0 && instance.data._links.update === "recordm/instances/-1") {
-                    //this is an already saved instace and it would give an error if saved again. It's an error condition that must be fixed in ui-all
-                    console.warn("ERROR in data: an instace with id>0 has wrong update hateos link. This should not happpen ", instance.data.id, instance.data._links)
-
-                }else{
-                    presenter.saveInstance(function(instanceData) {
-                        //there may be other instances being saved from references details and we just want to call the
-                        // concurrent once and when is the main instance being saved
-                        if (instance.data.id === +workItemCustomerDataId) {
-                            //give it 1 sec for the save to take effect in ES and the done conditions can be checked correctly
-                            setTimeout(() => {
-                                callChangeWiStateConcurrent(workItemId, nextState)
-                            }, 1000)
-                        }
-                        //after everything is saved we want to discard the several details listners that are attached whenever we opened a references details
-                        $(document).off(".workflow.details")
-                    })
-                }
+                presenter.saveInstance(function(_instanceData) {
+                    //there may be other instances being saved from references details and we just want to call the
+                    // concurrent once and when the main instance is being saved
+                    if (isCorrectInstance) {
+                        //give it 1 sec for the save to take effect in ES and the done conditions can be checked correctly
+                        setTimeout(() => {
+                            callChangeWiStateConcurrent(workItemId, nextState)
+                        }, 1000)
+                    }
+                    //after everything is saved we want to discard the several details listners that are attached whenever we opened a references details
+                    $(document).off(".workflow.details")
+                })
 
             } else {
                 callChangeWiStateConcurrent(workItemId, nextState)
@@ -216,23 +223,24 @@ cob.custom.customize.push(async function(core, utils, ui) {
                 return;
             }
 
-
-            const nextStateButtons = (currentState.next?.filter(s => workQueueStates.indexOf(s) !== -1) || [])
-                .map(s => `
-                <button
-                    type="button"
-                    data-workitem-id="${esDoc.instanceId}"
-                    data-next-state="${s}"
-                    data-customer-data-id="${worItemCustomerDataId}"
-                    class="js-change-state px-3 py-0 text-xs text-center text-white rounded-md focus:ring-4 bg-sky-400"
-                >
-                    ${ACTIONS[currentState.label + " -> " + s]}
-                </button>`)
-                .join("");
+            const nextStateButtons =  esDoc["agent_type"]?.[0] === "Human"
+                ? (currentState.next?.filter(s => workQueueStates.indexOf(s) !== -1) || [])
+                    .map(s => `
+                    <button
+                        type="button"
+                        data-workitem-id="${esDoc.instanceId}"
+                        data-next-state="${s}"
+                        data-customer-data-id="${worItemCustomerDataId}"
+                        class="js-change-state px-3 py-0 text-xs text-center text-white rounded-md focus:ring-4 bg-sky-400 hover:bg-blue-600"
+                    >
+                        ${ACTIONS[currentState.label + " -> " + s]}
+                    </button>`)
+                    .join("")
+                : []
 
             const nodeContent = $(`
                 <div class="js-work-item-${esDoc.instanceId} -m-1 flex">
-                    <div class="min-w-[80px] p-1 w-20">${currentState.label} ${nextStateButtons ? ' ->' : ''}</div>
+                    <div class="min-w-[80px] p-1 pl-10 w-20 text-left ">${currentState.label} ${nextStateButtons?.length ? ' ->' : ''}</div>
                     <div class="flex-1 text-left p-1 pl-2 flex gap-1 bg-white">${nextStateButtons}</div>
                 </div>`)
             $(node).html(nodeContent)
