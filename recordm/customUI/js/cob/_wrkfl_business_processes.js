@@ -11,11 +11,13 @@ cob.custom.customize.push(async function (core, utils, ui) {
     // Gerar diagrama mermaid
     core.customizeInstances(DEFINITION, async (instance, _presenter) => {
         const specificData = instance.findFields("Specific Data")[0].value;
+        const stateField = instance.findFields("State Field")[0].value;
         if(!specificData) return;
 
         let diagram = [
             {type: 'header', v: 'stateDiagram-v2'},
             {type: 'style', v: 'classDef RPA         color:#99c240, padding:0px 3px, border-radius:10px, border: 1px solid gray, background-color: white, font-size: 10px'},
+            {type: 'style', v: 'classDef Wait        color:#99c240, padding:0px 3px, border-radius:10px, border: 1px solid gray, background-color: white, font-size: 10px'},
             {type: 'style', v: 'classDef Human       color:#1e80ba, padding:0px 5px, border-radius:10px, border: 1px solid gray, background-color: white, font-size: 10px'},
             {type: 'style', v: 'classDef AI          color:#d15802, padding:0px 4px, border-radius:10px, border: 1px solid gray, background-color: white, font-size: 10px'},
             {type: 'style', v: 'classDef BgDimGreen  fill:#C1FA77'},
@@ -24,6 +26,7 @@ cob.custom.customize.push(async function (core, utils, ui) {
             {type: 'style', v: 'classDef Green       color:green,fill:white'},
             {type: 'style', v: 'classDef Red         color:red,fill:white'},
             {type: 'style', v: 'classDef Gray        color:gray,fill:white'},
+            {type: 'style', v: 'classDef Orange      color:#9f6700,fill:#fffaec'},
         ];
 
         // ************
@@ -36,7 +39,7 @@ cob.custom.customize.push(async function (core, utils, ui) {
         )).data;
         // window.console.debug('JN', specificDataDef)
 
-        const stateFieldDef = specificDataDef.fieldDefinitions.find(fd => fd.name == "Estado")
+        const stateFieldDef = specificDataDef.fieldDefinitions.find(fd => fd.name == stateField)
         // window.console.debug('JN', stateFieldDef)
 
         const states = stateFieldDef.configuration.keys.Select.args;
@@ -48,14 +51,14 @@ cob.custom.customize.push(async function (core, utils, ui) {
                                 .extensions
                                 .$styleResultColumn
                                 .args
-                                .map(c => {let [state,color] = c.split(":"); return( {state:state,color:color} ) }  );
+                                .map(c => {const [state,color] = c.split(":"); return ({state:state,color:color})});
 
                              
         window.console.debug('JN', statesColors)
 
         states.forEach((state, idx) => {
             diagram.push({type: 'state', v: `state "${state}" as ${idx}`, id: idx})
-            const stateColor = statesColors.find(c => c.state == state) || "none"
+            const stateColor = statesColors?.find(c => c.state == state) || "none"
             if(stateColor) diagram.push({type: 'stateColor', v: `class ${idx} ${stateColor.color}`})
         });
 
@@ -76,14 +79,14 @@ cob.custom.customize.push(async function (core, utils, ui) {
 
             // identificar estado inicial
             const launch_condition = wq['launch_condition'][0];
-            const startState = /\s*msg\.field\(["']Estado['"]\)\.changedTo\(["']([^"']+)['"]\)/
+            const startState = new RegExp(`\\s*msg\\.field\\(["']${stateField}['"]\\)\\.changedTo\\(["']([^"']+)['"]\\)`)
                 .exec(launch_condition)[1];
             const startStateIdx = states.findIndex(s => s == startState);
             if(startStateIdx < 0) window.console.error("não consegui encontrar estado inicial " + startState)
 
 
             // identificar estado final
-            const mudaEstadoRE = /^updates\[["']Estado["']\]\s*=\s*["']([^"']+)["']/;
+            const mudaEstadoRE = new RegExp(`^updates\\[["']${stateField}["']\\]\\s*=\\s*["']([^"']+)["']`);
             const detectaMudaEstadoRE = /\s*data\.value\(["'](.*)['"]\)\s*==\s*["']([^"']+)['"]/;
             const linhas = wq['on_done'][0].split('\n');
             const eDecisao = linhas.length > 1;
@@ -171,7 +174,7 @@ cob.custom.customize.push(async function (core, utils, ui) {
         }
 
         // Gerar transições
-        const icons = { Human: 'fa-person', RPA: 'fa-robot', AI: 'fa-street-view'}
+        const icons = { Human: 'fa-person', RPA: 'fa-robot', AI: 'fa-street-view', Wait: 'fa-clock'}
         diagram.filter(l => l.type == 'transition').forEach(t => {
             const desc = `<div class="${t.agent}"><span><i class="fa-solid ${icons[t.agent]}"></i></span> ${t.name}</div>`;
             t.v = `${t.from} --> ${t.to}: ${desc}`;
