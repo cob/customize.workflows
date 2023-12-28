@@ -29,6 +29,7 @@ if (msg.product == "recordm" && !DEFS_TO_IGNORE.contains(msg.type)) {
         def launchCondition = hit.value('Launch Condition')
         log.debug("Launch content: ${launchCondition.split("\n")}")
 
+        try {
             if (evaluate(launchCondition)) {
                 def possibleStates = hit.value('Possible States')
                 log.info("Launch condition true: ${launchCondition.split("\n")}")
@@ -42,6 +43,12 @@ if (msg.product == "recordm" && !DEFS_TO_IGNORE.contains(msg.type)) {
                 log.info("updates: ${updates}")
                 recordm.create("Work Item", updates)
             }
+        } catch (Exception e) {
+            log.error("couldn't evaluate launchcondition {{" +
+                    "WQ: ${hit.value('id')}:${hit.value('Code')}:${hit.value('Name')}, " +
+                    "condition: ${launchCondition}" +
+                    "}}", e);
+        }
     }
 }
 

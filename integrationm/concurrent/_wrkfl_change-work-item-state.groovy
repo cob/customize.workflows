@@ -57,9 +57,13 @@ if (nextState == "Done") {
 //If validations passed, change the state
 def result = recordm.update("Work Item", workItemId.toInteger(), [(WORK_ITEM_STATE_FIELD): nextState], argsMap.user)
 
-if (result.success()) return {
-    json(200, [success: true])
+if (!result.success() || result.body.error > 0)
+    return json(500, [success: false,
+                      error  : "We couldn't update the Work Item: " + result.body])
 
-} else {
-    json(500, [success: false])
-}
+else if (result.getBody().updated > 0)
+    return json(200, [success: true])
+
+else if (result.getBody().forbidden > 0)
+    return json(403, [success: false,
+                      error  : "You don't have permissions to update the Work Item"])
