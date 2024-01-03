@@ -20,7 +20,6 @@ if (msg.product == "recordm" && msg.type == "Work Queues") {
 if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete") {
 
     def workQueue = recordm.get(msg.value("Work Queue")).getBody()
-    def customerData = recordm.get(msg.value("Customer Data")).getBody()
 
     if (msg.action == "add") {
         switch (workQueue.value("Agent Type")) {
@@ -40,6 +39,7 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                 if (humanType == "User") {
                     def fieldWithUserValue = workQueue.value("User Field")
                     if (fieldWithUserValue != null) {
+                        def customerData = recordm.get(msg.value("Customer Data")).getBody()
                         def user = customerData.value(fieldWithUserValue)
                         if (user != null) {
                             recordm.update("Work Item", msg.id, ["User": user])
