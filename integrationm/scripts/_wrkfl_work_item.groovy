@@ -72,13 +72,12 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
 
                 def defName = wq.value("Specific Data")
                 def cdQquery = "id.raw:${msg.value('Customer Data')}"
-                def cdSearch = recordm.search(defName, cdQquery, [size: 1]);
+                def cdInstance = recordm.get(msg.value('Customer Data'))?.getBody();
 
-                if (cdSearch.success() && cdSearch.getTotal() > 0) {
+                if (cdInstance != null) {
                     Map updates = [:]
-                    def data = cdSearch.getHits().get(0)
 
-                    def binding = new Binding(data: data, updates: updates, recordm: recordm)
+                    def binding = new Binding(data: cdInstance, updates: updates, recordm: recordm)
 
                     try {
                         new GroovyShell(binding).evaluate(code)
