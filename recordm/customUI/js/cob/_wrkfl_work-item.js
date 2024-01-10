@@ -138,7 +138,7 @@ cob.custom.customize.push(async function(core, utils, ui) {
             if (instance.data.id > 0 && instance.data._links && instance.data._links.update === "recordm/instances/-1") {
                 console.warn("ERROR in data: an instace with id>0 has wrong update hateos link. This should not happpen ", instance.data.id, instance.data._links)
                 return
-            } 
+            }
 
             const workItemInstance = $(ev.target)
             const workItemId = workItemInstance.attr("data-workitem-id")
@@ -194,7 +194,6 @@ cob.custom.customize.push(async function(core, utils, ui) {
 
 
     })
-
 
     core.customizeColumns(DEFINITION, {
         [WI_TARGET_STATE_FIELD]: function(node, esDoc, colDef) {
@@ -259,5 +258,40 @@ cob.custom.customize.push(async function(core, utils, ui) {
             })
         }
     });
+
+    core.addCustomBatchAction({
+        key: `wrkfl_bulk_complete`,
+        label: `Completar Work Items`,
+        isAllowed: function(definitionM) {
+            return definitionM.getName() === "Work Items"
+        },
+        execute: function(definitionId, indexedInstancesM, ctx) {
+            window.console.debug('Completing work items', indexedInstancesM.length);
+            completeWorkItems(indexedInstancesM.map((i) => i.getInstanceId()), null)
+        },
+        executeOnQuery: async function(definitionId, query, ctx) {
+          window.console.debug('Completing work items matching query', query);
+          completeWorkItems(null, query)
+        }
+    })
+
+    function completeWorkItems(workItemIds, query) {
+        const wiIds = workItemIds ? workItemIds.join(",") : null;
+
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `/integrationm/cuncorrent/_wrkfl_bulk_complete?wiIds=${wiIds}&query=${query}`,
+                method: "GET",
+                dataType: "json",
+                xhrFields: { withCredentials: true },
+                cache: false,
+                ignoreErrors: true,
+                complete: function(jqXHR, textStatus) {
+                    return resolve(jqXHR.responseJSON);
+                },
+            });
+        });
+
+    }
 
 });
