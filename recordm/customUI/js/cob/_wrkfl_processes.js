@@ -132,16 +132,6 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
         if (startStateIdx < 0) 
             showError(`Cannot find state "${startState}", in "launch" condition of work queue code:${wq['code']}`)
         
-
-
-        // Contar items desta queue
-        const wiQuery = `work_queue:${wq['id']} (-state.raw:Done) (-state.raw:Error) (-state.raw:Canceled)`;
-        const nItemsInQueue = await axios.get(
-            `/recordm/recordm/definitions/search?def=Work Item&size=0&q=${wiQuery}`
-        ).then(r => r.data.hits.total.value ).catch( error => console.error("count", error))
-        
-        totalCount[name] = nItemsInQueue
-
         // identificar estado final
         const mudaEstadoRE = new RegExp(`^updates\\[["']${stateField}["']\\]\\s*=\\s*["']([^"']+)["']`);
         const detectaMudaEstadoRE = /\s*data\.value\(["'](.*)['"]\)\s*==\s*["']([^"']+)['"]/;
@@ -208,6 +198,23 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
             window.console.debug('JN', 'transition', name, ':', startStateIdx, startState, endStateIdx, endState);
         });
     };
+
+
+    if(!activeState) 
+        await Promise.all(wqs.map( wq => {    
+            const name = wq['name'][0];
+        
+            // Contar items desta queue
+            const wiQuery = `work_queue:${wq['id']} (-state.raw:Done) (-state.raw:Error) (-state.raw:Canceled)`;
+            return axios.get(
+                `/recordm/recordm/definitions/search?def=Work Item&size=0&q=${wiQuery}`
+            ).then(r => r.data.hits.total.value ).then( total => totalCount[name] = total).catch( error => console.error("count", error))
+        }))
+
+    
+
+    
+
 
     // **********************   
     //    Processar Gráfico     
