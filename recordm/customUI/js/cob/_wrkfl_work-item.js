@@ -241,7 +241,7 @@ cob.custom.customize.push(async function(core, utils, ui) {
             const nodeContent = $(`
                 <div class="js-work-item-${esDoc.instanceId} -m-1 flex">
                     <div class="min-w-[80px] p-1 pl-10 w-20 text-left ">${currentState.label} ${nextStateButtons?.length ? ' ->' : ''}</div>
-                    <div class="flex-1 text-left p-1 pl-2 flex gap-1 bg-white">${nextStateButtons}</div>
+                    <div class="flex-1 text-left p-1 pl-2 flex gap-1 bg-white bg-opacity-50">${nextStateButtons}</div>
                 </div>`)
             $(node).html(nodeContent)
 

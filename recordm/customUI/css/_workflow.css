@@ -1,6 +1,7 @@
 
 .mermaid svg {
   /* max-width: 80% !important; */
+  margin:auto;
   font-size: 10px !important;
   text-shadow: none !important;
 }
