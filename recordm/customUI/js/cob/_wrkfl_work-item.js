@@ -263,35 +263,44 @@ cob.custom.customize.push(async function(core, utils, ui) {
         key: `wrkfl_bulk_complete`,
         label: `Completar Work Items`,
         isAllowed: function(definitionM) {
-            return definitionM.getName() === "Work Items"
+            return definitionM.getName() === "Work Item";
         },
-        execute: function(definitionId, indexedInstancesM, ctx) {
-            window.console.debug('Completing work items', indexedInstancesM.length);
-            completeWorkItems(indexedInstancesM.map((i) => i.getInstanceId()), null)
+        execute: async function(definitionId, indexedInstancesM, ctx) {
+            window.console.debug("Completing work items", indexedInstancesM.length);
+            await completeWorkItems(indexedInstancesM.map((i) => i.getInstanceId()), null);
         },
         executeOnQuery: async function(definitionId, query, ctx) {
-          window.console.debug('Completing work items matching query', query);
-          completeWorkItems(null, query)
+            window.console.debug("Completing work items matching query", query);
+            await completeWorkItems(null, query);
+        },
+    });
+
+    async function completeWorkItems(workItemIds, query) {
+        core.showLoading("complete-workitems-in-bulk");
+
+        const payload = {};
+        if (workItemIds) {
+            payload.wiIds = workItemIds;
+        } else {
+            payload.query = query;
         }
-    })
 
-    function completeWorkItems(workItemIds, query) {
-        const wiIds = workItemIds ? workItemIds.join(",") : null;
-
-        return new Promise((resolve, reject) => {
-            $.ajax({
-                url: `/integrationm/cuncorrent/_wrkfl_bulk_complete?wiIds=${wiIds}&query=${query}`,
-                method: "GET",
-                dataType: "json",
-                xhrFields: { withCredentials: true },
-                cache: false,
-                ignoreErrors: true,
-                complete: function(jqXHR, textStatus) {
-                    return resolve(jqXHR.responseJSON);
-                },
-            });
-        });
-
+        await axios.post("/integrationm/concurrent/_wrkfl_bulk_complete", payload)
+          .then((resp) => {
+              const totalCompletedTasks = resp.data.workItems.filter(i => i && i.status === 200).length;
+              if (totalCompletedTasks > 0) {
+                  setTimeout(() => {
+                      $(".js-form-search").find(".btn-search").click();
+                      $(".js-references-refresh-btn").click();
+                  }, 1000);
+              }
+          })
+          .catch((err) => {
+              ui.notification.showError("Error completing work items in bulk", true);
+          })
+          .finally(() => {
+              core.hideLoading("complete-workitems-in-bulk");
+          });
     }
 
 });
