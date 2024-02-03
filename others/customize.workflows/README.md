@@ -30,6 +30,30 @@ action.imRest.cookie-value=<intemporal token for integrationm user>
 
 ### Definition Upgrades:
 
+#### 0.17.1  (ver servinform-galp)
+* Work Item
+```
+NOVOS CAMPOS:
+Assigned Group -> $extRef(userm,/userm/group/search?q={{this}})
+Assigned Group Name -> $auto.ref(Assigned Group).field(name)
+
+REMOVIDOS:
+Group -> $auto.ref(Work Queue).field(Specific Group Name)
+```
+
+###### PERMS:
+ Acrescentar na permissão de edit de workitems:
+```
+(
+     doc["assigned_group_name.raw"].size() > 0
+     && params.user.groups.contains(doc["assigned_group_name.raw"][0])
+     )
+     ||
+     (
+     doc["username.raw"].size() > 0
+     &&  doc["username.raw"][0] == params.user.username
+     )
+```
 #### 0.14.0 => 0.17.0  (ver servinform-galp)
 * Work Queues
 ```

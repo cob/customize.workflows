@@ -1,7 +1,7 @@
 {
   "id": null,
   "name": "Work Item",
-  "description": "@BPO v.0.17.0",
+  "description": "@BPO v.0.17.1",
   "duplicable": null,
   "state": "enabled",
   "fieldDefinitions": [
@@ -254,6 +254,59 @@
         },
         {
           "id": null,
+          "name": "Assigned Group",
+          "required": null,
+          "description": "$extRef(userm,/userm/group/search?q={{this}})",
+          "configuration": {
+            "description": "",
+            "keys": {
+              "ExternalReference": {
+                "args": {
+                  "product": "userm",
+                  "query": "/userm/group/search?q={{this}}"
+                }
+              }
+            },
+            "extensions": {}
+          },
+          "condition": null,
+          "visibilityCondition": null,
+          "duplicable": false,
+          "fields": [
+            {
+              "id": null,
+              "name": "Assigned Group Name",
+              "required": null,
+              "description": "$auto.ref(Assigned Group).field(name)",
+              "configuration": {
+                "description": "",
+                "keys": {
+                  "AutoRefField": {
+                    "args": {
+                      "source_field": "Assigned Group",
+                      "field_name": "name"
+                    }
+                  }
+                },
+                "extensions": {}
+              },
+              "condition": null,
+              "visibilityCondition": null,
+              "duplicable": false,
+              "fields": [],
+              "order": 8,
+              "rootField": false,
+              "restricted": false,
+              "defaultValue": null
+            }
+          ],
+          "order": 7,
+          "rootField": false,
+          "restricted": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
           "name": "Automation Errors",
           "required": null,
           "description": "$text",
@@ -277,7 +330,7 @@
           },
           "duplicable": false,
           "fields": [],
-          "order": 7,
+          "order": 9,
           "rootField": false,
           "restricted": false,
           "defaultValue": null
@@ -387,54 +440,19 @@
                   },
                   "duplicable": false,
                   "fields": [],
-                  "order": 11,
-                  "rootField": false,
-                  "restricted": false,
-                  "defaultValue": null
-                },
-                {
-                  "id": null,
-                  "name": "Group",
-                  "required": null,
-                  "description": "$auto.ref(Work Queue).field(Specific Group Name)",
-                  "configuration": {
-                    "description": "",
-                    "keys": {
-                      "AutoRefField": {
-                        "args": {
-                          "source_field": "Work Queue",
-                          "field_name": "Specific Group Name"
-                        }
-                      }
-                    },
-                    "extensions": {}
-                  },
-                  "condition": "Human Type=Specific Group",
-                  "visibilityCondition": {
-                    "type": "Equal",
-                    "value": [
-                      "Specific Group"
-                    ],
-                    "matcher": {
-                      "type": "Name",
-                      "name": "Human Type"
-                    }
-                  },
-                  "duplicable": false,
-                  "fields": [],
-                  "order": 12,
+                  "order": 13,
                   "rootField": false,
                   "restricted": false,
                   "defaultValue": null
                 }
               ],
-              "order": 10,
+              "order": 12,
               "rootField": false,
               "restricted": false,
               "defaultValue": null
             }
           ],
-          "order": 9,
+          "order": 11,
           "rootField": false,
           "restricted": false,
           "defaultValue": null
@@ -488,7 +506,7 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 14,
+              "order": 15,
               "rootField": false,
               "restricted": false,
               "defaultValue": null
@@ -514,7 +532,7 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 15,
+              "order": 16,
               "rootField": false,
               "restricted": false,
               "defaultValue": null
@@ -546,7 +564,7 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 16,
+              "order": 17,
               "rootField": false,
               "restricted": false,
               "defaultValue": null
@@ -578,7 +596,7 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 17,
+              "order": 18,
               "rootField": false,
               "restricted": false,
               "defaultValue": null
@@ -610,7 +628,7 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 18,
+              "order": 19,
               "rootField": false,
               "restricted": false,
               "defaultValue": null
@@ -642,7 +660,7 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 19,
+              "order": 20,
               "rootField": false,
               "restricted": false,
               "defaultValue": null
@@ -674,7 +692,7 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 20,
+              "order": 21,
               "rootField": false,
               "restricted": false,
               "defaultValue": null
@@ -700,13 +718,13 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 21,
+              "order": 22,
               "rootField": false,
               "restricted": false,
               "defaultValue": null
             }
           ],
-          "order": 13,
+          "order": 14,
           "rootField": false,
           "restricted": false,
           "defaultValue": null
@@ -738,7 +756,7 @@
           "visibilityCondition": null,
           "duplicable": false,
           "fields": [],
-          "order": 22,
+          "order": 23,
           "rootField": false,
           "restricted": false,
           "defaultValue": null
@@ -785,13 +803,13 @@
           "visibilityCondition": null,
           "duplicable": false,
           "fields": [],
-          "order": 23,
+          "order": 24,
           "rootField": false,
           "restricted": false,
           "defaultValue": null
         }
       ],
-      "order": 8,
+      "order": 10,
       "rootField": true,
       "restricted": false,
       "defaultValue": null
@@ -871,7 +889,7 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 26,
+              "order": 27,
               "rootField": false,
               "restricted": false,
               "defaultValue": null
@@ -898,7 +916,7 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 27,
+              "order": 28,
               "rootField": false,
               "restricted": false,
               "defaultValue": null
@@ -925,13 +943,13 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 28,
+              "order": 29,
               "rootField": false,
               "restricted": false,
               "defaultValue": null
             }
           ],
-          "order": 25,
+          "order": 26,
           "rootField": false,
           "restricted": false,
           "defaultValue": null
@@ -989,10 +1007,10 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 30,
+              "order": 31,
               "rootField": false,
               "restricted": false,
-              "defaultValue": "1706916532415"
+              "defaultValue": "1706929626766"
             },
             {
               "id": null,
@@ -1015,35 +1033,14 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 31,
+              "order": 32,
               "rootField": false,
               "restricted": false,
-              "defaultValue": "1706916532415"
+              "defaultValue": "1706929626766"
             },
             {
               "id": null,
               "name": "Date of Assignment",
-              "required": null,
-              "description": "$datetime",
-              "configuration": {
-                "description": "",
-                "keys": {
-                  "DateTime": {}
-                },
-                "extensions": {}
-              },
-              "condition": null,
-              "visibilityCondition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 32,
-              "rootField": false,
-              "restricted": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Date of Start",
               "required": null,
               "description": "$datetime",
               "configuration": {
@@ -1064,7 +1061,7 @@
             },
             {
               "id": null,
-              "name": "Date of first Pending",
+              "name": "Date of Start",
               "required": null,
               "description": "$datetime",
               "configuration": {
@@ -1085,7 +1082,7 @@
             },
             {
               "id": null,
-              "name": "Date of Pending",
+              "name": "Date of first Pending",
               "required": null,
               "description": "$datetime",
               "configuration": {
@@ -1106,7 +1103,7 @@
             },
             {
               "id": null,
-              "name": "Date of Done",
+              "name": "Date of Pending",
               "required": null,
               "description": "$datetime",
               "configuration": {
@@ -1127,7 +1124,7 @@
             },
             {
               "id": null,
-              "name": "Date of Canceling",
+              "name": "Date of Done",
               "required": null,
               "description": "$datetime",
               "configuration": {
@@ -1145,9 +1142,30 @@
               "rootField": false,
               "restricted": false,
               "defaultValue": null
+            },
+            {
+              "id": null,
+              "name": "Date of Canceling",
+              "required": null,
+              "description": "$datetime",
+              "configuration": {
+                "description": "",
+                "keys": {
+                  "DateTime": {}
+                },
+                "extensions": {}
+              },
+              "condition": null,
+              "visibilityCondition": null,
+              "duplicable": false,
+              "fields": [],
+              "order": 38,
+              "rootField": false,
+              "restricted": false,
+              "defaultValue": null
             }
           ],
-          "order": 29,
+          "order": 30,
           "rootField": false,
           "restricted": false,
           "defaultValue": null
@@ -1197,7 +1215,7 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 39,
+              "order": 40,
               "rootField": false,
               "restricted": false,
               "defaultValue": null
@@ -1222,7 +1240,7 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 40,
+              "order": 41,
               "rootField": false,
               "restricted": false,
               "defaultValue": null
@@ -1247,7 +1265,7 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 41,
+              "order": 42,
               "rootField": false,
               "restricted": false,
               "defaultValue": null
@@ -1272,7 +1290,7 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 42,
+              "order": 43,
               "rootField": false,
               "restricted": false,
               "defaultValue": null
@@ -1297,19 +1315,19 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 43,
+              "order": 44,
               "rootField": false,
               "restricted": false,
               "defaultValue": null
             }
           ],
-          "order": 38,
+          "order": 39,
           "rootField": false,
           "restricted": false,
           "defaultValue": null
         }
       ],
-      "order": 24,
+      "order": 25,
       "rootField": true,
       "restricted": false,
       "defaultValue": null

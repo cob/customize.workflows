@@ -36,18 +36,46 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                 return
             case "Human":
                 def humanType = msg.value("Human Type")
-                if (humanType == "User") {
-                    def fieldWithUserValue = workQueue.value("User Field")
-                    if (fieldWithUserValue != null) {
-                        def customerData = recordm.get(msg.value("Customer Data")).getBody()
-                        def user = customerData.value(fieldWithUserValue)
-                        if (user != null) {
-                            recordm.update("Work Item", msg.id, ["User": user])
+                switch (humanType) {
+                    case "User":
+                        def fieldWithUserValue = workQueue.value("User Field")
+                        if (fieldWithUserValue != null) {
+                            def customerData = recordm.get(msg.value("Customer Data")).getBody()
+                            def user = customerData.value(fieldWithUserValue)
+                            if (user != null) {
+                                recordm.update("Work Item", msg.id, ["User": user])
+                            }
                         }
-                    }
+                        break;
+
+                    case "Specific User":
+                        def fieldWithUserUri = workQueue.value("Specific User")
+                        if (fieldWithUserUri != null) {
+                            recordm.update("Work Item", msg.id, ["User": fieldWithUserUri])
+                        }
+                        break;
+
+                    case "Group":
+                        def fieldWithGroupValue = workQueue.value("Group Field")
+                        if (fieldWithGroupValue != null) {
+                            def customerData = recordm.get(msg.value("Customer Data")).getBody()
+                            def group = customerData.value(fieldWithGroupValue)
+                            if (group != null) {
+                                recordm.update("Work Item", msg.id, ["Assigned Group": group])
+                            }
+                        }
+                        break;
+
+                    case "Specific Group":
+                        def fieldWithGroupUri = workQueue.value("Specific Group")
+                        if (fieldWithGroupUri != null) {
+                            recordm.update("Work Item", msg.id, ["Assigned Group": fieldWithGroupUri])
+                        }
+                        break;
                 }
 
                 return
+
             case "AI":
                 log.info("TO BE DONE")
 
