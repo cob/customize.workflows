@@ -115,10 +115,12 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
         def datePending = msg.value("Date of Pending", Long.class)
         def totalTimePendingHours = msg.value("Time of Pending", Double.class) ?: 0
 
+        def currentUser = userm.getUser(msg.user).getBody()
+
         def isUnassigned = (msg.value('User') == null)
         if (isUnassigned && state != "To Assign") {
-            def currentUser = userm.getUser(msg.user).getBody()
             wiUpdates["User"] = currentUser._links.self
+            wiUpdates["Self Assigned"] = "Yes"
             wiUpdates["Date of Assignment"] = nowDateTime
             wiUpdates["Time of Assignment"] = 0.01
         }
@@ -133,6 +135,8 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                 wiUpdates["Date of Canceling"] = nowDateTime
                 break;
             case "Done":
+                wiUpdates["User of Done"] = currentUser._links.self
+                wiUpdates["Done by Assignee"] = (isUnassigned || msg.value("User") == wiUpdates["User of Done"] ? "Yes" : "No")
                 wiUpdates["Date of Done"] = nowDateTime
                 wiUpdates["Time of Execution"] = dateStart ? getDiifHOurs(dateStart, nowDateTime) : 0.01
                 wiUpdates["Time Overall"] = getDiifHOurs(dateCreation, nowDateTime)

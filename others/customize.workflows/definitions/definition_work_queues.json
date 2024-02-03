@@ -1,7 +1,7 @@
 {
   "id": null,
   "name": "Work Queues",
-  "description": "@BPO v.0.14.0",
+  "description": "@BPO v.0.17.0",
   "duplicable": null,
   "state": "enabled",
   "fieldDefinitions": [
@@ -29,7 +29,7 @@
     {
       "id": null,
       "name": "Business Process",
-      "required": "mandatory",
+      "required": null,
       "description": "$ref(Business Processes,*)  $instanceDescription",
       "configuration": {
         "description": "",
@@ -320,6 +320,32 @@
     },
     {
       "id": null,
+      "name": "State Field",
+      "required": null,
+      "description": "$auto.ref(Business Process).field(State Field)",
+      "configuration": {
+        "description": "",
+        "keys": {
+          "AutoRefField": {
+            "args": {
+              "source_field": "Business Process",
+              "field_name": "State Field"
+            }
+          }
+        },
+        "extensions": {}
+      },
+      "condition": null,
+      "visibilityCondition": null,
+      "duplicable": false,
+      "fields": [],
+      "order": 11,
+      "rootField": true,
+      "restricted": false,
+      "defaultValue": null
+    },
+    {
+      "id": null,
       "name": "Specific Data Main Customer Data Field",
       "required": null,
       "description": "$auto.ref(Business Process).field(Specific Data Main Customer Data Field)",
@@ -339,7 +365,7 @@
       "visibilityCondition": null,
       "duplicable": false,
       "fields": [],
-      "order": 11,
+      "order": 12,
       "rootField": true,
       "restricted": false,
       "defaultValue": null
@@ -360,7 +386,7 @@
       "visibilityCondition": null,
       "duplicable": false,
       "fields": [],
-      "order": 12,
+      "order": 13,
       "rootField": true,
       "restricted": false,
       "defaultValue": null
@@ -381,7 +407,7 @@
       "visibilityCondition": null,
       "duplicable": false,
       "fields": [],
-      "order": 13,
+      "order": 14,
       "rootField": true,
       "restricted": false,
       "defaultValue": null
@@ -402,7 +428,7 @@
       "visibilityCondition": null,
       "duplicable": false,
       "fields": [],
-      "order": 14,
+      "order": 15,
       "rootField": true,
       "restricted": false,
       "defaultValue": null
@@ -423,7 +449,7 @@
       "visibilityCondition": null,
       "duplicable": false,
       "fields": [],
-      "order": 15,
+      "order": 16,
       "rootField": true,
       "restricted": false,
       "defaultValue": null
@@ -432,10 +458,13 @@
       "id": null,
       "name": "Agent Type",
       "required": null,
-      "description": "$[*Human,RPA,AI,Wait]  $instanceDescription $expanded $groupEdit $styleResultColumn(Human:BgDimBlue,RPA:BgDimGreen,AI:BgDimOrange,Wait:BgDimGreen) $groupEdit",
+      "description": "$[*Human,RPA,AI,Wait]  $instanceDescription $expanded $groupEdit $styleResultColumn(Human:BgDimBlue,RPA:BgDimGreen,AI:BgDimOrange,Wait:BgDimGreen)",
       "configuration": {
         "description": "",
         "keys": {
+          "Expanded": {
+            "args": {}
+          },
           "InstanceDescription": {},
           "Select": {
             "args": [
@@ -445,9 +474,6 @@
               "Wait"
             ],
             "default": "Human"
-          },
-          "Expanded": {
-            "args": {}
           }
         },
         "extensions": {
@@ -470,19 +496,21 @@
           "id": null,
           "name": "Human Type",
           "required": null,
-          "description": "$[*Group,User] $expanded $groupEdit",
+          "description": "$[*Group,Specific Group,User,Specific User] $expanded $groupEdit",
           "configuration": {
             "description": "",
             "keys": {
+              "Expanded": {
+                "args": {}
+              },
               "Select": {
                 "args": [
                   "Group",
-                  "User"
+                  "Specific Group",
+                  "User",
+                  "Specific User"
                 ],
                 "default": "Group"
-              },
-              "Expanded": {
-                "args": {}
               }
             },
             "extensions": {
@@ -503,19 +531,12 @@
           "fields": [
             {
               "id": null,
-              "name": "Group",
+              "name": "Group Field",
               "required": null,
-              "description": "$extRef(userm,/userm/group/search?q={{this}}) $groupEdit",
+              "description": "$groupEdit Identifies the field with the group value from customer data instance. This field should be an \\$extRef pointing to UserM.",
               "configuration": {
-                "description": "",
-                "keys": {
-                  "ExternalReference": {
-                    "args": {
-                      "product": "userm",
-                      "query": "/userm/group/search?q={{this}}"
-                    }
-                  }
-                },
+                "description": "Identifies the field with the group value from customer data instance. This field should be an $extRef pointing to UserM.",
+                "keys": {},
                 "extensions": {
                   "$groupEdit": {}
                 }
@@ -530,42 +551,9 @@
                   "type": "Parent"
                 }
               },
-              "duplicable": true,
-              "fields": [
-                {
-                  "id": null,
-                  "name": "Group Name",
-                  "required": null,
-                  "description": "$auto.ref(Group).field(name) $style[hide]",
-                  "configuration": {
-                    "description": "",
-                    "keys": {
-                      "AutoRefField": {
-                        "args": {
-                          "source_field": "Group",
-                          "field_name": "name"
-                        }
-                      }
-                    },
-                    "extensions": {
-                      "$style": {
-                        "args": [
-                          "hide"
-                        ]
-                      }
-                    }
-                  },
-                  "condition": null,
-                  "visibilityCondition": null,
-                  "duplicable": false,
-                  "fields": [],
-                  "order": 19,
-                  "rootField": false,
-                  "restricted": false,
-                  "defaultValue": null
-                }
-              ],
-              "order": 18,
+              "duplicable": false,
+              "fields": [],
+              "order": 19,
               "rootField": false,
               "restricted": false,
               "defaultValue": null
@@ -598,9 +586,147 @@
               "rootField": false,
               "restricted": false,
               "defaultValue": null
+            },
+            {
+              "id": null,
+              "name": "Specific User",
+              "required": null,
+              "description": "$extRef(userm,/userm/user/search?q={{this}}) $groupEdit",
+              "configuration": {
+                "description": "",
+                "keys": {
+                  "ExternalReference": {
+                    "args": {
+                      "product": "userm",
+                      "query": "/userm/user/search?q={{this}}"
+                    }
+                  }
+                },
+                "extensions": {
+                  "$groupEdit": {}
+                }
+              },
+              "condition": "=Specific User",
+              "visibilityCondition": {
+                "type": "Equal",
+                "value": [
+                  "Specific User"
+                ],
+                "matcher": {
+                  "type": "Parent"
+                }
+              },
+              "duplicable": false,
+              "fields": [
+                {
+                  "id": null,
+                  "name": "Specific User Username",
+                  "required": null,
+                  "description": "$auto.ref(Specific User).field(username) $style[hide]",
+                  "configuration": {
+                    "description": "",
+                    "keys": {
+                      "AutoRefField": {
+                        "args": {
+                          "source_field": "Specific User",
+                          "field_name": "username"
+                        }
+                      }
+                    },
+                    "extensions": {
+                      "$style": {
+                        "args": [
+                          "hide"
+                        ]
+                      }
+                    }
+                  },
+                  "condition": null,
+                  "visibilityCondition": null,
+                  "duplicable": false,
+                  "fields": [],
+                  "order": 22,
+                  "rootField": false,
+                  "restricted": false,
+                  "defaultValue": null
+                }
+              ],
+              "order": 21,
+              "rootField": false,
+              "restricted": false,
+              "defaultValue": null
+            },
+            {
+              "id": null,
+              "name": "Specific Group",
+              "required": null,
+              "description": "$extRef(userm,/userm/group/search?q={{this}}) $groupEdit",
+              "configuration": {
+                "description": "",
+                "keys": {
+                  "ExternalReference": {
+                    "args": {
+                      "product": "userm",
+                      "query": "/userm/group/search?q={{this}}"
+                    }
+                  }
+                },
+                "extensions": {
+                  "$groupEdit": {}
+                }
+              },
+              "condition": "=Specific Group",
+              "visibilityCondition": {
+                "type": "Equal",
+                "value": [
+                  "Specific Group"
+                ],
+                "matcher": {
+                  "type": "Parent"
+                }
+              },
+              "duplicable": false,
+              "fields": [
+                {
+                  "id": null,
+                  "name": "Specific Group Name",
+                  "required": null,
+                  "description": "$auto.ref(Specific Group).field(name) $style[hide]",
+                  "configuration": {
+                    "description": "",
+                    "keys": {
+                      "AutoRefField": {
+                        "args": {
+                          "source_field": "Specific Group",
+                          "field_name": "name"
+                        }
+                      }
+                    },
+                    "extensions": {
+                      "$style": {
+                        "args": [
+                          "hide"
+                        ]
+                      }
+                    }
+                  },
+                  "condition": null,
+                  "visibilityCondition": null,
+                  "duplicable": false,
+                  "fields": [],
+                  "order": 24,
+                  "rootField": false,
+                  "restricted": false,
+                  "defaultValue": null
+                }
+              ],
+              "order": 23,
+              "rootField": false,
+              "restricted": false,
+              "defaultValue": null
             }
           ],
-          "order": 17,
+          "order": 18,
           "rootField": false,
           "restricted": false,
           "defaultValue": "Group"
@@ -629,7 +755,7 @@
           },
           "duplicable": false,
           "fields": [],
-          "order": 21,
+          "order": 25,
           "rootField": false,
           "restricted": false,
           "defaultValue": null
@@ -656,7 +782,7 @@
           },
           "duplicable": false,
           "fields": [],
-          "order": 22,
+          "order": 26,
           "rootField": false,
           "restricted": false,
           "defaultValue": null
@@ -683,7 +809,7 @@
           },
           "duplicable": false,
           "fields": [],
-          "order": 23,
+          "order": 27,
           "rootField": false,
           "restricted": false,
           "defaultValue": null
@@ -718,7 +844,7 @@
           },
           "duplicable": false,
           "fields": [],
-          "order": 24,
+          "order": 28,
           "rootField": false,
           "restricted": false,
           "defaultValue": null
@@ -753,13 +879,13 @@
           },
           "duplicable": false,
           "fields": [],
-          "order": 25,
+          "order": 29,
           "rootField": false,
           "restricted": false,
           "defaultValue": null
         }
       ],
-      "order": 16,
+      "order": 17,
       "rootField": true,
       "restricted": false,
       "defaultValue": "Human"
@@ -772,7 +898,9 @@
       "configuration": {
         "description": "",
         "keys": {
-          "Multiple": {},
+          "Expanded": {
+            "args": {}
+          },
           "Select": {
             "args": [
               "To Assign",
@@ -785,9 +913,7 @@
             ],
             "default": null
           },
-          "Expanded": {
-            "args": {}
-          }
+          "Multiple": {}
         },
         "extensions": {
           "$style": {
@@ -817,7 +943,7 @@
           "visibilityCondition": null,
           "duplicable": false,
           "fields": [],
-          "order": 27,
+          "order": 31,
           "rootField": false,
           "restricted": false,
           "defaultValue": null
@@ -838,7 +964,7 @@
           "visibilityCondition": null,
           "duplicable": false,
           "fields": [],
-          "order": 28,
+          "order": 32,
           "rootField": false,
           "restricted": false,
           "defaultValue": null
@@ -859,7 +985,7 @@
           "visibilityCondition": null,
           "duplicable": false,
           "fields": [],
-          "order": 29,
+          "order": 33,
           "rootField": false,
           "restricted": false,
           "defaultValue": null
@@ -880,7 +1006,7 @@
           "visibilityCondition": null,
           "duplicable": false,
           "fields": [],
-          "order": 30,
+          "order": 34,
           "rootField": false,
           "restricted": false,
           "defaultValue": null
@@ -909,7 +1035,7 @@
           },
           "duplicable": false,
           "fields": [],
-          "order": 31,
+          "order": 35,
           "rootField": false,
           "restricted": false,
           "defaultValue": null
@@ -938,13 +1064,13 @@
           },
           "duplicable": false,
           "fields": [],
-          "order": 32,
+          "order": 36,
           "rootField": false,
           "restricted": false,
           "defaultValue": null
         }
       ],
-      "order": 26,
+      "order": 30,
       "rootField": true,
       "restricted": false,
       "defaultValue": null
@@ -995,13 +1121,13 @@
           "visibilityCondition": null,
           "duplicable": false,
           "fields": [],
-          "order": 34,
+          "order": 38,
           "rootField": false,
           "restricted": false,
           "defaultValue": null
         }
       ],
-      "order": 33,
+      "order": 37,
       "rootField": true,
       "restricted": false,
       "defaultValue": null
