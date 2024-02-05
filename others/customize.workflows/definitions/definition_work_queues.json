@@ -1,7 +1,7 @@
 {
   "id": null,
   "name": "Work Queues",
-  "description": "@BPO v.0.17.0",
+  "description": "@BPO v.0.17.2",
   "duplicable": null,
   "state": "enabled",
   "fieldDefinitions": [
@@ -22,8 +22,8 @@
       "duplicable": false,
       "fields": [],
       "order": 0,
-      "rootField": true,
       "restricted": false,
+      "rootField": true,
       "defaultValue": null
     },
     {
@@ -34,13 +34,13 @@
       "configuration": {
         "description": "",
         "keys": {
-          "InstanceDescription": {},
           "Reference": {
             "args": {
               "query": "*",
               "definition": "Business Processes"
             }
-          }
+          },
+          "InstanceDescription": {}
         },
         "extensions": {}
       },
@@ -70,8 +70,8 @@
           "duplicable": false,
           "fields": [],
           "order": 2,
-          "rootField": false,
           "restricted": false,
+          "rootField": false,
           "defaultValue": null
         },
         {
@@ -96,8 +96,8 @@
           "duplicable": false,
           "fields": [],
           "order": 3,
-          "rootField": false,
           "restricted": false,
+          "rootField": false,
           "defaultValue": null
         },
         {
@@ -128,8 +128,8 @@
           "duplicable": false,
           "fields": [],
           "order": 4,
-          "rootField": false,
           "restricted": false,
+          "rootField": false,
           "defaultValue": null
         },
         {
@@ -160,8 +160,8 @@
           "duplicable": false,
           "fields": [],
           "order": 5,
-          "rootField": false,
           "restricted": false,
+          "rootField": false,
           "defaultValue": null
         },
         {
@@ -192,8 +192,8 @@
           "duplicable": false,
           "fields": [],
           "order": 6,
-          "rootField": false,
           "restricted": false,
+          "rootField": false,
           "defaultValue": null
         },
         {
@@ -224,8 +224,8 @@
           "duplicable": false,
           "fields": [],
           "order": 7,
-          "rootField": false,
           "restricted": false,
+          "rootField": false,
           "defaultValue": null
         },
         {
@@ -256,8 +256,8 @@
           "duplicable": false,
           "fields": [],
           "order": 8,
-          "rootField": false,
           "restricted": false,
+          "rootField": false,
           "defaultValue": null
         },
         {
@@ -282,14 +282,14 @@
           "duplicable": false,
           "fields": [],
           "order": 9,
-          "rootField": false,
           "restricted": false,
+          "rootField": false,
           "defaultValue": null
         }
       ],
       "order": 1,
-      "rootField": true,
       "restricted": false,
+      "rootField": true,
       "defaultValue": null
     },
     {
@@ -314,8 +314,8 @@
       "duplicable": false,
       "fields": [],
       "order": 10,
-      "rootField": true,
       "restricted": false,
+      "rootField": true,
       "defaultValue": null
     },
     {
@@ -340,8 +340,8 @@
       "duplicable": false,
       "fields": [],
       "order": 11,
-      "rootField": true,
       "restricted": false,
+      "rootField": true,
       "defaultValue": null
     },
     {
@@ -366,8 +366,8 @@
       "duplicable": false,
       "fields": [],
       "order": 12,
-      "rootField": true,
       "restricted": false,
+      "rootField": true,
       "defaultValue": null
     },
     {
@@ -387,8 +387,8 @@
       "duplicable": false,
       "fields": [],
       "order": 13,
-      "rootField": true,
       "restricted": false,
+      "rootField": true,
       "defaultValue": null
     },
     {
@@ -408,8 +408,8 @@
       "duplicable": false,
       "fields": [],
       "order": 14,
-      "rootField": true,
       "restricted": false,
+      "rootField": true,
       "defaultValue": null
     },
     {
@@ -429,8 +429,8 @@
       "duplicable": false,
       "fields": [],
       "order": 15,
-      "rootField": true,
       "restricted": false,
+      "rootField": true,
       "defaultValue": null
     },
     {
@@ -450,8 +450,8 @@
       "duplicable": false,
       "fields": [],
       "order": 16,
-      "rootField": true,
       "restricted": false,
+      "rootField": true,
       "defaultValue": null
     },
     {
@@ -462,10 +462,6 @@
       "configuration": {
         "description": "",
         "keys": {
-          "Expanded": {
-            "args": {}
-          },
-          "InstanceDescription": {},
           "Select": {
             "args": [
               "Human",
@@ -474,7 +470,11 @@
               "Wait"
             ],
             "default": "Human"
-          }
+          },
+          "Expanded": {
+            "args": {}
+          },
+          "InstanceDescription": {}
         },
         "extensions": {
           "$groupEdit": {},
@@ -496,21 +496,21 @@
           "id": null,
           "name": "Human Type",
           "required": null,
-          "description": "$[*Group,Specific Group,User,Specific User] $expanded $groupEdit",
+          "description": "$[*Group,Group Field,User,User Field] $expanded $groupEdit",
           "configuration": {
             "description": "",
             "keys": {
-              "Expanded": {
-                "args": {}
-              },
               "Select": {
                 "args": [
                   "Group",
-                  "Specific Group",
+                  "Group Field",
                   "User",
-                  "Specific User"
+                  "User Field"
                 ],
                 "default": "Group"
+              },
+              "Expanded": {
+                "args": {}
               }
             },
             "extensions": {
@@ -541,11 +541,11 @@
                   "$groupEdit": {}
                 }
               },
-              "condition": "=Group",
+              "condition": "=Group Field",
               "visibilityCondition": {
                 "type": "Equal",
                 "value": [
-                  "Group"
+                  "Group Field"
                 ],
                 "matcher": {
                   "type": "Parent"
@@ -554,8 +554,8 @@
               "duplicable": false,
               "fields": [],
               "order": 19,
-              "rootField": false,
               "restricted": false,
+              "rootField": false,
               "defaultValue": null
             },
             {
@@ -570,11 +570,11 @@
                   "$groupEdit": {}
                 }
               },
-              "condition": "=User",
+              "condition": "=User Field",
               "visibilityCondition": {
                 "type": "Equal",
                 "value": [
-                  "User"
+                  "User Field"
                 ],
                 "matcher": {
                   "type": "Parent"
@@ -583,13 +583,13 @@
               "duplicable": false,
               "fields": [],
               "order": 20,
-              "rootField": false,
               "restricted": false,
+              "rootField": false,
               "defaultValue": null
             },
             {
               "id": null,
-              "name": "Specific User",
+              "name": "User",
               "required": null,
               "description": "$extRef(userm,/userm/user/search?q={{this}}) $groupEdit",
               "configuration": {
@@ -606,11 +606,11 @@
                   "$groupEdit": {}
                 }
               },
-              "condition": "=Specific User",
+              "condition": "=User",
               "visibilityCondition": {
                 "type": "Equal",
                 "value": [
-                  "Specific User"
+                  "User"
                 ],
                 "matcher": {
                   "type": "Parent"
@@ -620,15 +620,15 @@
               "fields": [
                 {
                   "id": null,
-                  "name": "Specific User Username",
+                  "name": "User Username",
                   "required": null,
-                  "description": "$auto.ref(Specific User).field(username) $style[hide]",
+                  "description": "$auto.ref(User).field(username) $style[hide]",
                   "configuration": {
                     "description": "",
                     "keys": {
                       "AutoRefField": {
                         "args": {
-                          "source_field": "Specific User",
+                          "source_field": "User",
                           "field_name": "username"
                         }
                       }
@@ -646,19 +646,19 @@
                   "duplicable": false,
                   "fields": [],
                   "order": 22,
-                  "rootField": false,
                   "restricted": false,
+                  "rootField": false,
                   "defaultValue": null
                 }
               ],
               "order": 21,
-              "rootField": false,
               "restricted": false,
+              "rootField": false,
               "defaultValue": null
             },
             {
               "id": null,
-              "name": "Specific Group",
+              "name": "Group",
               "required": null,
               "description": "$extRef(userm,/userm/group/search?q={{this}}) $groupEdit",
               "configuration": {
@@ -675,11 +675,11 @@
                   "$groupEdit": {}
                 }
               },
-              "condition": "=Specific Group",
+              "condition": "=Group",
               "visibilityCondition": {
                 "type": "Equal",
                 "value": [
-                  "Specific Group"
+                  "Group"
                 ],
                 "matcher": {
                   "type": "Parent"
@@ -689,15 +689,15 @@
               "fields": [
                 {
                   "id": null,
-                  "name": "Specific Group Name",
+                  "name": "Group Name",
                   "required": null,
-                  "description": "$auto.ref(Specific Group).field(name) $style[hide]",
+                  "description": "$auto.ref(Group).field(name) $style[hide]",
                   "configuration": {
                     "description": "",
                     "keys": {
                       "AutoRefField": {
                         "args": {
-                          "source_field": "Specific Group",
+                          "source_field": "Group",
                           "field_name": "name"
                         }
                       }
@@ -715,20 +715,20 @@
                   "duplicable": false,
                   "fields": [],
                   "order": 24,
-                  "rootField": false,
                   "restricted": false,
+                  "rootField": false,
                   "defaultValue": null
                 }
               ],
               "order": 23,
-              "rootField": false,
               "restricted": false,
+              "rootField": false,
               "defaultValue": null
             }
           ],
           "order": 18,
-          "rootField": false,
           "restricted": false,
+          "rootField": false,
           "defaultValue": "Group"
         },
         {
@@ -756,8 +756,8 @@
           "duplicable": false,
           "fields": [],
           "order": 25,
-          "rootField": false,
           "restricted": false,
+          "rootField": false,
           "defaultValue": null
         },
         {
@@ -783,8 +783,8 @@
           "duplicable": false,
           "fields": [],
           "order": 26,
-          "rootField": false,
           "restricted": false,
+          "rootField": false,
           "defaultValue": null
         },
         {
@@ -810,43 +810,8 @@
           "duplicable": false,
           "fields": [],
           "order": 27,
-          "rootField": false,
           "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Wait Generic Condition",
-          "required": null,
-          "description": "$text $help[tested against every event]",
-          "configuration": {
-            "description": "",
-            "keys": {
-              "Help": {
-                "args": [
-                  "tested against every event"
-                ]
-              }
-            },
-            "extensions": {
-              "$text": {}
-            }
-          },
-          "condition": "=Wait",
-          "visibilityCondition": {
-            "type": "Equal",
-            "value": [
-              "Wait"
-            ],
-            "matcher": {
-              "type": "Parent"
-            }
-          },
-          "duplicable": false,
-          "fields": [],
-          "order": 28,
           "rootField": false,
-          "restricted": false,
           "defaultValue": null
         },
         {
@@ -879,15 +844,50 @@
           },
           "duplicable": false,
           "fields": [],
-          "order": 29,
-          "rootField": false,
+          "order": 28,
           "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Wait Generic Condition",
+          "required": null,
+          "description": "$text $help[tested against every event]",
+          "configuration": {
+            "description": "",
+            "keys": {
+              "Help": {
+                "args": [
+                  "tested against every event"
+                ]
+              }
+            },
+            "extensions": {
+              "$text": {}
+            }
+          },
+          "condition": "=Wait",
+          "visibilityCondition": {
+            "type": "Equal",
+            "value": [
+              "Wait"
+            ],
+            "matcher": {
+              "type": "Parent"
+            }
+          },
+          "duplicable": false,
+          "fields": [],
+          "order": 29,
+          "restricted": false,
+          "rootField": false,
           "defaultValue": null
         }
       ],
       "order": 17,
-      "rootField": true,
       "restricted": false,
+      "rootField": true,
       "defaultValue": "Human"
     },
     {
@@ -898,9 +898,6 @@
       "configuration": {
         "description": "",
         "keys": {
-          "Expanded": {
-            "args": {}
-          },
           "Select": {
             "args": [
               "To Assign",
@@ -913,7 +910,10 @@
             ],
             "default": null
           },
-          "Multiple": {}
+          "Multiple": {},
+          "Expanded": {
+            "args": {}
+          }
         },
         "extensions": {
           "$style": {
@@ -944,8 +944,8 @@
           "duplicable": false,
           "fields": [],
           "order": 31,
-          "rootField": false,
           "restricted": false,
+          "rootField": false,
           "defaultValue": null
         },
         {
@@ -965,8 +965,8 @@
           "duplicable": false,
           "fields": [],
           "order": 32,
-          "rootField": false,
           "restricted": false,
+          "rootField": false,
           "defaultValue": null
         },
         {
@@ -986,8 +986,8 @@
           "duplicable": false,
           "fields": [],
           "order": 33,
-          "rootField": false,
           "restricted": false,
+          "rootField": false,
           "defaultValue": null
         },
         {
@@ -1007,8 +1007,8 @@
           "duplicable": false,
           "fields": [],
           "order": 34,
-          "rootField": false,
           "restricted": false,
+          "rootField": false,
           "defaultValue": null
         },
         {
@@ -1036,8 +1036,8 @@
           "duplicable": false,
           "fields": [],
           "order": 35,
-          "rootField": false,
           "restricted": false,
+          "rootField": false,
           "defaultValue": null
         },
         {
@@ -1065,14 +1065,14 @@
           "duplicable": false,
           "fields": [],
           "order": 36,
-          "rootField": false,
           "restricted": false,
+          "rootField": false,
           "defaultValue": null
         }
       ],
       "order": 30,
-      "rootField": true,
       "restricted": false,
+      "rootField": true,
       "defaultValue": null
     },
     {
@@ -1122,14 +1122,14 @@
           "duplicable": false,
           "fields": [],
           "order": 38,
-          "rootField": false,
           "restricted": false,
+          "rootField": false,
           "defaultValue": null
         }
       ],
       "order": 37,
-      "rootField": true,
       "restricted": false,
+      "rootField": true,
       "defaultValue": null
     }
   ],

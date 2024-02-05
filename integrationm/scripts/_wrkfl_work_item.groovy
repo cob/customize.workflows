@@ -37,7 +37,7 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
             case "Human":
                 def humanType = msg.value("Human Type")
                 switch (humanType) {
-                    case "User":
+                    case "User Field":
                         def fieldWithUserValue = workQueue.value("User Field")
                         if (fieldWithUserValue != null) {
                             def customerData = recordm.get(msg.value("Customer Data")).getBody()
@@ -48,14 +48,14 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                         }
                         break;
 
-                    case "Specific User":
-                        def fieldWithUserUri = workQueue.value("Specific User")
+                    case "User":
+                        def fieldWithUserUri = workQueue.value("User")
                         if (fieldWithUserUri != null) {
                             recordm.update("Work Item", msg.id, ["User": fieldWithUserUri])
                         }
                         break;
 
-                    case "Group":
+                    case "Group Field":
                         def fieldWithGroupValue = workQueue.value("Group Field")
                         if (fieldWithGroupValue != null) {
                             def customerData = recordm.get(msg.value("Customer Data")).getBody()
@@ -66,8 +66,8 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                         }
                         break;
 
-                    case "Specific Group":
-                        def fieldWithGroupUri = workQueue.value("Specific Group")
+                    case "Group":
+                        def fieldWithGroupUri = workQueue.value("Group")
                         if (fieldWithGroupUri != null) {
                             recordm.update("Work Item", msg.id, ["Assigned Group": fieldWithGroupUri])
                         }

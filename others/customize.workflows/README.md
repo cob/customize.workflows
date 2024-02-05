@@ -30,6 +30,25 @@ action.imRest.cookie-value=<intemporal token for integrationm user>
 
 ### Definition Upgrades:
 
+#### 0.17.2  (ver servinform-galp)
+* Work Queues
+```
+ALTERADOS:
+Human Type : $[*Group,Group Field,User,User Field] $expanded $groupEdit
+Group Field : SE =Group Field
+User Field : SE =User Field
+Specific User : SE =User
+Specific User Username : $auto.ref(User).field(username) $style[hide]
+Specific Group : SE =Group
+Specific Group Name : $auto.ref(Group).field(name) $style[hide]
+RENOMEADOS:
+Specific User -> User
+Specific User Username ->  User Username
+Specific Group ->  Group
+Specific Group Name ->  Group Name
+```
+
+
 #### 0.17.1  (ver servinform-galp)
 * Work Item
 ```
