@@ -223,8 +223,8 @@ cob.custom.customize.push(async function(core, utils, ui) {
                 return;
             }
 
-            const nextStateButtons =  esDoc["agent_type"]?.[0] === "Human"
-                ? (currentState.next?.filter(s => workQueueStates.indexOf(s) !== -1) || [])
+            const nextStateButtons = esDoc["agent_type"]?.[0] === "Human" && esDoc["_links"]?.update
+                 ? (currentState.next?.filter(s => workQueueStates.indexOf(s) !== -1) || [])
                     .map(s => `
                     <button
                         type="button"
