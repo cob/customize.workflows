@@ -1,7 +1,7 @@
 {
   "id": null,
   "name": "Work Item",
-  "description": "@BPO v.0.17.1",
+  "description": "@BPO v.0.17.4",
   "duplicable": null,
   "state": "enabled",
   "fieldDefinitions": [
@@ -148,7 +148,6 @@
           "configuration": {
             "description": "",
             "keys": {
-              "InstanceDescription": {},
               "Select": {
                 "args": [
                   "To Assign",
@@ -160,7 +159,8 @@
                   "Canceled"
                 ],
                 "default": null
-              }
+              },
+              "InstanceDescription": {}
             },
             "extensions": {
               "$styleResultRows": {
@@ -465,13 +465,13 @@
           "configuration": {
             "description": "",
             "keys": {
+              "InstanceDescription": {},
               "AutoRefField": {
                 "args": {
                   "source_field": "Work Queue",
                   "field_name": "Business Process"
                 }
               },
-              "InstanceDescription": {},
               "Reference": {
                 "args": {
                   "query": "*",
@@ -737,16 +737,16 @@
           "configuration": {
             "description": "",
             "keys": {
-              "AutoRefField": {
-                "args": {
-                  "source_field": "Business Process",
-                  "field_name": "Level 1"
-                }
-              },
               "Reference": {
                 "args": {
                   "query": "*",
                   "definition": "Business Processes"
+                }
+              },
+              "AutoRefField": {
+                "args": {
+                  "source_field": "Business Process",
+                  "field_name": "Level 1"
                 }
               }
             },
@@ -769,12 +769,6 @@
           "configuration": {
             "description": "",
             "keys": {
-              "AutoRefField": {
-                "args": {
-                  "source_field": "Work Queue",
-                  "field_name": "Possible States"
-                }
-              },
               "Select": {
                 "args": [
                   "To Assign",
@@ -788,7 +782,13 @@
                 ],
                 "default": null
               },
-              "Multiple": {}
+              "Multiple": {},
+              "AutoRefField": {
+                "args": {
+                  "source_field": "Work Queue",
+                  "field_name": "Possible States"
+                }
+              }
             },
             "extensions": {
               "$style": {
@@ -987,13 +987,13 @@
               "configuration": {
                 "description": "",
                 "keys": {
-                  "DateTime": {},
+                  "InstanceDescription": {},
                   "Default": {
                     "args": {
                       "value": "now"
                     }
                   },
-                  "InstanceDescription": {}
+                  "DateTime": {}
                 },
                 "extensions": {
                   "$style": {
@@ -1010,7 +1010,7 @@
               "order": 31,
               "rootField": false,
               "restricted": false,
-              "defaultValue": "1706929626766"
+              "defaultValue": "1708711783187"
             },
             {
               "id": null,
@@ -1020,12 +1020,12 @@
               "configuration": {
                 "description": "",
                 "keys": {
-                  "DateTime": {},
                   "Default": {
                     "args": {
                       "value": "now"
                     }
-                  }
+                  },
+                  "DateTime": {}
                 },
                 "extensions": {}
               },
@@ -1036,7 +1036,7 @@
               "order": 32,
               "rootField": false,
               "restricted": false,
-              "defaultValue": "1706929626766"
+              "defaultValue": "1708711783187"
             },
             {
               "id": null,
@@ -1299,13 +1299,18 @@
               "id": null,
               "name": "Time of Pending",
               "required": null,
-              "description": "$number(2)",
+              "description": "$number(2) $default(0)",
               "configuration": {
                 "description": "",
                 "keys": {
                   "Number": {
                     "args": {
                       "decimal_places": "2"
+                    }
+                  },
+                  "Default": {
+                    "args": {
+                      "value": "0"
                     }
                   }
                 },
@@ -1318,7 +1323,7 @@
               "order": 44,
               "rootField": false,
               "restricted": false,
-              "defaultValue": null
+              "defaultValue": "0"
             }
           ],
           "order": 39,
