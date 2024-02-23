@@ -30,6 +30,14 @@ action.imRest.cookie-value=<intemporal token for integrationm user>
 
 ### Definition Upgrades:
 
+
+#### 0.17.4  (ver servinform-galp)
+* Work Items
+```
+ALTERADOS:
+Time of Pending : $number(2)  -> $number(2) $default(0)
+```
+
 #### 0.17.2  (ver servinform-galp)
 * Work Queues
 ```
