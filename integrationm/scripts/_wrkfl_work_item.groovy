@@ -161,6 +161,7 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                 break;
             case "Canceled":
                 wiUpdates["Date of Canceling"] = nowDateTime
+                wiUpdates["Time Overall"] = getDiifHOurs(dateCreation, nowDateTime)
                 break;
             case "Done":
                 wiUpdates["User of Done"] = currentUser._links.self
