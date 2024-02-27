@@ -155,7 +155,7 @@ cob.custom.customize.push(async function(core, utils, ui) {
 
             if(!isCorrectInstance && !isInstanceVisible) return;
 
-            if (nextState === "Done") {
+            if (nextState === "Done" ||nextState === "In Progress" ||nextState === "Pending" || nextState === "Canceled") {
                 if (isCorrectInstance) {
                     ui.notification.showInfo("Saving <b>" + instance.data.jsonDefinition.name + "</b> and completing work item...", false);
                 } else {
