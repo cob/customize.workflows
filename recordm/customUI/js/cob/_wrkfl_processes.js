@@ -1,7 +1,15 @@
 import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.5.0/+esm'
 import axios from 'https://cdn.jsdelivr.net/npm/axios@1.1.2/+esm'
 
-const toText = (classes) => classes ? classes.join(" ") : ""
+const toText = (classes) => {
+    if (Array.isArray(classes)){
+        return classes.join(" ")
+    } else if (classes) {
+        return classes
+    } else {
+        return ""
+    }
+}
 
 export default async function embedMermaid(bpid, stateDef, stateField, targetElement,
                  activeState,  linkClasses=['ml-3.5'], mermaidClasses=['!ml-3.5'], errorClasses=["text-red-900", "ml-3.5"]) {
