@@ -11,9 +11,7 @@ cob.custom.customize.push(async function (core, utils, ui) {
         const stateField = instance.findFields("State Field")[0].value;
         if(!specificData) return;
 
-        await embedMermaid(instance.data.id, specificData, stateField, $(".custom-workQueues"))
-
-        
+        await embedMermaid(instance.data.id, specificData, stateField, document.querySelector(".custom-workQueues"), {linkToBP: false})        
     });
 });
 

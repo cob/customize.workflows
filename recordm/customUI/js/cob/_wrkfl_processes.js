@@ -11,20 +11,19 @@ const toText = (classes) => {
     }
 }
 
-export default async function embedMermaid(bpid, stateDef, stateField, targetElement,
-                 activeState,  linkClasses=['ml-3.5'], mermaidClasses=['!ml-3.5'], errorClasses=["text-red-900", "ml-3.5"]) {
-
-    const showError = (message) => targetElement.append(`<div class="${toText(errorClasses)}">${message}</div>`)
+export default function embedMermaid(bpid, stateDef, stateField, targetElement,
+    {activeState = undefined, linkClasses ='ml-3.5', mermaidClasses='!ml-3.5', errorClasses="text-red-900 ml-3.5", linkToBP = true} = {}) {
+        const showError = (message) => targetElement.append(`<div class="${toText(errorClasses)}">${message}</div>`)
 
     try {
-        await catchAll(bpid, stateDef, stateField, targetElement, activeState, showError, linkClasses, mermaidClasses)
+        return catchAll(bpid, stateDef, stateField, targetElement, activeState, showError, linkClasses, mermaidClasses, linkToBP)
     } catch (e) {
         showError("Something went wrong")
         showError(e)
     }
 }
 
-async function catchAll(bpid, stateDef, stateField, targetElement, activeState, showError,linkClasses, mermaidClasses) {
+async function catchAll(bpid, stateDef, stateField, targetElement, activeState, showError,linkClasses, mermaidClasses, linkToBP) {
 
     let diagram = [
         { type: 'header', v: 'stateDiagram-v2' }, 
@@ -42,7 +41,7 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
         { type: 'style', v: 'classDef Highlighted stroke:red,stroke-width:3px' },
     ];
 
-    let totalCount = {}
+    let queueData = {}
 
     // ************
     //   Estados
@@ -80,7 +79,7 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
             .map(c => { const [state, color] = c.split(":"); return ({ state: state, color: color }); });
 
 
-    window.console.debug('JN', statesColors);
+    window.console.debug('JN', statesColors); 
 
     const toStateId = (i) => i < 10 ? 's_0' + i : 's_' + i 
     const toDecisionId = (i) => i < 10 ? 'd_0' + i : 'd_' + i 
@@ -89,7 +88,6 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
         const idx = toStateId(i)
 
         diagram.push({ type: 'state', v: `${idx} : ${state}`, id: idx });
-        console.log("diagram", i, idx, state)
         const stateColor = statesColors?.find(c => c.state == state) || "none";
 
         if(activeState && state == activeState)
@@ -208,21 +206,24 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
     };
 
 
-    if(!activeState) 
-        await Promise.all(wqs.map( wq => {    
+
+
+    if(!activeState) {
+        const allWIRequests = []
+
+        for(const wq of wqs) {
             const name = wq['name'][0];
-        
+
             // Contar items desta queue
             const wiQuery = `work_queue:${wq['id']} (-state.raw:Done) (-state.raw:Error) (-state.raw:Canceled)`;
-            return axios.get(
-                `/recordm/recordm/definitions/search?def=Work Item&size=0&q=${wiQuery}`
-            ).then(r => r.data.hits.total.value ).then( total => totalCount[name] = total).catch( error => console.error("count", error))
-        }))
-
-    
-
-    
-
+            const promise = axios.get(`/recordm/recordm/definitions/search?def=Work Item&size=0&q=${wiQuery}`)
+                .then(r => r.data.hits.total.value )
+                .then( total => queueData[name] = { total : total, query : wiQuery })
+                .catch( error => console.error("DC count", error))
+            allWIRequests.push(promise)
+        }
+        await Promise.all(allWIRequests)
+    }
 
     // **********************   
     //    Processar Gráfico     
@@ -257,14 +258,14 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
     // Gerar transições
     const icons = { Human: 'fa-person', RPA: 'fa-robot', AI: 'fa-street-view', Wait: 'fa-clock' };
     diagram.filter(l => l.type == 'transition').forEach(t => {
-        const amount = totalCount[t.name] > 0 ? ` ${totalCount[t.name]}`: ""
-        const desc = `<div class="${t.agent}"><span><i class="fa-solid ${icons[t.agent]}"></i>${amount}</span> ${t.name}</div>`;
+ 
+        const amount = queueData[t.name].total > 0 ? ` ${queueData[t.name].total}`: ""
+        const desc = `<div class="${t.agent}"><a id="${t.name}"><i class="fa-solid ${icons[t.agent]}"></i>${amount}</a> ${t.name}</div>`;
         t.v = `${t.from} --> ${t.to}: ${desc}`;
         t.clean = `${t.from} --> ${t.to}: ${t.name}`
     });
 
 
-    console.log("diagram", diagram)
 
     // *****************
     //   Gerar Gráfico
@@ -302,16 +303,38 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
     const normalLink = createLink(mermaidSrc)
     const cleanLink  = createLink(cleanSrc)
 
-    // Work Queues
-    targetElement
-        .append(`<a href="${normalLink}" class="${toText(linkClasses)}" target="_blank" onclick="if(event.altKey || event.metaKey) { event.preventDefault(); window.open('${cleanLink}', '_blank'); }">Mermaid link</a>`)
-        // .append(`<a href="${mermaidLink}" class="${toText(linkClasses)}" style="margin:0px 14px;" target=_blank>Editor Mermaid</a>`)
-        .append(`<pre class="mermaid ${toText(mermaidClasses)}">` + mermaidSrc + '</pre>')
+    const bpLink = document.createElement("a")
+        bpLink.href      = `/#/instance/${bpid}`
+        bpLink.innerHTML = "Business Process"
+        bpLink.className = "top-8 left-2 text-sm text-blue-400 absolute"
 
-    if(targetElement.is(':visible')){        
-        mermaid.initialize({ startOnLoad: false });
-        setTimeout(() => mermaid.init(), 10);
-    }
+    const link = document.createElement("a")
+        link.href      = normalLink
+        link.target    = "_blank"
+        link.innerHTML = "Mermaid"
+        link.className = linkClasses
+        link.onclick   = (event) => { if(event.altKey || event.metaKey){ event.preventDefault(); window.open(cleanLink, '_blank'); }}
+
+    const merElem = document.createElement("div")
+        merElem.classList = "mermaid text-center " + mermaidClasses
+
+
+    if(linkToBP)
+        targetElement.append(link, bpLink, merElem)
+    else 
+        targetElement.append(link, merElem)
+
+    
+    mermaid.initialize({ startOnLoad: false })
+    const {svg } = await mermaid.render('mermaid', mermaidSrc)
+    
+    merElem.innerHTML = svg
+    
+    const defId = (await axios.get(`/recordm/recordm/definitions/search?def=Work Item&size=1&q=*`)).data.hits.hits[0]._source.definitionId
+    merElem.querySelectorAll("a").forEach( elem => elem.id in queueData ? elem.href = `/#/definitions/${defId}/q=${queueData[elem.id].query}` : "")
+
 }
+
+
 
 
