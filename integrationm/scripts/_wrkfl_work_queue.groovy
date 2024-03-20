@@ -22,7 +22,7 @@ if (msg.product == "recordm" && msg.type == "Work Queues") {
 }
 
 
-if (msg.product != "recordm" || DEFS_TO_IGNORE.contains(msg.type)) {
+if (msg.product == "recordm" && !DEFS_TO_IGNORE.contains(msg.type)) {
 
     switch (msg.action) {
         case "add":
@@ -64,7 +64,7 @@ if (msg.product != "recordm" || DEFS_TO_IGNORE.contains(msg.type)) {
             break;
 
         case "delete":
-            new WorkflowUtils(recordm).deleteWorkItems(msg.getId(), msg.getUser())
+            new WorkflowUtils(recordm).deleteWorkItems(msg.getId())
             break;
 
     }
