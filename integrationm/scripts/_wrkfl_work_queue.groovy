@@ -1,4 +1,5 @@
 import com.cultofbits.integrationm.service.dictionary.recordm.RecordmSearchHit
+import com.cultofbits.customizations.workflow.WorkflowUtils
 import com.google.common.cache.CacheBuilder
 import groovy.json.internal.Cache
 import groovy.transform.Field
@@ -19,6 +20,7 @@ if (msg.product == "recordm" && msg.type == "Work Queues") {
     log.info("Invalidating WorkQueues cache")
     workQueuesCache.invalidateAll()
 }
+
 
 if (msg.product != "recordm" || DEFS_TO_IGNORE.contains(msg.type)) {
 
@@ -62,7 +64,7 @@ if (msg.product != "recordm" || DEFS_TO_IGNORE.contains(msg.type)) {
             break;
 
         case "delete":
-
+            new WorkflowUtils(recordm).deleteWorkItems(msg.getId(), msg.getUser())
             break;
 
     }
