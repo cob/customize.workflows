@@ -30,11 +30,13 @@ action.imRest.cookie-value=<intemporal token for integrationm user>
 
 ### Definition Upgrades:
 
-#### 0.18.0 
+#### 1.0.0 
 * Work Items
 ```
-ALTERADOS:
+CHANGED:
+
 Moved file from `utils/_wrkfl_utils.groovy` to ` com.cultofbits.customizations.workflow.WorkflowUtils`. The methods are the same.
+Change all import statements in all scripts and concurrents.
 ```
 
 #### 0.17.4  (ver servinform-galp)
