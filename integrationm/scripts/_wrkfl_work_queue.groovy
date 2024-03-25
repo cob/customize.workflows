@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 
 @Field static workQueuesCache = CacheBuilder.newBuilder()
         .expireAfterWrite(5, TimeUnit.MINUTES)
-        .build() as Cache<String, List<RecordmSearchHit>>
+        .build()
 
 if (msg.product == "recordm" && msg.type == "Work Queues") {
     log.info("Invalidating WorkQueues cache")
