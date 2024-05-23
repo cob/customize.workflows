@@ -28,10 +28,14 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                 log.info("The new workm item is a RPA Action {{concurrent: ${concurrent} }}")
 
                 def actionResponse = actionPacks.imRest.post("/concurrent/${concurrent}", [id: msg.value("Customer Data")], "cob-bot")
-                // TODO Era bom se podessemos usar o ReusableResponse
-                if (new JSONObject(actionResponse).getString("success") == "true") {
-                    recordm.update("Work Item", msg.id, ["State": "Done"], "cob-bot")
-                }
+
+                JSONObject responseMap = new JSONObject(actionResponse)
+                def updateMap = [
+                        "State"            : responseMap.getString("success") == "true" ? "Done" : "Error",
+                        "Automation Errors": responseMap.optString("message")
+                ]
+
+                recordm.update("Work Item", msg.id, updateMap, "cob-bot")
 
                 return
             case "Human":
