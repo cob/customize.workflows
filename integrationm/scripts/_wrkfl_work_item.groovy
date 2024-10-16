@@ -29,11 +29,20 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
 
                 def actionResponse = actionPacks.imRest.post("/concurrent/${concurrent}", [id: msg.value("Customer Data")], "cob-bot")
 
-                JSONObject responseMap = new JSONObject(actionResponse)
-                def updateMap = [
-                        "State"            : responseMap.getString("success") == "true" ? "Done" : "Error",
-                        "Automation Errors": responseMap.optString("message")
-                ]
+                def updateMap = [:]
+
+                try {
+                    JSONObject responseMap = new JSONObject(actionResponse)
+                    updateMap = [
+                            "State"            : responseMap.getString("success") == "true" ? "Done" : "Error",
+                            "Automation Errors": responseMap.optString("message")
+                    ]
+                } catch (Exception e) {
+                    updateMap = [
+                            "State"            : "Error",
+                            "Automation Errors": "Internal Server Error. Error executing RPA."
+                    ]
+                }
 
                 recordm.update("Work Item", msg.id, updateMap, "cob-bot")
 
