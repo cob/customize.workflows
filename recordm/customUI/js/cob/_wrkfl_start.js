@@ -31,7 +31,7 @@ cob.custom.customize.push(function(core, utils, ui){
         isAllowed: function(definitionM) {
             definitionName = definitionM.getName();
             // criar um grupo específico
-            return core.getGroups().includes("System")
+            return core.getGroups()?.includes("System")
               && !["Business Process", "Work Queue", "Work Item"].includes(definitionName);
         },
         execute: function(definitionId, indexedInstancesM, _ctx) {
