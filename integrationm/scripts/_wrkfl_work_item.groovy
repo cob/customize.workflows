@@ -112,7 +112,6 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                 log.debug("On ${state} CODE: " + code)
 
                 def defName = wq.value("Specific Data")
-                def cdQquery = "id.raw:${msg.value('Customer Data')}"
                 def cdInstance = recordm.get(msg.value('Customer Data'))?.getBody();
 
                 if (cdInstance != null) {
@@ -139,7 +138,7 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                         rmOptions = [runAs: "integrationm", "substituting": msg.user]
                     }
 
-                    recordm.update(defName, cdQquery, updates, rmOptions)
+                    recordm.update(defName, msg.value('Customer Data'), updates, rmOptions)
                 }
             }
         }
