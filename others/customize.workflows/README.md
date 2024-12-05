@@ -25,10 +25,22 @@ action.imRest.cookie-value=<intemporal token for integrationm user>
 ### RecordM
 
 * Import all definitions.
-
+* Add the following customizations:
+  * cob-cli customize styleResults
+  * cob-cli customize commons-validators
 
 
 ### Definition Upgrades:
+
+#### 1.2.0
+* Make field `Code` in definition `Work Queues` unique
+
+
+Definition: Work Queues
+```
+CHANGED:
+Code: $instanceDescription $commons.validate(uniqueValue(showLink=true))
+```
 
 #### 1.0.0 
 * Delete Work Items

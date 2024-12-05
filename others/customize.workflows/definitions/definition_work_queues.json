@@ -1,7 +1,7 @@
 {
   "id": null,
   "name": "Work Queues",
-  "description": "@BPO v.0.17.2",
+  "description": "@BPO v.0.18.0",
   "duplicable": null,
   "state": "enabled",
   "fieldDefinitions": [
@@ -11,7 +11,7 @@
       "required": null,
       "description": "$group",
       "configuration": {
-        "description": "",
+        "description": null,
         "keys": {
           "Group": {}
         },
@@ -29,18 +29,18 @@
     {
       "id": null,
       "name": "Business Process",
-      "required": null,
+      "required": "mandatory",
       "description": "$ref(Business Processes,*)  $instanceDescription",
       "configuration": {
-        "description": "",
+        "description": null,
         "keys": {
+          "InstanceDescription": {},
           "Reference": {
             "args": {
               "query": "*",
               "definition": "Business Processes"
             }
-          },
-          "InstanceDescription": {}
+          }
         },
         "extensions": {}
       },
@@ -54,7 +54,7 @@
           "required": null,
           "description": "$auto.ref(Business Process).field(Level)",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
               "AutoRefField": {
                 "args": {
@@ -80,7 +80,7 @@
           "required": null,
           "description": "$auto.ref(Business Process).field(Enclosing Business Process Full Name)",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
               "AutoRefField": {
                 "args": {
@@ -106,7 +106,7 @@
           "required": null,
           "description": "$auto.ref(Business Process).field(Level 1) $ref(Business Processes,*)",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
               "AutoRefField": {
                 "args": {
@@ -138,7 +138,7 @@
           "required": null,
           "description": "$auto.ref(Business Process).field(Level 2) $ref(Business Processes,*)",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
               "AutoRefField": {
                 "args": {
@@ -170,7 +170,7 @@
           "required": null,
           "description": "$auto.ref(Business Process).field(Level 3) $ref(Business Processes,*)",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
               "AutoRefField": {
                 "args": {
@@ -202,7 +202,7 @@
           "required": null,
           "description": "$auto.ref(Business Process).field(Level 4) $ref(Business Processes,*)",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
               "AutoRefField": {
                 "args": {
@@ -234,7 +234,7 @@
           "required": null,
           "description": "$auto.ref(Business Process).field(Level 5) $ref(Business Processes,*)",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
               "AutoRefField": {
                 "args": {
@@ -266,7 +266,7 @@
           "required": null,
           "description": "$auto.ref(Business Process).field(Group Name)",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
               "AutoRefField": {
                 "args": {
@@ -298,7 +298,7 @@
       "required": null,
       "description": "$auto.ref(Business Process).field(Specific Data)",
       "configuration": {
-        "description": "",
+        "description": null,
         "keys": {
           "AutoRefField": {
             "args": {
@@ -324,7 +324,7 @@
       "required": null,
       "description": "$auto.ref(Business Process).field(State Field)",
       "configuration": {
-        "description": "",
+        "description": null,
         "keys": {
           "AutoRefField": {
             "args": {
@@ -350,7 +350,7 @@
       "required": null,
       "description": "$auto.ref(Business Process).field(Specific Data Main Customer Data Field)",
       "configuration": {
-        "description": "",
+        "description": null,
         "keys": {
           "AutoRefField": {
             "args": {
@@ -373,14 +373,20 @@
     {
       "id": null,
       "name": "Code",
-      "required": null,
-      "description": "$instanceDescription",
+      "required": "mandatory",
+      "description": "$instanceDescription $commons.validate(uniqueValue(showLink=true))",
       "configuration": {
-        "description": "",
+        "description": null,
         "keys": {
           "InstanceDescription": {}
         },
-        "extensions": {}
+        "extensions": {
+          "$commons.validate": {
+            "args": [
+              "uniqueValue(showLink=true)"
+            ]
+          }
+        }
       },
       "condition": null,
       "visibilityCondition": null,
@@ -394,10 +400,10 @@
     {
       "id": null,
       "name": "Name",
-      "required": null,
+      "required": "mandatory",
       "description": "$instanceLabel",
       "configuration": {
-        "description": "",
+        "description": null,
         "keys": {
           "InstanceLabel": {}
         },
@@ -418,7 +424,7 @@
       "required": null,
       "description": "$group",
       "configuration": {
-        "description": "",
+        "description": null,
         "keys": {
           "Group": {}
         },
@@ -437,12 +443,19 @@
       "id": null,
       "name": "Description",
       "required": null,
-      "description": "$markdown",
+      "description": "$markdown $instanceDescription $style[mdPreview]",
       "configuration": {
-        "description": "",
-        "keys": {},
+        "description": null,
+        "keys": {
+          "InstanceDescription": {}
+        },
         "extensions": {
-          "$markdown": {}
+          "$markdown": {},
+          "$style": {
+            "args": [
+              "mdPreview"
+            ]
+          }
         }
       },
       "condition": null,
@@ -460,8 +473,11 @@
       "required": null,
       "description": "$[*Human,RPA,AI,Wait]  $instanceDescription $expanded $groupEdit $styleResultColumn(Human:BgDimBlue,RPA:BgDimGreen,AI:BgDimOrange,Wait:BgDimGreen)",
       "configuration": {
-        "description": "",
+        "description": null,
         "keys": {
+          "Expanded": {
+            "args": {}
+          },
           "Select": {
             "args": [
               "Human",
@@ -470,9 +486,6 @@
               "Wait"
             ],
             "default": "Human"
-          },
-          "Expanded": {
-            "args": {}
           },
           "InstanceDescription": {}
         },
@@ -498,7 +511,7 @@
           "required": null,
           "description": "$[*Group,Group Field,User,User Field] $expanded $groupEdit",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
               "Select": {
                 "args": [
@@ -593,7 +606,7 @@
               "required": null,
               "description": "$extRef(userm,/userm/user/search?q={{this}}) $groupEdit",
               "configuration": {
-                "description": "",
+                "description": null,
                 "keys": {
                   "ExternalReference": {
                     "args": {
@@ -624,7 +637,7 @@
                   "required": null,
                   "description": "$auto.ref(User).field(username) $style[hide]",
                   "configuration": {
-                    "description": "",
+                    "description": null,
                     "keys": {
                       "AutoRefField": {
                         "args": {
@@ -662,7 +675,7 @@
               "required": null,
               "description": "$extRef(userm,/userm/group/search?q={{this}}) $groupEdit",
               "configuration": {
-                "description": "",
+                "description": null,
                 "keys": {
                   "ExternalReference": {
                     "args": {
@@ -693,7 +706,7 @@
                   "required": null,
                   "description": "$auto.ref(Group).field(name) $style[hide]",
                   "configuration": {
-                    "description": "",
+                    "description": null,
                     "keys": {
                       "AutoRefField": {
                         "args": {
@@ -737,7 +750,7 @@
           "required": null,
           "description": "$groupEdit",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {},
             "extensions": {
               "$groupEdit": {}
@@ -820,7 +833,7 @@
           "required": null,
           "description": "$text $help[tested against every WorkItem]",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
               "Help": {
                 "args": [
@@ -855,7 +868,7 @@
           "required": null,
           "description": "$text $help[tested against every event]",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
               "Help": {
                 "args": [
@@ -896,8 +909,12 @@
       "required": null,
       "description": "$[To Assign,To Do,In Progress,Done,Pending,Error,Canceled] $multiple $style[radio-1line] $expanded",
       "configuration": {
-        "description": "",
+        "description": null,
         "keys": {
+          "Multiple": {},
+          "Expanded": {
+            "args": {}
+          },
           "Select": {
             "args": [
               "To Assign",
@@ -909,10 +926,6 @@
               "Canceled"
             ],
             "default": null
-          },
-          "Multiple": {},
-          "Expanded": {
-            "args": {}
           }
         },
         "extensions": {
@@ -996,7 +1009,7 @@
           "required": null,
           "description": "$text",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {},
             "extensions": {
               "$text": {}
@@ -1017,7 +1030,7 @@
           "required": null,
           "description": "$text",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {},
             "extensions": {
               "$text": {}
@@ -1046,7 +1059,7 @@
           "required": null,
           "description": "$text",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {},
             "extensions": {
               "$text": {}
@@ -1081,7 +1094,7 @@
       "required": null,
       "description": "$group $style[use-reference-count,grupo] ",
       "configuration": {
-        "description": "",
+        "description": null,
         "keys": {
           "Group": {}
         },
@@ -1102,14 +1115,14 @@
           "id": null,
           "name": "Work Items",
           "required": null,
-          "description": "$references(Work Item,Work Queue,[view:default],[Queue:count()])",
+          "description": "$references(Work Item,Work Queue,[view:vWorkQueue,showActions:true],[Queue:count()])",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
               "References": {
                 "args": {
                   "field": "Work Queue",
-                  "options": "[view:default]",
+                  "options": "[view:vWorkQueue,showActions:true]",
                   "definition": "Work Item",
                   "aggs": "[Queue:count()]"
                 }
