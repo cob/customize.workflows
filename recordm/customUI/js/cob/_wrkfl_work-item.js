@@ -86,7 +86,7 @@ cob.custom.customize.push(async function(core, utils, ui) {
 
             // Reset all options when setting a work queue
             $("option", wiStatetFP.content()).remove();
-            const $list = $(`select#${wiStatetFP.getId()}`, wiStatetFP.content());
+            const $list = $(`select#f${wiStatetFP.getId()}`, wiStatetFP.content());
             options.forEach((state) => {
                 const $option = $(`<option value="${state}">${state}</option>`);
                 $list.append($option);
@@ -138,7 +138,7 @@ cob.custom.customize.push(async function(core, utils, ui) {
             if (instance.data.id > 0 && instance.data._links && instance.data._links.update === "recordm/instances/-1") {
                 console.warn("ERROR in data: an instace with id>0 has wrong update hateos link. This should not happpen ", instance.data.id, instance.data._links)
                 return
-            } 
+            }
 
             const workItemInstance = $(ev.target)
             const workItemId = workItemInstance.attr("data-workitem-id")
