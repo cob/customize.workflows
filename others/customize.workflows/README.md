@@ -32,6 +32,20 @@ action.imRest.cookie-value=<intemporal token for integrationm user>
 
 ### Definition Upgrades:
 
+#### 1.3.0
+* Add fields `Work Queue Code`, `Output` in definition `Work Items`
+
+
+Definition: Work Queues
+```
+ADDED:
+Work Queue:
+   Work Queue Code: $auto.ref(Work Queue).field(Code)
+   
+Execution Info:
+   Output: $text   
+```
+
 #### 1.2.0
 * Make field `Code` in definition `Work Queues` unique
 
