@@ -161,10 +161,10 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
 
         // Se tinha um user, e agora ja nao tem
         def previousUser = msg.getOldInstance().value("User")
-        def userWasPreviouslyAssigned = previousUser && isUnassigned
+        def userCleared = previousUser && isUnassigned
 
         // So atualiza o user se o update anterior não foi um unassignment
-        if (isUnassigned && state != "To Assign" && !userWasPreviouslyAssigned) {
+        if (isUnassigned && state != "To Assign" && !userCleared) {
             wiUpdates["User"] = currentUser._links.self
             wiUpdates["Self Assigned"] = "Yes"
             wiUpdates["Date of Assignment"] = nowDateTime
