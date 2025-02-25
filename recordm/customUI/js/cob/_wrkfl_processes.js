@@ -31,13 +31,28 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
         { type: 'style', v: 'classDef Wait        color:#99c240, padding:0px 3px, border-radius:10px, border: 1px solid gray, background-color: white, font-size: 10px' },
         { type: 'style', v: 'classDef Human       color:#1e80ba, padding:0px 5px, border-radius:10px, border: 1px solid gray, background-color: white, font-size: 10px' },
         { type: 'style', v: 'classDef AI          color:#d15802, padding:0px 4px, border-radius:10px, border: 1px solid gray, background-color: white, font-size: 10px' },
-        { type: 'style', v: 'classDef BgDimGreen  fill:#C1FA77' },
-        { type: 'style', v: 'classDef BgDimOrange fill:#FFE0D2' },
-        { type: 'style', v: 'classDef BgDimRed    fill:lightpink' },
+        
+        { type: 'style', v: 'classDef BgRed  fill:red' },
+        { type: 'style', v: 'classDef BgGreen fill:green' },
+        { type: 'style', v: 'classDef BgBlue    fill:blue' },
+        { type: 'style', v: 'classDef BgOrange    fill:orange' },
+        { type: 'style', v: 'classDef BgGray    fill:gray' },
+        { type: 'style', v: 'classDef BgDimRed    fill:#C1FA77' },
+        { type: 'style', v: 'classDef BgDimGreen    fill:#C1FA77' },
+        { type: 'style', v: 'classDef BgDimBlue    fill:#def4f9' },
+        { type: 'style', v: 'classDef BgDimOrange    fill:#FFE0D2' },
+        { type: 'style', v: 'classDef BgDimGray    fill:#bebebe' },
+
+        { type: 'style', v: 'classDef DimGreen       color:#9c9,fill:white' },
+        { type: 'style', v: 'classDef DimRed       color:#fbb,fill:white' },
+        { type: 'style', v: 'classDef DimOrange       color:#ffdebb,fill:white' },
+        { type: 'style', v: 'classDef DimGray       color:#bebebe,fill:white' },
+        { type: 'style', v: 'classDef Red       color:red,fill:white' },
         { type: 'style', v: 'classDef Green       color:green,fill:white' },
-        { type: 'style', v: 'classDef Red         color:red,fill:white' },
-        { type: 'style', v: 'classDef Gray        color:gray,fill:white' },
-        { type: 'style', v: 'classDef Orange      color:#9f6700,fill:#fffaec' },
+        { type: 'style', v: 'classDef Blue       color:blue,fill:white' },
+        { type: 'style', v: 'classDef Orange       color:orange,fill:white' },
+        { type: 'style', v: 'classDef Gray         color:gray,fill:white' },
+        
         { type: 'style', v: 'classDef Highlighted stroke:red,stroke-width:3px' },
     ];
 
@@ -334,7 +349,3 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
     merElem.querySelectorAll("a").forEach( elem => elem.id in queueData ? elem.href = `/#/definitions/${defId}/q=${queueData[elem.id].query}` : "")
 
 }
-
-
-
-
