@@ -29,8 +29,29 @@ action.imRest.cookie-value=<intemporal token for integrationm user>
   * cob-cli customize styleResults
   * cob-cli customize commons-validators
 
+```
+Permission de read de work items:
+
+instances:read:<def_id_work_item>:
+(doc["assigned_group_name.raw"].size() > 0 && params.user.groups.contains(doc["assigned_group_name.raw"][0]))
+||
+(doc["username.raw"].stream().anyMatch(u -> params.user.username == u))
+
+instances:update:<def_id_work_item>:
+(doc["assigned_group_name.raw"].size() > 0 && params.user.groups.contains(doc["assigned_group_name.raw"][0]))
+||
+(doc["username.raw"].stream().anyMatch(u -> params.user.username == u))
+
+```
 
 ### Definition Upgrades:
+
+#### 1.4.0
+* Set  Work Item field `User` duplicable
+```
+CHANGED:
+Execution Status > User: Duplicable
+```
 
 #### 1.3.0
 * Add fields `Work Queue Code`, `Output` in definition `Work Items`

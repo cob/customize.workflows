@@ -54,9 +54,11 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                         def fieldWithUserValue = workQueue.value("User Field")
                         if (fieldWithUserValue != null) {
                             def customerData = recordm.get(msg.value("Customer Data")).getBody()
-                            def user = customerData.value(fieldWithUserValue)
-                            if (user != null) {
-                                recordm.update("Work Item", msg.id, ["User": user])
+                            def uriUsers = customerData.values(fieldWithUserValue)
+                            if (uriUsers.size() > 0) {
+                                def wiUpdate = [:]
+                                uriUsers.eachWithIndex { el, idx -> wiUpdate["User[${idx}]"] = el }
+                                recordm.update("Work Item", msg.id, wiUpdate)
                             }
                         }
                         break;
@@ -64,7 +66,7 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                     case "User":
                         def fieldWithUserUri = workQueue.value("User")
                         if (fieldWithUserUri != null) {
-                            recordm.update("Work Item", msg.id, ["User": fieldWithUserUri])
+                            recordm.update("Work Item", msg.id, ["User[0]": fieldWithUserUri])
                         }
                         break;
 

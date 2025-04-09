@@ -1,7 +1,7 @@
 {
   "id": null,
   "name": "Work Item",
-  "description": "@BPO v.0.18.0",
+  "description": "@BPO v.0.19.0",
   "duplicable": null,
   "state": "enabled",
   "fieldDefinitions": [
@@ -13,12 +13,12 @@
       "configuration": {
         "description": null,
         "keys": {
+          "Group": {},
           "Expanded": {
             "args": {
               "condition": "id!=-1"
             }
-          },
-          "Group": {}
+          }
         },
         "extensions": {
           "$style": {
@@ -144,11 +144,10 @@
           "id": null,
           "name": "State",
           "required": "mandatory",
-          "description": "$[To Assign,To Do,In Progress,Done,Pending,Error,Canceled] $instanceDescription  $styleResultColumn(To Assign:BgDimOrange,To Do:BgDimBlue,In Progress:BgDimBlue,Pending:BgDimOrnage,Done:Green,Canceled:Gray,Error:Red)  $styleResultRows(Done:bg-neutral-200,Canceled:bg-neutral-200) $groupEdit ",
+          "description": "$[To Assign,To Do,In Progress,Done,Pending,Error,Canceled] $instanceDescription $groupEdit  $styleResultRows(Done:bg-neutral-200,Canceled:bg-neutral-200) $styleResultColumn(To Assign:BgDimOrange,To Do:BgDimBlue,In Progress:BgDimBlue,Pending:BgDimOrnage,Done:Green,Canceled:Gray,Error:Red)",
           "configuration": {
             "description": null,
             "keys": {
-              "InstanceDescription": {},
               "Select": {
                 "args": [
                   "To Assign",
@@ -160,7 +159,8 @@
                   "Canceled"
                 ],
                 "default": null
-              }
+              },
+              "InstanceDescription": {}
             },
             "extensions": {
               "$styleResultRows": {
@@ -196,10 +196,11 @@
           "id": null,
           "name": "User",
           "required": null,
-          "description": "$extRef(userm,/userm/user/search?q={{this}}*) $groupEdit  $styleResultColumn(/userm/user/36:DimGray)",
+          "description": "$instanceDescription $extRef(userm,/userm/user/search?q={{this}}*) $groupEdit $styleResultColumn(/userm/user/36:DimGray)",
           "configuration": {
             "description": null,
             "keys": {
+              "InstanceDescription": {},
               "ExternalReference": {
                 "args": {
                   "product": "userm",
@@ -218,7 +219,7 @@
           },
           "condition": null,
           "visibilityCondition": null,
-          "duplicable": false,
+          "duplicable": true,
           "fields": [
             {
               "id": null,
@@ -349,12 +350,12 @@
       "configuration": {
         "description": null,
         "keys": {
+          "Group": {},
           "Expanded": {
             "args": {
               "condition": "id=-1"
             }
-          },
-          "Group": {}
+          }
         },
         "extensions": {}
       },
@@ -370,13 +371,13 @@
           "configuration": {
             "description": null,
             "keys": {
+              "InstanceDescription": {},
               "Reference": {
                 "args": {
                   "query": "specific_data:__Customer Data Definition__",
                   "definition": "Work Queues"
                 }
-              },
-              "InstanceDescription": {}
+              }
             },
             "extensions": {}
           },
@@ -485,13 +486,13 @@
               "configuration": {
                 "description": null,
                 "keys": {
+                  "InstanceDescription": {},
                   "AutoRefField": {
                     "args": {
                       "source_field": "Work Queue",
                       "field_name": "Description"
                     }
-                  },
-                  "InstanceDescription": {}
+                  }
                 },
                 "extensions": {
                   "$markdown": {},
@@ -526,16 +527,16 @@
             "description": null,
             "keys": {
               "InstanceDescription": {},
-              "Reference": {
-                "args": {
-                  "query": "*",
-                  "definition": "Business Processes"
-                }
-              },
               "AutoRefField": {
                 "args": {
                   "source_field": "Work Queue",
                   "field_name": "Business Process"
+                }
+              },
+              "Reference": {
+                "args": {
+                  "query": "*",
+                  "definition": "Business Processes"
                 }
               }
             },
@@ -605,16 +606,16 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "Reference": {
-                    "args": {
-                      "query": "*",
-                      "definition": "Business Processes"
-                    }
-                  },
                   "AutoRefField": {
                     "args": {
                       "source_field": "Business Process",
                       "field_name": "Level 1"
+                    }
+                  },
+                  "Reference": {
+                    "args": {
+                      "query": "*",
+                      "definition": "Business Processes"
                     }
                   }
                 },
@@ -637,16 +638,16 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "Reference": {
-                    "args": {
-                      "query": "*",
-                      "definition": "Business Processes"
-                    }
-                  },
                   "AutoRefField": {
                     "args": {
                       "source_field": "Business Process",
                       "field_name": "Level 2"
+                    }
+                  },
+                  "Reference": {
+                    "args": {
+                      "query": "*",
+                      "definition": "Business Processes"
                     }
                   }
                 },
@@ -669,16 +670,16 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "Reference": {
-                    "args": {
-                      "query": "*",
-                      "definition": "Business Processes"
-                    }
-                  },
                   "AutoRefField": {
                     "args": {
                       "source_field": "Business Process",
                       "field_name": "Level 3"
+                    }
+                  },
+                  "Reference": {
+                    "args": {
+                      "query": "*",
+                      "definition": "Business Processes"
                     }
                   }
                 },
@@ -701,16 +702,16 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "Reference": {
-                    "args": {
-                      "query": "*",
-                      "definition": "Business Processes"
-                    }
-                  },
                   "AutoRefField": {
                     "args": {
                       "source_field": "Business Process",
                       "field_name": "Level 4"
+                    }
+                  },
+                  "Reference": {
+                    "args": {
+                      "query": "*",
+                      "definition": "Business Processes"
                     }
                   }
                 },
@@ -733,16 +734,16 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "Reference": {
-                    "args": {
-                      "query": "*",
-                      "definition": "Business Processes"
-                    }
-                  },
                   "AutoRefField": {
                     "args": {
                       "source_field": "Business Process",
                       "field_name": "Level 5"
+                    }
+                  },
+                  "Reference": {
+                    "args": {
+                      "query": "*",
+                      "definition": "Business Processes"
                     }
                   }
                 },
@@ -797,16 +798,16 @@
           "configuration": {
             "description": null,
             "keys": {
-              "Reference": {
-                "args": {
-                  "query": "*",
-                  "definition": "Business Processes"
-                }
-              },
               "AutoRefField": {
                 "args": {
                   "source_field": "Business Process",
                   "field_name": "Level 1"
+                }
+              },
+              "Reference": {
+                "args": {
+                  "query": "*",
+                  "definition": "Business Processes"
                 }
               }
             },
@@ -829,13 +830,6 @@
           "configuration": {
             "description": null,
             "keys": {
-              "Multiple": {},
-              "AutoRefField": {
-                "args": {
-                  "source_field": "Work Queue",
-                  "field_name": "Possible States"
-                }
-              },
               "Select": {
                 "args": [
                   "To Assign",
@@ -848,7 +842,14 @@
                   "Canceled"
                 ],
                 "default": null
-              }
+              },
+              "AutoRefField": {
+                "args": {
+                  "source_field": "Work Queue",
+                  "field_name": "Possible States"
+                }
+              },
+              "Multiple": {}
             },
             "extensions": {
               "$style": {
@@ -904,10 +905,10 @@
           "configuration": {
             "description": null,
             "keys": {
+              "Group": {},
               "Expanded": {
                 "args": {}
-              },
-              "Group": {}
+              }
             },
             "extensions": {
               "$style": {
@@ -1022,10 +1023,10 @@
           "configuration": {
             "description": null,
             "keys": {
+              "Group": {},
               "Expanded": {
                 "args": {}
-              },
-              "Group": {}
+              }
             },
             "extensions": {
               "$style": {
@@ -1047,13 +1048,13 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "InstanceDescription": {},
-                  "DateTime": {},
                   "Default": {
                     "args": {
                       "value": "now"
                     }
-                  }
+                  },
+                  "InstanceDescription": {},
+                  "DateTime": {}
                 },
                 "extensions": {
                   "$style": {
@@ -1070,7 +1071,7 @@
               "order": 33,
               "restricted": false,
               "rootField": false,
-              "defaultValue": "1737544990126"
+              "defaultValue": "1744124376519"
             },
             {
               "id": null,
@@ -1080,12 +1081,12 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "DateTime": {},
                   "Default": {
                     "args": {
                       "value": "now"
                     }
-                  }
+                  },
+                  "DateTime": {}
                 },
                 "extensions": {}
               },
@@ -1096,7 +1097,7 @@
               "order": 34,
               "restricted": false,
               "rootField": false,
-              "defaultValue": "1737544990126"
+              "defaultValue": "1744124376519"
             },
             {
               "id": null,
@@ -1238,10 +1239,10 @@
           "configuration": {
             "description": null,
             "keys": {
+              "Group": {},
               "Expanded": {
                 "args": {}
-              },
-              "Group": {}
+              }
             },
             "extensions": {
               "$style": {
@@ -1363,14 +1364,14 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "Number": {
-                    "args": {
-                      "decimal_places": "3"
-                    }
-                  },
                   "Default": {
                     "args": {
                       "value": "0"
+                    }
+                  },
+                  "Number": {
+                    "args": {
+                      "decimal_places": "3"
                     }
                   }
                 },
