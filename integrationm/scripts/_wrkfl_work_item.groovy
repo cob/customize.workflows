@@ -22,6 +22,8 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
     def workQueue = recordm.get(msg.value("Work Queue")).getBody()
 
     if (msg.action == "add") {
+        def wiUpdate = [:]
+
         switch (workQueue.value("Agent Type")) {
             case "RPA":
                 def concurrent = workQueue.value("Concurrent")
@@ -29,24 +31,19 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
 
                 def actionResponse = actionPacks.imRest.post("/concurrent/${concurrent}", [id: msg.value("Customer Data")], "cob-bot")
 
-                def updateMap = [:]
-
                 try {
                     JSONObject responseMap = new JSONObject(actionResponse)
-                    updateMap = [
+                    wiUpdate = [
                             "State"            : responseMap.getString("success") == "true" ? "Done" : "Error",
                             "Automation Errors": responseMap.optString("message")
                     ]
                 } catch (Exception e) {
-                    updateMap = [
+                    wiUpdate = [
                             "State"            : "Error",
                             "Automation Errors": "Internal Server Error. Error executing RPA."
                     ]
                 }
-
-                recordm.update("Work Item", msg.id, updateMap, "cob-bot")
-
-                return
+                break
             case "Human":
                 def humanType = msg.value("Human Type")
                 switch (humanType) {
@@ -56,9 +53,7 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                             def customerData = recordm.get(msg.value("Customer Data")).getBody()
                             def uriUsers = customerData.values(fieldWithUserValue)
                             if (uriUsers.size() > 0) {
-                                def wiUpdate = [:]
-                                uriUsers.eachWithIndex { el, idx -> wiUpdate["User[${idx}]"] = el }
-                                recordm.update("Work Item", msg.id, wiUpdate)
+                                uriUsers.eachWithIndex { uri, idx -> wiUpdate["User[${idx}]"] = uri }
                             }
                         }
                         break;
@@ -66,7 +61,7 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                     case "User":
                         def fieldWithUserUri = workQueue.value("User")
                         if (fieldWithUserUri != null) {
-                            recordm.update("Work Item", msg.id, ["User[0]": fieldWithUserUri])
+                            wiUpdate << ["User": fieldWithUserUri]
                         }
                         break;
 
@@ -76,7 +71,7 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                             def customerData = recordm.get(msg.value("Customer Data")).getBody()
                             def group = customerData.value(fieldWithGroupValue)
                             if (group != null) {
-                                recordm.update("Work Item", msg.id, ["Assigned Group": group])
+                                wiUpdate << ["Assigned Group": group]
                             }
                         }
                         break;
@@ -84,20 +79,60 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                     case "Group":
                         def fieldWithGroupUri = workQueue.value("Group")
                         if (fieldWithGroupUri != null) {
-                            recordm.update("Work Item", msg.id, ["Assigned Group": fieldWithGroupUri])
+                            wiUpdate << ["Assigned Group": fieldWithGroupUri]
                         }
                         break;
                 }
-
-                return
+                break;
 
             case "AI":
                 log.info("TO BE DONE")
 
-                return
+                break;
             default:
                 log.info("New human workitem created {{taskId: ${msg.id} }}")
         }
+
+        //Set Visibility type
+        def visibilityType = msg.value("Visibility Type")
+        switch (visibilityType) {
+            case "User Field":
+                def fieldWithUserValue = workQueue.value("Visibility User Field")
+                if (fieldWithUserValue != null) {
+                    def customerData = recordm.get(msg.value("Customer Data")).getBody()
+                    def uriUsers = customerData.values(fieldWithUserValue)
+                    if (uriUsers.size() > 0) {
+                        uriUsers.eachWithIndex { uri, idx -> wiUpdate["Visibility User[${idx}]"] = uri }
+                    }
+                }
+                break;
+
+            case "User":
+                def fieldWithUserUri = workQueue.value("Visibility User")
+                if (fieldWithUserUri != null) {
+                    wiUpdate << ["Visibility User": fieldWithUserUri]
+                }
+                break;
+
+            case "Group Field":
+                def fieldWithGroupValue = workQueue.value("Visibility Group Field")
+                if (fieldWithGroupValue != null) {
+                    def customerData = recordm.get(msg.value("Customer Data")).getBody()
+                    def group = customerData.value(fieldWithGroupValue)
+                    if (group != null) {
+                        wiUpdate << ["Visibility Group": group]
+                    }
+                }
+                break;
+
+            case "Group":
+                def fieldWithGroupUri = workQueue.value("Visibility Group")
+                if (fieldWithGroupUri != null) {
+                    wiUpdate << ["Visibility Group": fieldWithGroupUri]
+                }
+                break;
+        }
+        recordm.update("Work Item", msg.id, wiUpdate, "cob-bot")
 
     } else if (msg.field('State').changed()) {
         def state = msg.value('State')
@@ -137,7 +172,7 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
 
                     def rmOptions = [:]
                     if (msg.user != "integrationm") {
-                        rmOptions = [runAs: "integrationm", "substituting": msg.user]
+                        rmOptions = [runAs: msg.user, "substituting": "cob-bot"]
                     }
 
                     recordm.update(defName, msg.value('Customer Data'), updates, rmOptions)

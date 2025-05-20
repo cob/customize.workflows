@@ -1,7 +1,7 @@
 {
   "id": null,
   "name": "Business Processes",
-  "description": "@BPO v.0.14.0",
+  "description": "@BPO v.1.15.0",
   "duplicable": null,
   "state": "enabled",
   "fieldDefinitions": [
@@ -9,13 +9,19 @@
       "id": null,
       "name": "Details: __Full Name__",
       "required": null,
-      "description": "$group",
+      "description": "$group $style[grupo]",
       "configuration": {
-        "description": "",
+        "description": null,
         "keys": {
           "Group": {}
         },
-        "extensions": {}
+        "extensions": {
+          "$style": {
+            "args": [
+              "grupo"
+            ]
+          }
+        }
       },
       "condition": null,
       "visibilityCondition": null,
@@ -37,6 +43,7 @@
           "fields": [],
           "order": 1,
           "rootField": false,
+          "duplicablePath": false,
           "restricted": false,
           "defaultValue": null
         },
@@ -46,7 +53,7 @@
           "required": null,
           "description": "$auto.ref(Enclosing Business Process).field(Full Name) $style[hide]",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
               "AutoRefField": {
                 "args": {
@@ -69,6 +76,7 @@
           "fields": [],
           "order": 2,
           "rootField": false,
+          "duplicablePath": false,
           "restricted": false,
           "defaultValue": null
         },
@@ -78,7 +86,7 @@
           "required": null,
           "description": "$ref(Business Processes,*) $groupEdit $style[hide-inline]  $help[leave empty for <br> First Level]",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
               "Help": {
                 "args": [
@@ -107,6 +115,7 @@
           "fields": [],
           "order": 3,
           "rootField": false,
+          "duplicablePath": false,
           "restricted": false,
           "defaultValue": null
         },
@@ -116,16 +125,16 @@
           "required": null,
           "description": "$instanceLabel $auto.text(Enclosing Business Process Full Name,Name).join(Enclosing Business Process Full Name,' . ',Name) $style[hide] ",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
+              "InstanceLabel": {},
               "AutoTextJoin": {
                 "args": [
                   "Enclosing Business Process Full Name",
                   "' . '",
                   "Name"
                 ]
-              },
-              "InstanceLabel": {}
+              }
             },
             "extensions": {
               "$style": {
@@ -141,6 +150,7 @@
           "fields": [],
           "order": 4,
           "rootField": false,
+          "duplicablePath": false,
           "restricted": false,
           "defaultValue": null
         },
@@ -148,10 +158,16 @@
           "id": null,
           "name": "Specific Data",
           "required": null,
-          "description": "Definition Name for the associated data",
+          "description": "$help[Definition Name for the associated data]",
           "configuration": {
-            "description": "Definition Name for the associated data",
-            "keys": {},
+            "description": null,
+            "keys": {
+              "Help": {
+                "args": [
+                  "Definition Name for the associated data"
+                ]
+              }
+            },
             "extensions": {}
           },
           "condition": null,
@@ -160,6 +176,7 @@
           "fields": [],
           "order": 5,
           "rootField": false,
+          "duplicablePath": false,
           "restricted": false,
           "defaultValue": null
         },
@@ -167,10 +184,16 @@
           "id": null,
           "name": "State Field",
           "required": null,
-          "description": "Name of the field in the Specific Data Definition that is used as a state by the process",
+          "description": "$help[Name of the field in the Specific Data Definition that is used as a state by the process]",
           "configuration": {
-            "description": "Name of the field in the Specific Data Definition that is used as a state by the process",
-            "keys": {},
+            "description": null,
+            "keys": {
+              "Help": {
+                "args": [
+                  "Name of the field in the Specific Data Definition that is used as a state by the process"
+                ]
+              }
+            },
             "extensions": {}
           },
           "condition": null,
@@ -179,6 +202,7 @@
           "fields": [],
           "order": 6,
           "rootField": false,
+          "duplicablePath": false,
           "restricted": false,
           "defaultValue": null
         },
@@ -188,7 +212,7 @@
           "required": null,
           "description": "$help[In case of sub-data definitions which field references the main Specific Data ]",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
               "Help": {
                 "args": [
@@ -204,6 +228,7 @@
           "fields": [],
           "order": 7,
           "rootField": false,
+          "duplicablePath": false,
           "restricted": false,
           "defaultValue": null
         },
@@ -213,7 +238,7 @@
           "required": null,
           "description": "$text ",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {},
             "extensions": {
               "$text": {}
@@ -225,29 +250,31 @@
           "fields": [],
           "order": 8,
           "rootField": false,
+          "duplicablePath": false,
           "restricted": false,
           "defaultValue": null
         },
         {
           "id": null,
-          "name": "Visibility",
+          "name": "Groups",
           "required": null,
-          "description": "$group $style[subgroup] $expanded",
+          "description": "$extRef(userm,/userm/group/search?q={{this}}) $help[The Groups that can see this business process]",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
-              "Group": {},
-              "Expanded": {
-                "args": {}
-              }
-            },
-            "extensions": {
-              "$style": {
+              "ExternalReference": {
+                "args": {
+                  "product": "userm",
+                  "query": "/userm/group/search?q={{this}}"
+                }
+              },
+              "Help": {
                 "args": [
-                  "subgroup"
+                  "The Groups that can see this business process"
                 ]
               }
-            }
+            },
+            "extensions": {}
           },
           "condition": null,
           "visibilityCondition": null,
@@ -255,72 +282,48 @@
           "fields": [
             {
               "id": null,
-              "name": "Groups",
+              "name": "Group Name",
               "required": null,
-              "description": "$extRef(userm,/userm/group/search?q={{this}}) The Groups that can see this business process",
+              "description": "$auto.ref(Groups).field(name) $style[hide]",
               "configuration": {
-                "description": "The Groups that can see this business process",
+                "description": null,
                 "keys": {
-                  "ExternalReference": {
+                  "AutoRefField": {
                     "args": {
-                      "product": "userm",
-                      "query": "/userm/group/search?q={{this}}"
+                      "source_field": "Groups",
+                      "field_name": "name"
                     }
                   }
                 },
-                "extensions": {}
+                "extensions": {
+                  "$style": {
+                    "args": [
+                      "hide"
+                    ]
+                  }
+                }
               },
               "condition": null,
               "visibilityCondition": null,
               "duplicable": false,
-              "fields": [
-                {
-                  "id": null,
-                  "name": "Group Name",
-                  "required": null,
-                  "description": "$auto.ref(Groups).field(name) $style[hide]",
-                  "configuration": {
-                    "description": "",
-                    "keys": {
-                      "AutoRefField": {
-                        "args": {
-                          "source_field": "Groups",
-                          "field_name": "name"
-                        }
-                      }
-                    },
-                    "extensions": {
-                      "$style": {
-                        "args": [
-                          "hide"
-                        ]
-                      }
-                    }
-                  },
-                  "condition": null,
-                  "visibilityCondition": null,
-                  "duplicable": false,
-                  "fields": [],
-                  "order": 11,
-                  "rootField": false,
-                  "restricted": false,
-                  "defaultValue": null
-                }
-              ],
+              "fields": [],
               "order": 10,
               "rootField": false,
+              "duplicablePath": false,
               "restricted": false,
               "defaultValue": null
             }
           ],
           "order": 9,
           "rootField": false,
+          "duplicablePath": false,
           "restricted": false,
           "defaultValue": null
         }
       ],
       "order": 0,
       "rootField": true,
+      "duplicablePath": false,
       "restricted": false,
       "defaultValue": null
     },
@@ -328,19 +331,18 @@
       "id": null,
       "name": "Sub-Business Processes",
       "required": null,
-      "description": "$group $style[subgroup,use-reference-count,grupo,hide-in-new-instance] ",
+      "description": "$group $style[grupo,use-reference-count,hide] ",
       "configuration": {
-        "description": "",
+        "description": null,
         "keys": {
           "Group": {}
         },
         "extensions": {
           "$style": {
             "args": [
-              "subgroup",
-              "use-reference-count",
               "grupo",
-              "hide-in-new-instance"
+              "use-reference-count",
+              "hide"
             ]
           }
         }
@@ -355,7 +357,7 @@
           "required": null,
           "description": "$auto.ref(Enclosing Business Process).field(Level) $style[hide] $var.parent_level",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
               "AutoRefField": {
                 "args": {
@@ -365,20 +367,21 @@
               }
             },
             "extensions": {
-              "$var.parent_level": {},
               "$style": {
                 "args": [
                   "hide"
                 ]
-              }
+              },
+              "$var.parent_level": {}
             }
           },
           "condition": null,
           "visibilityCondition": null,
           "duplicable": false,
           "fields": [],
-          "order": 13,
+          "order": 12,
           "rootField": false,
+          "duplicablePath": false,
           "restricted": false,
           "defaultValue": null
         },
@@ -388,7 +391,7 @@
           "required": null,
           "description": "$auto.ref(Level 1).field(Name)",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
               "AutoRefField": {
                 "args": {
@@ -403,8 +406,9 @@
           "visibilityCondition": null,
           "duplicable": false,
           "fields": [],
-          "order": 14,
+          "order": 13,
           "rootField": false,
+          "duplicablePath": false,
           "restricted": false,
           "defaultValue": null
         },
@@ -414,7 +418,7 @@
           "required": null,
           "description": "$calc.sum(var.parent_level,1) $instanceDescription",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
               "InstanceDescription": {}
             },
@@ -431,8 +435,9 @@
           "visibilityCondition": null,
           "duplicable": false,
           "fields": [],
-          "order": 15,
+          "order": 14,
           "rootField": false,
+          "duplicablePath": false,
           "restricted": false,
           "defaultValue": null
         },
@@ -442,19 +447,19 @@
           "required": null,
           "description": "$ref(Business Processes,*) $auto.text(id).join(id) $instanceDescription",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
-              "AutoTextJoin": {
-                "args": [
-                  "id"
-                ]
-              },
               "InstanceDescription": {},
               "Reference": {
                 "args": {
                   "query": "*",
                   "definition": "Business Processes"
                 }
+              },
+              "AutoTextJoin": {
+                "args": [
+                  "id"
+                ]
               }
             },
             "extensions": {}
@@ -472,8 +477,9 @@
           },
           "duplicable": false,
           "fields": [],
-          "order": 16,
+          "order": 15,
           "rootField": false,
+          "duplicablePath": false,
           "restricted": false,
           "defaultValue": null
         },
@@ -483,18 +489,18 @@
           "required": null,
           "description": "$ref(Business Processes,*) $auto.ref(Enclosing Business Process).field(Level 1)",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
-              "AutoRefField": {
-                "args": {
-                  "source_field": "Enclosing Business Process",
-                  "field_name": "Level 1"
-                }
-              },
               "Reference": {
                 "args": {
                   "query": "*",
                   "definition": "Business Processes"
+                }
+              },
+              "AutoRefField": {
+                "args": {
+                  "source_field": "Enclosing Business Process",
+                  "field_name": "Level 1"
                 }
               }
             },
@@ -511,8 +517,9 @@
           },
           "duplicable": false,
           "fields": [],
-          "order": 17,
+          "order": 16,
           "rootField": false,
+          "duplicablePath": false,
           "restricted": false,
           "defaultValue": null
         },
@@ -522,19 +529,19 @@
           "required": null,
           "description": "$ref(Business Processes,*) $auto.text(id).join(id) $instanceDescription",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
-              "AutoTextJoin": {
-                "args": [
-                  "id"
-                ]
-              },
               "InstanceDescription": {},
               "Reference": {
                 "args": {
                   "query": "*",
                   "definition": "Business Processes"
                 }
+              },
+              "AutoTextJoin": {
+                "args": [
+                  "id"
+                ]
               }
             },
             "extensions": {}
@@ -552,8 +559,9 @@
           },
           "duplicable": false,
           "fields": [],
-          "order": 18,
+          "order": 17,
           "rootField": false,
+          "duplicablePath": false,
           "restricted": false,
           "defaultValue": null
         },
@@ -563,18 +571,18 @@
           "required": null,
           "description": "$ref(Business Processes,*) $auto.ref(Enclosing Business Process).field(Level 2)",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
-              "AutoRefField": {
-                "args": {
-                  "source_field": "Enclosing Business Process",
-                  "field_name": "Level 2"
-                }
-              },
               "Reference": {
                 "args": {
                   "query": "*",
                   "definition": "Business Processes"
+                }
+              },
+              "AutoRefField": {
+                "args": {
+                  "source_field": "Enclosing Business Process",
+                  "field_name": "Level 2"
                 }
               }
             },
@@ -591,8 +599,9 @@
           },
           "duplicable": false,
           "fields": [],
-          "order": 19,
+          "order": 18,
           "rootField": false,
+          "duplicablePath": false,
           "restricted": false,
           "defaultValue": null
         },
@@ -602,19 +611,19 @@
           "required": null,
           "description": "$ref(Business Processes,*) $auto.text(id).join(id) $instanceDescription",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
-              "AutoTextJoin": {
-                "args": [
-                  "id"
-                ]
-              },
               "InstanceDescription": {},
               "Reference": {
                 "args": {
                   "query": "*",
                   "definition": "Business Processes"
                 }
+              },
+              "AutoTextJoin": {
+                "args": [
+                  "id"
+                ]
               }
             },
             "extensions": {}
@@ -632,8 +641,9 @@
           },
           "duplicable": false,
           "fields": [],
-          "order": 20,
+          "order": 19,
           "rootField": false,
+          "duplicablePath": false,
           "restricted": false,
           "defaultValue": null
         },
@@ -643,18 +653,18 @@
           "required": null,
           "description": "$ref(Business Processes,*) $auto.ref(Enclosing Business Process).field(Level 3)",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
-              "AutoRefField": {
-                "args": {
-                  "source_field": "Enclosing Business Process",
-                  "field_name": "Level 3"
-                }
-              },
               "Reference": {
                 "args": {
                   "query": "*",
                   "definition": "Business Processes"
+                }
+              },
+              "AutoRefField": {
+                "args": {
+                  "source_field": "Enclosing Business Process",
+                  "field_name": "Level 3"
                 }
               }
             },
@@ -671,8 +681,9 @@
           },
           "duplicable": false,
           "fields": [],
-          "order": 21,
+          "order": 20,
           "rootField": false,
+          "duplicablePath": false,
           "restricted": false,
           "defaultValue": null
         },
@@ -682,19 +693,19 @@
           "required": null,
           "description": "$ref(Business Processes,*) $auto.text(id).join(id) $instanceDescription",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
-              "AutoTextJoin": {
-                "args": [
-                  "id"
-                ]
-              },
               "InstanceDescription": {},
               "Reference": {
                 "args": {
                   "query": "*",
                   "definition": "Business Processes"
                 }
+              },
+              "AutoTextJoin": {
+                "args": [
+                  "id"
+                ]
               }
             },
             "extensions": {}
@@ -712,8 +723,9 @@
           },
           "duplicable": false,
           "fields": [],
-          "order": 22,
+          "order": 21,
           "rootField": false,
+          "duplicablePath": false,
           "restricted": false,
           "defaultValue": null
         },
@@ -723,18 +735,18 @@
           "required": null,
           "description": "$ref(Business Processes,*) $auto.ref(Enclosing Business Process).field(Level 4)",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
-              "AutoRefField": {
-                "args": {
-                  "source_field": "Enclosing Business Process",
-                  "field_name": "Level 4"
-                }
-              },
               "Reference": {
                 "args": {
                   "query": "*",
                   "definition": "Business Processes"
+                }
+              },
+              "AutoRefField": {
+                "args": {
+                  "source_field": "Enclosing Business Process",
+                  "field_name": "Level 4"
                 }
               }
             },
@@ -751,8 +763,9 @@
           },
           "duplicable": false,
           "fields": [],
-          "order": 23,
+          "order": 22,
           "rootField": false,
+          "duplicablePath": false,
           "restricted": false,
           "defaultValue": null
         },
@@ -762,19 +775,19 @@
           "required": null,
           "description": "$ref(Business Processes,*) $auto.text(id).join(id) $instanceDescription",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
-              "AutoTextJoin": {
-                "args": [
-                  "id"
-                ]
-              },
               "InstanceDescription": {},
               "Reference": {
                 "args": {
                   "query": "*",
                   "definition": "Business Processes"
                 }
+              },
+              "AutoTextJoin": {
+                "args": [
+                  "id"
+                ]
               }
             },
             "extensions": {}
@@ -792,8 +805,9 @@
           },
           "duplicable": false,
           "fields": [],
-          "order": 24,
+          "order": 23,
           "rootField": false,
+          "duplicablePath": false,
           "restricted": false,
           "defaultValue": null
         },
@@ -803,7 +817,7 @@
           "required": null,
           "description": "$references(Business Processes,Enclosing Business Process)",
           "configuration": {
-            "description": "",
+            "description": null,
             "keys": {
               "References": {
                 "args": {
@@ -825,14 +839,16 @@
           },
           "duplicable": false,
           "fields": [],
-          "order": 25,
+          "order": 24,
           "rootField": false,
+          "duplicablePath": false,
           "restricted": false,
           "defaultValue": null
         }
       ],
-      "order": 12,
+      "order": 11,
       "rootField": true,
+      "duplicablePath": false,
       "restricted": false,
       "defaultValue": null
     },
@@ -842,7 +858,7 @@
       "required": null,
       "description": "$references(Work Queues,Business Process,[view:vBusinessProcess]) $style[workQueues]",
       "configuration": {
-        "description": "",
+        "description": null,
         "keys": {
           "References": {
             "args": {
@@ -864,8 +880,9 @@
       "visibilityCondition": null,
       "duplicable": false,
       "fields": [],
-      "order": 26,
+      "order": 25,
       "rootField": true,
+      "duplicablePath": false,
       "restricted": false,
       "defaultValue": null
     }

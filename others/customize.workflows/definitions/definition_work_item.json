@@ -1,7 +1,7 @@
 {
   "id": null,
   "name": "Work Item",
-  "description": "@BPO v.0.19.0",
+  "description": "@BPO v.1.5",
   "duplicable": null,
   "state": "enabled",
   "fieldDefinitions": [
@@ -9,20 +9,21 @@
       "id": null,
       "name": "Execution Status",
       "required": null,
-      "description": "$group $expanded(id!=-1) $style[hide-in-new-instance]",
+      "description": "$group $expanded(id!=-1) $style[grupo,hide-in-new-instance]",
       "configuration": {
         "description": null,
         "keys": {
-          "Group": {},
           "Expanded": {
             "args": {
               "condition": "id!=-1"
             }
-          }
+          },
+          "Group": {}
         },
         "extensions": {
           "$style": {
             "args": [
+              "grupo",
               "hide-in-new-instance"
             ]
           }
@@ -36,10 +37,15 @@
           "id": null,
           "name": "Customer Data Definition",
           "required": null,
-          "description": "$auto.ref(Customer Data).field(definitionName) $style[hide-inline]",
+          "description": "$auto.ref(Customer Data).field(definitionName) $style[hide-inline] $editForGroup(System) ",
           "configuration": {
             "description": null,
             "keys": {
+              "EditForGroup": {
+                "args": [
+                  "System"
+                ]
+              },
               "AutoRefField": {
                 "args": {
                   "source_field": "Customer Data",
@@ -60,18 +66,25 @@
           "duplicable": false,
           "fields": [],
           "order": 1,
-          "restricted": false,
           "rootField": false,
+          "duplicablePath": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
           "id": null,
           "name": "Customer Data",
           "required": null,
-          "description": "$ref(Work Queues,*) $readonly $alert(a def é uma qualquer só para conseguirmos ter o ref; o instanceId será preenchido por quem criar o WI) $style[hide-inline]",
+          "description": "$ref(Work Queues,*) $alert(a def é uma qualquer só para conseguirmos ter o ref; o instanceId será preenchido por quem criar o WI) $style[hide-inline] $editForGroup(System) $instanceDescription",
           "configuration": {
             "description": null,
             "keys": {
+              "InstanceDescription": {},
+              "EditForGroup": {
+                "args": [
+                  "System"
+                ]
+              },
               "Reference": {
                 "args": {
                   "query": "*",
@@ -80,7 +93,6 @@
               }
             },
             "extensions": {
-              "$readonly": {},
               "$style": {
                 "args": [
                   "hide-inline"
@@ -98,18 +110,24 @@
           "duplicable": false,
           "fields": [],
           "order": 2,
-          "restricted": false,
           "rootField": false,
+          "duplicablePath": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
           "id": null,
           "name": "Main Customer Data",
           "required": null,
-          "description": "$ref(Work Queues,*) $readonly $alert(a def é uma qualquer só para conseguirmos ter o ref; o instanceId será preenchido por quem criar o WI) $style[hide-inline]",
+          "description": "$ref(Work Queues,*) $alert(a def é uma qualquer só para conseguirmos ter o ref; o instanceId será preenchido por quem criar o WI) $style[hide-inline] $editForGroup(System) ",
           "configuration": {
             "description": null,
             "keys": {
+              "EditForGroup": {
+                "args": [
+                  "System"
+                ]
+              },
               "Reference": {
                 "args": {
                   "query": "*",
@@ -118,7 +136,6 @@
               }
             },
             "extensions": {
-              "$readonly": {},
               "$style": {
                 "args": [
                   "hide-inline"
@@ -136,18 +153,20 @@
           "duplicable": false,
           "fields": [],
           "order": 3,
-          "restricted": false,
           "rootField": false,
+          "duplicablePath": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
           "id": null,
           "name": "State",
           "required": "mandatory",
-          "description": "$[To Assign,To Do,In Progress,Done,Pending,Error,Canceled] $instanceDescription $groupEdit  $styleResultRows(Done:bg-neutral-200,Canceled:bg-neutral-200) $styleResultColumn(To Assign:BgDimOrange,To Do:BgDimBlue,In Progress:BgDimBlue,Pending:BgDimOrnage,Done:Green,Canceled:Gray,Error:Red)",
+          "description": "$[To Assign,To Do,In Progress,Done,Pending,Error,Canceled] $instanceDescription $groupEdit $styleResultColumn(To Assign:BgDimOrange,To Do:BgDimBlue,In Progress:BgDimBlue,Pending:BgDimOrnage,Done:Green,Canceled:Gray,Error:Red) ",
           "configuration": {
             "description": null,
             "keys": {
+              "InstanceDescription": {},
               "Select": {
                 "args": [
                   "To Assign",
@@ -159,16 +178,9 @@
                   "Canceled"
                 ],
                 "default": null
-              },
-              "InstanceDescription": {}
+              }
             },
             "extensions": {
-              "$styleResultRows": {
-                "args": [
-                  "Done:bg-neutral-200",
-                  "Canceled:bg-neutral-200"
-                ]
-              },
               "$groupEdit": {},
               "$styleResultColumn": {
                 "args": [
@@ -188,19 +200,25 @@
           "duplicable": false,
           "fields": [],
           "order": 4,
-          "restricted": false,
           "rootField": false,
+          "duplicablePath": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
           "id": null,
           "name": "User",
           "required": null,
-          "description": "$instanceDescription $extRef(userm,/userm/user/search?q={{this}}*) $groupEdit $styleResultColumn(/userm/user/36:DimGray)",
+          "description": "$instanceDescription $extRef(userm,/userm/user/search?q={{this}}*) $groupEdit $styleResultColumn(/userm/user/36:DimGray) $editForGroup(System) ",
           "configuration": {
             "description": null,
             "keys": {
               "InstanceDescription": {},
+              "EditForGroup": {
+                "args": [
+                  "System"
+                ]
+              },
               "ExternalReference": {
                 "args": {
                   "product": "userm",
@@ -243,21 +261,23 @@
               "duplicable": false,
               "fields": [],
               "order": 6,
-              "restricted": false,
               "rootField": false,
+              "duplicablePath": true,
+              "restricted": false,
               "defaultValue": null
             }
           ],
           "order": 5,
-          "restricted": false,
           "rootField": false,
+          "duplicablePath": true,
+          "restricted": false,
           "defaultValue": null
         },
         {
           "id": null,
           "name": "Assigned Group",
           "required": null,
-          "description": "$extRef(userm,/userm/group/search?q={{this}})",
+          "description": "$extRef(userm,/userm/group/search?q={{this}}) $editForGroup(System) ",
           "configuration": {
             "description": null,
             "keys": {
@@ -266,6 +286,11 @@
                   "product": "userm",
                   "query": "/userm/group/search?q={{this}}"
                 }
+              },
+              "EditForGroup": {
+                "args": [
+                  "System"
+                ]
               }
             },
             "extensions": {}
@@ -296,24 +321,154 @@
               "duplicable": false,
               "fields": [],
               "order": 8,
-              "restricted": false,
               "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
               "defaultValue": null
             }
           ],
           "order": 7,
-          "restricted": false,
           "rootField": false,
+          "duplicablePath": false,
+          "restricted": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Visibility User",
+          "required": null,
+          "description": "$extRef(userm,/userm/user/search?q={{this}}*) $groupEdit $editForGroup(System) ",
+          "configuration": {
+            "description": null,
+            "keys": {
+              "ExternalReference": {
+                "args": {
+                  "product": "userm",
+                  "query": "/userm/user/search?q={{this}}*"
+                }
+              },
+              "EditForGroup": {
+                "args": [
+                  "System"
+                ]
+              }
+            },
+            "extensions": {
+              "$groupEdit": {}
+            }
+          },
+          "condition": null,
+          "visibilityCondition": null,
+          "duplicable": true,
+          "fields": [
+            {
+              "id": null,
+              "name": "Visibility User Username",
+              "required": null,
+              "description": "$auto.ref(Visibility User).field(username)",
+              "configuration": {
+                "description": null,
+                "keys": {
+                  "AutoRefField": {
+                    "args": {
+                      "source_field": "Visibility User",
+                      "field_name": "username"
+                    }
+                  }
+                },
+                "extensions": {}
+              },
+              "condition": null,
+              "visibilityCondition": null,
+              "duplicable": false,
+              "fields": [],
+              "order": 10,
+              "rootField": false,
+              "duplicablePath": true,
+              "restricted": false,
+              "defaultValue": null
+            }
+          ],
+          "order": 9,
+          "rootField": false,
+          "duplicablePath": true,
+          "restricted": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Visibility Group",
+          "required": null,
+          "description": "$extRef(userm,/userm/group/search?q={{this}}) $editForGroup(System) ",
+          "configuration": {
+            "description": null,
+            "keys": {
+              "ExternalReference": {
+                "args": {
+                  "product": "userm",
+                  "query": "/userm/group/search?q={{this}}"
+                }
+              },
+              "EditForGroup": {
+                "args": [
+                  "System"
+                ]
+              }
+            },
+            "extensions": {}
+          },
+          "condition": null,
+          "visibilityCondition": null,
+          "duplicable": false,
+          "fields": [
+            {
+              "id": null,
+              "name": "Visibility Group Name",
+              "required": null,
+              "description": "$auto.ref(Visibility Group).field(name)",
+              "configuration": {
+                "description": null,
+                "keys": {
+                  "AutoRefField": {
+                    "args": {
+                      "source_field": "Visibility Group",
+                      "field_name": "name"
+                    }
+                  }
+                },
+                "extensions": {}
+              },
+              "condition": null,
+              "visibilityCondition": null,
+              "duplicable": false,
+              "fields": [],
+              "order": 12,
+              "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
+              "defaultValue": null
+            }
+          ],
+          "order": 11,
+          "rootField": false,
+          "duplicablePath": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
           "id": null,
           "name": "Automation Errors",
           "required": null,
-          "description": "$text",
+          "description": "$text $editForGroup(System) ",
           "configuration": {
             "description": null,
-            "keys": {},
+            "keys": {
+              "EditForGroup": {
+                "args": [
+                  "System"
+                ]
+              }
+            },
             "extensions": {
               "$text": {}
             }
@@ -331,33 +486,41 @@
           },
           "duplicable": false,
           "fields": [],
-          "order": 9,
-          "restricted": false,
+          "order": 13,
           "rootField": false,
+          "duplicablePath": false,
+          "restricted": false,
           "defaultValue": null
         }
       ],
       "order": 0,
-      "restricted": false,
       "rootField": true,
+      "duplicablePath": false,
+      "restricted": false,
       "defaultValue": null
     },
     {
       "id": null,
       "name": "Business Process & Work Queue",
       "required": null,
-      "description": "$group $expanded(id=-1)",
+      "description": "$group $expanded(id=-1) $style[grupo]",
       "configuration": {
         "description": null,
         "keys": {
-          "Group": {},
           "Expanded": {
             "args": {
               "condition": "id=-1"
             }
-          }
+          },
+          "Group": {}
         },
-        "extensions": {}
+        "extensions": {
+          "$style": {
+            "args": [
+              "grupo"
+            ]
+          }
+        }
       },
       "condition": null,
       "visibilityCondition": null,
@@ -367,11 +530,16 @@
           "id": null,
           "name": "Work Queue",
           "required": "mandatory",
-          "description": "$ref(Work Queues, specific_data:__Customer Data Definition__) $instanceDescription ",
+          "description": "$ref(Work Queues, specific_data:__Customer Data Definition__) $instanceDescription  $editForGroup(System) ",
           "configuration": {
             "description": null,
             "keys": {
               "InstanceDescription": {},
+              "EditForGroup": {
+                "args": [
+                  "System"
+                ]
+              },
               "Reference": {
                 "args": {
                   "query": "specific_data:__Customer Data Definition__",
@@ -406,16 +574,17 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 12,
-              "restricted": false,
+              "order": 16,
               "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
               "defaultValue": null
             },
             {
               "id": null,
               "name": "Agent Type",
               "required": null,
-              "description": "$auto.ref(Work Queue).field(Agent Type)",
+              "description": "$auto.ref(Work Queue).field(Agent Type)  $styleResultColumn(Human:BgDimBlue,RPA:BgDimGreen,AI:BgDimOrange,Wait:BgGreen)",
               "configuration": {
                 "description": null,
                 "keys": {
@@ -426,7 +595,16 @@
                     }
                   }
                 },
-                "extensions": {}
+                "extensions": {
+                  "$styleResultColumn": {
+                    "args": [
+                      "Human:BgDimBlue",
+                      "RPA:BgDimGreen",
+                      "AI:BgDimOrange",
+                      "Wait:BgGreen"
+                    ]
+                  }
+                }
               },
               "condition": null,
               "visibilityCondition": null,
@@ -467,15 +645,47 @@
                   },
                   "duplicable": false,
                   "fields": [],
-                  "order": 14,
-                  "restricted": false,
+                  "order": 18,
                   "rootField": false,
+                  "duplicablePath": false,
+                  "restricted": false,
                   "defaultValue": null
                 }
               ],
-              "order": 13,
-              "restricted": false,
+              "order": 17,
               "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
+              "defaultValue": null
+            },
+            {
+              "id": null,
+              "name": "Visibility Type",
+              "required": null,
+              "description": "$auto.ref(Work Queue).field(Visibility Type) $expanded",
+              "configuration": {
+                "description": null,
+                "keys": {
+                  "Expanded": {
+                    "args": {}
+                  },
+                  "AutoRefField": {
+                    "args": {
+                      "source_field": "Work Queue",
+                      "field_name": "Visibility Type"
+                    }
+                  }
+                },
+                "extensions": {}
+              },
+              "condition": null,
+              "visibilityCondition": null,
+              "duplicable": false,
+              "fields": [],
+              "order": 19,
+              "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
               "defaultValue": null
             },
             {
@@ -507,15 +717,17 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 15,
-              "restricted": false,
+              "order": 20,
               "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
               "defaultValue": null
             }
           ],
-          "order": 11,
-          "restricted": false,
+          "order": 15,
           "rootField": false,
+          "duplicablePath": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -567,9 +779,10 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 17,
-              "restricted": false,
+              "order": 22,
               "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
               "defaultValue": null
             },
             {
@@ -593,9 +806,10 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 18,
-              "restricted": false,
+              "order": 23,
               "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
               "defaultValue": null
             },
             {
@@ -606,16 +820,16 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "AutoRefField": {
-                    "args": {
-                      "source_field": "Business Process",
-                      "field_name": "Level 1"
-                    }
-                  },
                   "Reference": {
                     "args": {
                       "query": "*",
                       "definition": "Business Processes"
+                    }
+                  },
+                  "AutoRefField": {
+                    "args": {
+                      "source_field": "Business Process",
+                      "field_name": "Level 1"
                     }
                   }
                 },
@@ -625,9 +839,10 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 19,
-              "restricted": false,
+              "order": 24,
               "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
               "defaultValue": null
             },
             {
@@ -638,16 +853,16 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "AutoRefField": {
-                    "args": {
-                      "source_field": "Business Process",
-                      "field_name": "Level 2"
-                    }
-                  },
                   "Reference": {
                     "args": {
                       "query": "*",
                       "definition": "Business Processes"
+                    }
+                  },
+                  "AutoRefField": {
+                    "args": {
+                      "source_field": "Business Process",
+                      "field_name": "Level 2"
                     }
                   }
                 },
@@ -657,9 +872,10 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 20,
-              "restricted": false,
+              "order": 25,
               "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
               "defaultValue": null
             },
             {
@@ -670,16 +886,16 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "AutoRefField": {
-                    "args": {
-                      "source_field": "Business Process",
-                      "field_name": "Level 3"
-                    }
-                  },
                   "Reference": {
                     "args": {
                       "query": "*",
                       "definition": "Business Processes"
+                    }
+                  },
+                  "AutoRefField": {
+                    "args": {
+                      "source_field": "Business Process",
+                      "field_name": "Level 3"
                     }
                   }
                 },
@@ -689,9 +905,10 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 21,
-              "restricted": false,
+              "order": 26,
               "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
               "defaultValue": null
             },
             {
@@ -702,16 +919,16 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "AutoRefField": {
-                    "args": {
-                      "source_field": "Business Process",
-                      "field_name": "Level 4"
-                    }
-                  },
                   "Reference": {
                     "args": {
                       "query": "*",
                       "definition": "Business Processes"
+                    }
+                  },
+                  "AutoRefField": {
+                    "args": {
+                      "source_field": "Business Process",
+                      "field_name": "Level 4"
                     }
                   }
                 },
@@ -721,9 +938,10 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 22,
-              "restricted": false,
+              "order": 27,
               "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
               "defaultValue": null
             },
             {
@@ -734,16 +952,16 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "AutoRefField": {
-                    "args": {
-                      "source_field": "Business Process",
-                      "field_name": "Level 5"
-                    }
-                  },
                   "Reference": {
                     "args": {
                       "query": "*",
                       "definition": "Business Processes"
+                    }
+                  },
+                  "AutoRefField": {
+                    "args": {
+                      "source_field": "Business Process",
+                      "field_name": "Level 5"
                     }
                   }
                 },
@@ -753,9 +971,10 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 23,
-              "restricted": false,
+              "order": 28,
               "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
               "defaultValue": null
             },
             {
@@ -779,25 +998,32 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 24,
-              "restricted": false,
+              "order": 29,
               "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
               "defaultValue": null
             }
           ],
-          "order": 16,
-          "restricted": false,
+          "order": 21,
           "rootField": false,
+          "duplicablePath": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
           "id": null,
           "name": "Main Business Process",
           "required": null,
-          "description": "$ref(Business Processes,*) $auto.ref(Business Process).field(Level 1)",
+          "description": "$ref(Business Processes,*) $auto.ref(Business Process).field(Level 1) $editForGroup(System) ",
           "configuration": {
             "description": null,
             "keys": {
+              "EditForGroup": {
+                "args": [
+                  "System"
+                ]
+              },
               "AutoRefField": {
                 "args": {
                   "source_field": "Business Process",
@@ -817,9 +1043,10 @@
           "visibilityCondition": null,
           "duplicable": false,
           "fields": [],
-          "order": 25,
-          "restricted": false,
+          "order": 30,
           "rootField": false,
+          "duplicablePath": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
@@ -830,6 +1057,7 @@
           "configuration": {
             "description": null,
             "keys": {
+              "Multiple": {},
               "Select": {
                 "args": [
                   "To Assign",
@@ -848,8 +1076,7 @@
                   "source_field": "Work Queue",
                   "field_name": "Possible States"
                 }
-              },
-              "Multiple": {}
+              }
             },
             "extensions": {
               "$style": {
@@ -864,22 +1091,24 @@
           "visibilityCondition": null,
           "duplicable": false,
           "fields": [],
-          "order": 26,
-          "restricted": false,
+          "order": 31,
           "rootField": false,
+          "duplicablePath": false,
+          "restricted": false,
           "defaultValue": null
         }
       ],
-      "order": 10,
-      "restricted": false,
+      "order": 14,
       "rootField": true,
+      "duplicablePath": false,
+      "restricted": false,
       "defaultValue": null
     },
     {
       "id": null,
       "name": "Execution Info",
       "required": null,
-      "description": "$group $style[hide-in-new-instance]",
+      "description": "$group $style[grupo,hide-in-new-instance]",
       "configuration": {
         "description": null,
         "keys": {
@@ -888,6 +1117,7 @@
         "extensions": {
           "$style": {
             "args": [
+              "grupo",
               "hide-in-new-instance"
             ]
           }
@@ -905,10 +1135,10 @@
           "configuration": {
             "description": null,
             "keys": {
-              "Group": {},
               "Expanded": {
                 "args": {}
-              }
+              },
+              "Group": {}
             },
             "extensions": {
               "$style": {
@@ -926,7 +1156,7 @@
               "id": null,
               "name": "User of Done",
               "required": null,
-              "description": "$extRef(userm,/userm/user/search?q={{this}}*) $groupEdit  $styleResultColumn(/userm/user/36:DimGray)",
+              "description": "$extRef(userm,/userm/user/search?q={{this}}*) $groupEdit  $styleResultColumn(/userm/user/36:DimGray) $editForGroup(System) ",
               "configuration": {
                 "description": null,
                 "keys": {
@@ -935,6 +1165,11 @@
                       "product": "userm",
                       "query": "/userm/user/search?q={{this}}*"
                     }
+                  },
+                  "EditForGroup": {
+                    "args": [
+                      "System"
+                    ]
                   }
                 },
                 "extensions": {
@@ -950,19 +1185,25 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 29,
-              "restricted": false,
+              "order": 34,
               "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
               "defaultValue": null
             },
             {
               "id": null,
               "name": "Done by Assignee",
               "required": null,
-              "description": "$[Yes,No]",
+              "description": "$[Yes,No] $editForGroup(System) ",
               "configuration": {
                 "description": null,
                 "keys": {
+                  "EditForGroup": {
+                    "args": [
+                      "System"
+                    ]
+                  },
                   "Select": {
                     "args": [
                       "Yes",
@@ -977,19 +1218,25 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 30,
-              "restricted": false,
+              "order": 35,
               "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
               "defaultValue": null
             },
             {
               "id": null,
               "name": "Self Assigned",
               "required": null,
-              "description": "$[Yes,No]",
+              "description": "$[Yes,No] $editForGroup(System) ",
               "configuration": {
                 "description": null,
                 "keys": {
+                  "EditForGroup": {
+                    "args": [
+                      "System"
+                    ]
+                  },
                   "Select": {
                     "args": [
                       "Yes",
@@ -1004,29 +1251,31 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 31,
-              "restricted": false,
+              "order": 36,
               "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
               "defaultValue": null
             }
           ],
-          "order": 28,
-          "restricted": false,
+          "order": 33,
           "rootField": false,
+          "duplicablePath": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
           "id": null,
           "name": "Dates",
           "required": null,
-          "description": "$group $expanded $style[subgroup]",
+          "description": "$group $expanded $style[subgroup] ",
           "configuration": {
             "description": null,
             "keys": {
-              "Group": {},
               "Expanded": {
                 "args": {}
-              }
+              },
+              "Group": {}
             },
             "extensions": {
               "$style": {
@@ -1044,7 +1293,7 @@
               "id": null,
               "name": "Date of Request",
               "required": null,
-              "description": "$datetime $default(now) $instanceDescription $style[dateDiffBefore]",
+              "description": "$datetime $default(now) $instanceDescription $style[dateDiffBefore] $editForGroup(System) ",
               "configuration": {
                 "description": null,
                 "keys": {
@@ -1054,6 +1303,11 @@
                     }
                   },
                   "InstanceDescription": {},
+                  "EditForGroup": {
+                    "args": [
+                      "System"
+                    ]
+                  },
                   "DateTime": {}
                 },
                 "extensions": {
@@ -1068,16 +1322,17 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 33,
-              "restricted": false,
+              "order": 38,
               "rootField": false,
-              "defaultValue": "1744124376519"
+              "duplicablePath": false,
+              "restricted": false,
+              "defaultValue": "1747735725143"
             },
             {
               "id": null,
               "name": "Date of Creation",
               "required": null,
-              "description": "$datetime $default(now)  ",
+              "description": "$datetime $default(now) $editForGroup(System) ",
               "configuration": {
                 "description": null,
                 "keys": {
@@ -1085,6 +1340,11 @@
                     "args": {
                       "value": "now"
                     }
+                  },
+                  "EditForGroup": {
+                    "args": [
+                      "System"
+                    ]
                   },
                   "DateTime": {}
                 },
@@ -1094,124 +1354,25 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 34,
-              "restricted": false,
+              "order": 39,
               "rootField": false,
-              "defaultValue": "1744124376519"
+              "duplicablePath": false,
+              "restricted": false,
+              "defaultValue": "1747735725143"
             },
             {
               "id": null,
               "name": "Date of Assignment",
               "required": null,
-              "description": "$datetime",
+              "description": "$datetime $editForGroup(System) ",
               "configuration": {
                 "description": null,
                 "keys": {
-                  "DateTime": {}
-                },
-                "extensions": {}
-              },
-              "condition": null,
-              "visibilityCondition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 35,
-              "restricted": false,
-              "rootField": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Date of Start",
-              "required": null,
-              "description": "$datetime",
-              "configuration": {
-                "description": null,
-                "keys": {
-                  "DateTime": {}
-                },
-                "extensions": {}
-              },
-              "condition": null,
-              "visibilityCondition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 36,
-              "restricted": false,
-              "rootField": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Date of first Pending",
-              "required": null,
-              "description": "$datetime",
-              "configuration": {
-                "description": null,
-                "keys": {
-                  "DateTime": {}
-                },
-                "extensions": {}
-              },
-              "condition": null,
-              "visibilityCondition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 37,
-              "restricted": false,
-              "rootField": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Date of Pending",
-              "required": null,
-              "description": "$datetime",
-              "configuration": {
-                "description": null,
-                "keys": {
-                  "DateTime": {}
-                },
-                "extensions": {}
-              },
-              "condition": null,
-              "visibilityCondition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 38,
-              "restricted": false,
-              "rootField": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Date of Done",
-              "required": null,
-              "description": "$datetime",
-              "configuration": {
-                "description": null,
-                "keys": {
-                  "DateTime": {}
-                },
-                "extensions": {}
-              },
-              "condition": null,
-              "visibilityCondition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 39,
-              "restricted": false,
-              "rootField": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Date of Canceling",
-              "required": null,
-              "description": "$datetime",
-              "configuration": {
-                "description": null,
-                "keys": {
+                  "EditForGroup": {
+                    "args": [
+                      "System"
+                    ]
+                  },
                   "DateTime": {}
                 },
                 "extensions": {}
@@ -1221,28 +1382,165 @@
               "duplicable": false,
               "fields": [],
               "order": 40,
-              "restricted": false,
               "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
+              "defaultValue": null
+            },
+            {
+              "id": null,
+              "name": "Date of Start",
+              "required": null,
+              "description": "$datetime $editForGroup(System) ",
+              "configuration": {
+                "description": null,
+                "keys": {
+                  "EditForGroup": {
+                    "args": [
+                      "System"
+                    ]
+                  },
+                  "DateTime": {}
+                },
+                "extensions": {}
+              },
+              "condition": null,
+              "visibilityCondition": null,
+              "duplicable": false,
+              "fields": [],
+              "order": 41,
+              "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
+              "defaultValue": null
+            },
+            {
+              "id": null,
+              "name": "Date of first Pending",
+              "required": null,
+              "description": "$datetime $editForGroup(System) ",
+              "configuration": {
+                "description": null,
+                "keys": {
+                  "EditForGroup": {
+                    "args": [
+                      "System"
+                    ]
+                  },
+                  "DateTime": {}
+                },
+                "extensions": {}
+              },
+              "condition": null,
+              "visibilityCondition": null,
+              "duplicable": false,
+              "fields": [],
+              "order": 42,
+              "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
+              "defaultValue": null
+            },
+            {
+              "id": null,
+              "name": "Date of Pending",
+              "required": null,
+              "description": "$datetime $editForGroup(System) ",
+              "configuration": {
+                "description": null,
+                "keys": {
+                  "EditForGroup": {
+                    "args": [
+                      "System"
+                    ]
+                  },
+                  "DateTime": {}
+                },
+                "extensions": {}
+              },
+              "condition": null,
+              "visibilityCondition": null,
+              "duplicable": false,
+              "fields": [],
+              "order": 43,
+              "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
+              "defaultValue": null
+            },
+            {
+              "id": null,
+              "name": "Date of Done",
+              "required": null,
+              "description": "$datetime $editForGroup(System) ",
+              "configuration": {
+                "description": null,
+                "keys": {
+                  "EditForGroup": {
+                    "args": [
+                      "System"
+                    ]
+                  },
+                  "DateTime": {}
+                },
+                "extensions": {}
+              },
+              "condition": null,
+              "visibilityCondition": null,
+              "duplicable": false,
+              "fields": [],
+              "order": 44,
+              "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
+              "defaultValue": null
+            },
+            {
+              "id": null,
+              "name": "Date of Canceling",
+              "required": null,
+              "description": "$datetime $editForGroup(System) ",
+              "configuration": {
+                "description": null,
+                "keys": {
+                  "EditForGroup": {
+                    "args": [
+                      "System"
+                    ]
+                  },
+                  "DateTime": {}
+                },
+                "extensions": {}
+              },
+              "condition": null,
+              "visibilityCondition": null,
+              "duplicable": false,
+              "fields": [],
+              "order": 45,
+              "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
               "defaultValue": null
             }
           ],
-          "order": 32,
-          "restricted": false,
+          "order": 37,
           "rootField": false,
+          "duplicablePath": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
           "id": null,
           "name": "Times",
           "required": null,
-          "description": "$group $expanded $style[subgroup]",
+          "description": "$group $expanded $style[subgroup] ",
           "configuration": {
             "description": null,
             "keys": {
-              "Group": {},
               "Expanded": {
                 "args": {}
-              }
+              },
+              "Group": {}
             },
             "extensions": {
               "$style": {
@@ -1260,7 +1558,7 @@
               "id": null,
               "name": "Time of Execution",
               "required": null,
-              "description": "$number(3)",
+              "description": "$number(3) $editForGroup(System) ",
               "configuration": {
                 "description": null,
                 "keys": {
@@ -1268,6 +1566,11 @@
                     "args": {
                       "decimal_places": "3"
                     }
+                  },
+                  "EditForGroup": {
+                    "args": [
+                      "System"
+                    ]
                   }
                 },
                 "extensions": {}
@@ -1276,16 +1579,17 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 42,
-              "restricted": false,
+              "order": 47,
               "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
               "defaultValue": null
             },
             {
               "id": null,
               "name": "Time Overall",
               "required": null,
-              "description": "$number(3)",
+              "description": "$number(3) $editForGroup(System) ",
               "configuration": {
                 "description": null,
                 "keys": {
@@ -1293,6 +1597,11 @@
                     "args": {
                       "decimal_places": "3"
                     }
+                  },
+                  "EditForGroup": {
+                    "args": [
+                      "System"
+                    ]
                   }
                 },
                 "extensions": {}
@@ -1301,16 +1610,17 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 43,
-              "restricted": false,
+              "order": 48,
               "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
               "defaultValue": null
             },
             {
               "id": null,
               "name": "Time of Assignment",
               "required": null,
-              "description": "$number(3)",
+              "description": "$number(3) $editForGroup(System) ",
               "configuration": {
                 "description": null,
                 "keys": {
@@ -1318,6 +1628,11 @@
                     "args": {
                       "decimal_places": "3"
                     }
+                  },
+                  "EditForGroup": {
+                    "args": [
+                      "System"
+                    ]
                   }
                 },
                 "extensions": {}
@@ -1326,16 +1641,17 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 44,
-              "restricted": false,
+              "order": 49,
               "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
               "defaultValue": null
             },
             {
               "id": null,
               "name": "Time of Start",
               "required": null,
-              "description": "$number(3)",
+              "description": "$number(3) $editForGroup(System) ",
               "configuration": {
                 "description": null,
                 "keys": {
@@ -1343,6 +1659,11 @@
                     "args": {
                       "decimal_places": "3"
                     }
+                  },
+                  "EditForGroup": {
+                    "args": [
+                      "System"
+                    ]
                   }
                 },
                 "extensions": {}
@@ -1351,16 +1672,17 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 45,
-              "restricted": false,
+              "order": 50,
               "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
               "defaultValue": null
             },
             {
               "id": null,
               "name": "Time of Pending",
               "required": null,
-              "description": "$number(3) $default(0)",
+              "description": "$number(3) $default(0) $editForGroup(System) ",
               "configuration": {
                 "description": null,
                 "keys": {
@@ -1368,6 +1690,11 @@
                     "args": {
                       "value": "0"
                     }
+                  },
+                  "EditForGroup": {
+                    "args": [
+                      "System"
+                    ]
                   },
                   "Number": {
                     "args": {
@@ -1381,25 +1708,33 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 46,
-              "restricted": false,
+              "order": 51,
               "rootField": false,
+              "duplicablePath": false,
+              "restricted": false,
               "defaultValue": "0"
             }
           ],
-          "order": 41,
-          "restricted": false,
+          "order": 46,
           "rootField": false,
+          "duplicablePath": false,
+          "restricted": false,
           "defaultValue": null
         },
         {
           "id": null,
           "name": "Output",
           "required": null,
-          "description": "$text",
+          "description": "$text $editForGroup(System) ",
           "configuration": {
             "description": null,
-            "keys": {},
+            "keys": {
+              "EditForGroup": {
+                "args": [
+                  "System"
+                ]
+              }
+            },
             "extensions": {
               "$text": {}
             }
@@ -1408,15 +1743,17 @@
           "visibilityCondition": null,
           "duplicable": false,
           "fields": [],
-          "order": 47,
-          "restricted": false,
+          "order": 52,
           "rootField": false,
+          "duplicablePath": false,
+          "restricted": false,
           "defaultValue": null
         }
       ],
-      "order": 27,
-      "restricted": false,
+      "order": 32,
       "rootField": true,
+      "duplicablePath": false,
+      "restricted": false,
       "defaultValue": null
     }
   ],
