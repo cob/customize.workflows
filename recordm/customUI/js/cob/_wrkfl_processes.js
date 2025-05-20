@@ -155,7 +155,6 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
         
         // identificar estado final
         const mudaEstadoRE = new RegExp(`^updates\\[["']${stateField}["']\\]\\s*=\\s*["']([^"']+)["']`);
-        const detectaMudaEstadoRE = /\s*data\.value\(["'](.*)['"]\)\s*==\s*["']([^"']+)['"]/;
         const linhas = wq['on_done'][0].split('\n');
         const eDecisao = linhas.length > 1;
 
@@ -188,14 +187,10 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
 
                     endState = endMatches[1]
 
-                    const matchFrom = detectaMudaEstadoRE.exec(matchIf[1]);
-                    if (matchFrom) {
-                        decisionName = "" + matchFrom[1] + ' = ' + matchFrom[2] + "";
-                    } else {
-                        showError(`Error while parsing condition at line ${i+1} in "on done" of work queue code:${wq['code']}`)
-                        window.console.error("não consegui extrair de " + matchIf[1]);
-                        decisionName = "FALTA";
-                    }
+                    decisionName = matchIf[1]
+                        .replaceAll(/data.value\(["']([^"']*)["']\)/g, "$1")
+                        .replaceAll("==", "=")                     
+
                 } else if(endState){
                     // An undefined endState means that it is likely a join
                     showError(`Error while parsing "on done" condition at line ${i+1} in work queue code:${wq['code']}`)
