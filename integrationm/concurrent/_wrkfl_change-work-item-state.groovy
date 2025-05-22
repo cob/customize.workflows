@@ -1,7 +1,9 @@
+import static com.cultofbits.integrationm.service.internal.rest.SimpleResponse.json
+
 def WORK_ITEM_STATE_FIELD = "State"
 
-def workItemId = argsMap.workItemId
-def nextState = argsMap.nextState
+def workItemId = args.workItemId
+def nextState = args.nextState
 
 if (workItemId == null || nextState == null) {
     return json(400, ["errorMsg": "Missing required parameters"])
@@ -9,23 +11,23 @@ if (workItemId == null || nextState == null) {
 
 //Check Done Conditions if next state is Done
 if (nextState == "Done") {
-    def wiSearch = recordm.search("Work Item", "id.raw:${workItemId}", [size: 1]);
+    def wiGet = recordm.get(workItemId)
 
-    if (wiSearch.success() && wiSearch.getTotal() > 0) {
-        def wi = wiSearch.getHits().get(0)
+    if (wiGet.ok()) {
+        def wi = wiGet.body
 
-        def wqSearch = recordm.search("Work Queues", "id.raw:${wi.value('Work Queue')}", [size: 1]);
+        def wqGet = recordm.get(wi.value('Work Queue'));
 
-        if (wqSearch.success() && wqSearch.getTotal() > 0) {
-            def wq = wqSearch.getHits().get(0)
+        if (wqGet.ok()) {
+            def wq = wqGet.body
             def doneConditions = wq.value("Done Conditions")
             def doneConditionsErrorMsg = wq.value("Done Conditions Error Msg") ?: doneConditions
 
             if (doneConditions != null) {
-                def cdSearch = recordm.search(wi.value("Customer Data Definition"), "id.raw:${wi.value('Customer Data')}", [size: 1]);
+                def cdGet = recordm.get(wi.value('Customer Data'));
 
-                if (cdSearch.success() && cdSearch.getTotal() > 0) {
-                    def data = cdSearch.getHits().get(0)
+                if (cdGet.ok()) {
+                    def data = cdGet.body
 
                     def binding = new Binding(data: data, recordm: recordm)
                     try {
