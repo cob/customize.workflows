@@ -144,7 +144,7 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                 break
         }
 
-        recordm.update("Work Item", msg.id, wiUpdates)
+        recordm.update("Work Item", msg.id, wiUpdates, "cob-bot")
 
     } else if (msg.field('State').changed()) {
         def state = msg.value('State')
