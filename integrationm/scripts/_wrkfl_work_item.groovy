@@ -9,7 +9,7 @@ import java.math.RoundingMode
 
 @Field static workQueuesCache = CacheBuilder.newBuilder()
         .expireAfterWrite(5, TimeUnit.MINUTES)
-        .build();
+        .build()
 
 if (msg.product == "recordm" && msg.type == "Work Queues") {
     log.info("Invalidating WorkQueues cache")
@@ -22,27 +22,39 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
     def workQueue = recordm.get(msg.value("Work Queue")).getBody()
 
     if (msg.action == "add") {
-        def wiUpdate = [:]
+
+        def wiUpdates = [:]
 
         switch (workQueue.value("Agent Type")) {
             case "RPA":
-                def concurrent = workQueue.value("Concurrent")
-                log.info("The new workm item is a RPA Action {{concurrent: ${concurrent} }}")
+                executor.execute {
+                    def concurrent = workQueue.value("Concurrent")
+                    log.info("The new workm item is a RPA Action {{concurrent: ${concurrent} }}")
 
-                def actionResponse = actionPacks.imRest.post("/concurrent/${concurrent}", [id: msg.value("Customer Data")], "cob-bot")
+                    def start = System.currentTimeMillis()
+                    def actionResponse = actionPacks.imRest.post("/concurrent/${concurrent}", [id: msg.value("Customer Data")], "cob-bot")
+                    def stop = System.currentTimeMillis()
 
-                try {
-                    JSONObject responseMap = new JSONObject(actionResponse)
-                    wiUpdate = [
-                            "State"            : responseMap.getString("success") == "true" ? "Done" : "Error",
-                            "Automation Errors": responseMap.optString("message")
-                    ]
-                } catch (Exception e) {
-                    wiUpdate = [
-                            "State"            : "Error",
-                            "Automation Errors": "Internal Server Error. Error executing RPA."
-                    ]
+                    def updateMap
+
+                    try {
+                        JSONObject responseMap = new JSONObject(actionResponse)
+                        updateMap = [
+                                "State"            : responseMap.getString("success") == "true" ? "Done" : "Error",
+                                "Automation Errors": responseMap.optString("message"),
+                                "Time of Execution": getDiifHOurs(start, stop)
+                        ]
+                    } catch (Exception ignored) {
+                        updateMap = [
+                                "State"            : "Error",
+                                "Automation Errors": "Internal Server Error. Error executing RPA.",
+                                "Time of Execution": getDiifHOurs(start, stop)
+                        ]
+                    }
+
+                    recordm.update("Work Item", msg.id, updateMap, "cob-bot")
                 }
+
                 break
             case "Human":
                 def humanType = msg.value("Human Type")
@@ -53,17 +65,17 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                             def customerData = recordm.get(msg.value("Customer Data")).getBody()
                             def uriUsers = customerData.values(fieldWithUserValue)
                             if (uriUsers.size() > 0) {
-                                uriUsers.eachWithIndex { uri, idx -> wiUpdate["User[${idx}]"] = uri }
+                                uriUsers.eachWithIndex { uri, idx -> wiUpdates["User[${idx}]"] = uri }
                             }
                         }
-                        break;
+                        break
 
                     case "User":
                         def fieldWithUserUri = workQueue.value("User")
                         if (fieldWithUserUri != null) {
-                            wiUpdate << ["User": fieldWithUserUri]
+                            wiUpdates["User[0]"] = fieldWithUserUri
                         }
-                        break;
+                        break
 
                     case "Group Field":
                         def fieldWithGroupValue = workQueue.value("Group Field")
@@ -71,26 +83,25 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                             def customerData = recordm.get(msg.value("Customer Data")).getBody()
                             def group = customerData.value(fieldWithGroupValue)
                             if (group != null) {
-                                wiUpdate << ["Assigned Group": group]
+                                wiUpdates["Assigned Group"] = group
                             }
                         }
-                        break;
+                        break
 
                     case "Group":
                         def fieldWithGroupUri = workQueue.value("Group")
                         if (fieldWithGroupUri != null) {
-                            wiUpdate << ["Assigned Group": fieldWithGroupUri]
+                            wiUpdates["Assigned Group"] = fieldWithGroupUri
                         }
-                        break;
+                        break
                 }
-                break;
+
+                break
 
             case "AI":
                 log.info("TO BE DONE")
 
-                break;
-            default:
-                log.info("New human workitem created {{taskId: ${msg.id} }}")
+                break
         }
 
         //Set Visibility type
@@ -102,17 +113,17 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                     def customerData = recordm.get(msg.value("Customer Data")).getBody()
                     def uriUsers = customerData.values(fieldWithUserValue)
                     if (uriUsers.size() > 0) {
-                        uriUsers.eachWithIndex { uri, idx -> wiUpdate["Visibility User[${idx}]"] = uri }
+                        uriUsers.eachWithIndex { uri, idx -> wiUpdates["Visibility User[${idx}]"] = uri }
                     }
                 }
-                break;
+                break
 
             case "User":
                 def fieldWithUserUri = workQueue.value("Visibility User")
                 if (fieldWithUserUri != null) {
-                    wiUpdate << ["Visibility User": fieldWithUserUri]
+                    wiUpdates["Visibility User"] = fieldWithUserUri
                 }
-                break;
+                break
 
             case "Group Field":
                 def fieldWithGroupValue = workQueue.value("Visibility Group Field")
@@ -120,62 +131,65 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                     def customerData = recordm.get(msg.value("Customer Data")).getBody()
                     def group = customerData.value(fieldWithGroupValue)
                     if (group != null) {
-                        wiUpdate << ["Visibility Group": group]
+                        wiUpdates["Visibility Group"] =  group
                     }
                 }
-                break;
+                break
 
             case "Group":
                 def fieldWithGroupUri = workQueue.value("Visibility Group")
                 if (fieldWithGroupUri != null) {
-                    wiUpdate << ["Visibility Group": fieldWithGroupUri]
+                    wiUpdates["Visibility Group"] = fieldWithGroupUri
                 }
-                break;
+                break
         }
-        recordm.update("Work Item", msg.id, wiUpdate, "cob-bot")
+
+        recordm.update("Work Item", msg.id, wiUpdates, "cob-bot")
 
     } else if (msg.field('State').changed()) {
         def state = msg.value('State')
 
         def wq = getWorkQueueInstance(msg.value('Work Queue'))
 
-        //Run the relevant On XXX code pieces aonfigured on the WorkQueue (which make updates on the customer Data instance
         if (wq == null) {
             log.error("Work Item refers non-existing Work Queue {{workItemId:${msg.instance.id}, WorkQueueId:${msg.value('Work Queue')} }}")
 
         } else {
+            //Run the relevant On XXX code pieces configured on the WorkQueue (which make updates on the customer Data instance
             def code = wq.value("On " + state)
             if (code != null) {
-                log.debug("On ${state} CODE: " + code)
+                executor.execute {
+                    log.debug("On ${state} CODE: " + code)
 
-                def defName = wq.value("Specific Data")
-                def cdInstance = recordm.get(msg.value('Customer Data'))?.getBody();
+                    def defName = wq.value("Specific Data")
+                    def cdInstance = recordm.get(msg.value('Customer Data'))?.getBody()
 
-                if (cdInstance != null) {
-                    Map updates = [:]
+                    if (cdInstance != null) {
+                        Map updates = [:]
 
-                    def binding = new Binding(data: cdInstance, updates: updates, recordm: recordm)
+                        def binding = new Binding(data: cdInstance, updates: updates, recordm: recordm)
 
-                    try {
-                        new GroovyShell(binding).evaluate(code)
+                        try {
+                            new GroovyShell(binding).evaluate(code)
 
-                    } catch (Exception e) {
-                        log.error("Error evaluating code {{ 'On ${state}' code: ${code} }}", e)
-                        def previousErrors = (msg.value("Automation Errors") ? msg.value("Automation Errors") + "\n\n" : "")
-                        recordm.update("Work Item", msg.instance.id, [
-                                "State"            : "Error",
-                                "Automation Errors": previousErrors +
-                                        "Error evaluating 'On ${state}' code: ${code} \n" +
-                                        "Error: " + e.getMessage()])
-                        return
+                        } catch (Exception e) {
+                            log.error("Error evaluating code {{ 'On ${state}' code: ${code} }}", e)
+                            def previousErrors = (msg.value("Automation Errors") ? msg.value("Automation Errors") + "\n\n" : "")
+                            recordm.update("Work Item", msg.instance.id, [
+                                    "State"            : "Error",
+                                    "Automation Errors": previousErrors +
+                                            "Error evaluating 'On ${state}' code: ${code} \n" +
+                                            "Error: " + e.getMessage()])
+                            return
+                        }
+
+                        def rmOptions = [:]
+                        if (msg.user != "integrationm") {
+                            rmOptions = [runAs: msg.user, "substituting": "cob-bot"]
+                        }
+
+                        recordm.update(defName, msg.value('Customer Data'), updates, rmOptions)
                     }
-
-                    def rmOptions = [:]
-                    if (msg.user != "integrationm") {
-                        rmOptions = [runAs: msg.user, "substituting": "cob-bot"]
-                    }
-
-                    recordm.update(defName, msg.value('Customer Data'), updates, rmOptions)
                 }
             }
         }
@@ -183,7 +197,7 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
 
         //Update Workitem dates and times
         Map wiUpdates = [:]
-        def nowDateTime = msg._timestamp_;
+        def nowDateTime = msg._timestamp_
         def oldState = msg.oldInstance.value('State')
 
         def dateCreation = msg.value("Date of Creation", Long.class)
@@ -213,18 +227,20 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
             case "Pending":
                 if (!dateFirstPending) wiUpdates["Date of first Pending"] = nowDateTime
                 wiUpdates["Date of Pending"] = nowDateTime
-                break;
+                break
             case "Canceled":
                 wiUpdates["Date of Canceling"] = nowDateTime
                 wiUpdates["Time Overall"] = getDiifHOurs(dateCreation, nowDateTime)
-                break;
+                break
             case "Done":
                 wiUpdates["User of Done"] = currentUser._links.self
                 wiUpdates["Done by Assignee"] = (isUnassigned || msg.value("User") == wiUpdates["User of Done"] ? "Yes" : "No")
                 wiUpdates["Date of Done"] = nowDateTime
-                wiUpdates["Time of Execution"] = dateStart ? getDiifHOurs(dateStart, nowDateTime) : 0.01
+                wiUpdates["Time of Execution"] = dateStart
+                        ? getDiifHOurs(dateStart, nowDateTime)
+                        : (msg.value("Time of Execution") ?: 0.01)
                 wiUpdates["Time Overall"] = getDiifHOurs(dateCreation, nowDateTime)
-                break;
+                break
         }
 
         //Casos em que estou a sair do estado:
@@ -232,17 +248,17 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
             case "To Assign":
                 wiUpdates["Date of Assignment"] = nowDateTime
                 wiUpdates["Time of Assignment"] = getDiifHOurs(dateCreation, nowDateTime)
-                break;
+                break
             case "To Do":
                 //se vier de pendente já tenho esta data preenchida
                 if (!dateStart) {
                     wiUpdates["Date of Start"] = nowDateTime
                     wiUpdates["Time of Start"] = getDiifHOurs(dateCreation, nowDateTime)
                 }
-                break;
+                break
             case "Pending":
                 wiUpdates["Time of Pending"] = totalTimePendingHours + getDiifHOurs(datePending, nowDateTime)
-                break;
+                break
         }
 
         recordm.update(msg.type, msg.instance.id, wiUpdates)
@@ -261,6 +277,6 @@ def getWorkQueueInstance(wqId) {
                 { recordm.get(wqId).getBody() }
         )
     } catch (ExecutionException ignore) {
-        return null;
+        return null
     }
 }

@@ -1,7 +1,5 @@
-import com.cultofbits.integrationm.service.dictionary.recordm.RecordmSearchHit
 import com.cultofbits.customizations.workflow.WorkflowUtils
 import com.google.common.cache.CacheBuilder
-import groovy.json.internal.Cache
 import groovy.transform.Field
 
 import java.util.concurrent.TimeUnit
