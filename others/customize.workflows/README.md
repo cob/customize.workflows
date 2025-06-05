@@ -39,7 +39,7 @@ instances:read:<def_id_work_item>:
 ||
 (doc["visibility_group_name.raw"].size() > 0 && params.user.groups.contains(doc["visibility_group_name.raw"][0]))
 ||
-(doc["visibility_username.raw"].size() && doc["visibility_username.raw"].stream().anyMatch(u -> params.user.username == u))
+(doc["visibility_user_username.raw"].size() > 0 && doc["visibility_user_username.raw"].stream().anyMatch(u -> params.user.username == u))
 
 instances:update:<def_id_work_item>:
 (doc["assigned_group_name.raw"].size() > 0 && params.user.groups.contains(doc["assigned_group_name.raw"][0]))
