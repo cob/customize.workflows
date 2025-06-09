@@ -20,10 +20,15 @@ if (nextState == "Done") {
 
         if (wqGet.ok()) {
             def wq = wqGet.body
-            def doneConditions = wq.values("Done Conditions")
-            def doneConditionsErrorMsgs = wq.values("Done Conditions Error Msg") ?: doneConditions
 
-            if (doneConditions.size() > 0) {
+            def conditions = wq.fields
+                    .findAll{f -> f.fieldDefinition.name.startsWith("Condition") }
+                    .collect{ f ->
+                        [ evalCode : f.fields.find{ it.fieldDefinition.name == "Done Conditions" }.value,
+                        errorMsg : f.fields.find{ it.fieldDefinition.name == "Done Conditions Error Msg" }.value] }
+                    .findAll{ it.evalCode != null }
+
+            if (conditions.size() > 0) {
                 def cdGet = recordm.get(wi.value('Customer Data'));
 
                 if (cdGet.ok()) {
@@ -31,24 +36,24 @@ if (nextState == "Done") {
 
                     def evaluatedErrorMessages = []
 
-                    for (int i = 0; i < doneConditions.size(); i++) {
-                        def conditionCode = doneConditions[i]
+                    conditions.forEach { condition ->
+                        def conditionCode = condition.evalCode
                         def binding = new Binding(data: data, recordm: recordm)
                         try {
                             if (!new GroovyShell(binding).evaluate(conditionCode)) {
-                            evaluatedErrorMessages.add( doneConditionsErrorMsgs[i] )
+                                evaluatedErrorMessages.add( condition.errorMsg ?: conditionCode )
                             }
                         } catch (Exception e) {
-                            log.error("Error evaluating Done Conditions {{ code: ${doneConditions} }}", e)
+                            log.error("Error evaluating Done Conditions {{ code: ${conditionCode} }}", e)
 
                             def previousErrors = (wi.value("Automation Errors") ? wi.value("Automation Errors") + "\n\n" : "")
                             recordm.update("Work Item", workItemId, [
                                     "State"            : "Error",
-                                    "Automation Errors": previousErrors + "Error evaluating 'Done Conditions': ${doneConditions} \n" + "Error: " + e.getMessage()
+                                    "Automation Errors": previousErrors + "Error evaluating 'Done Conditions': ${conditionCode} \n" + "Error: " + e.getMessage()
                             ])
 
                             return json(500, [success: false,
-                                            error: "Error evaluating 'Done Conditions': ${doneConditions} "])
+                                            error: "Error evaluating 'Done Conditions': ${conditionCode} "])
                         }
                     }
 
