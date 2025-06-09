@@ -1,7 +1,7 @@
 {
   "id": null,
-  "name": "Work Queues - teste",
-  "description": "@BPO v.1.15.0",
+  "name": "Work Queues",
+  "description": "@BPO v.1.6.0 BETA",
   "duplicable": null,
   "state": "enabled",
   "fieldDefinitions": [
@@ -1290,11 +1290,11 @@
             },
             {
               "id": null,
-              "name": "Done Conditions",
+              "name": "On Done",
               "required": null,
-              "description": "$text Conditions that need to be met in order for Done to be possible",
+              "description": "$text",
               "configuration": {
-                "description": "Conditions that need to be met in order for Done to be possible",
+                "description": null,
                 "keys": {},
                 "extensions": {
                   "$text": {}
@@ -1312,45 +1312,74 @@
             },
             {
               "id": null,
-              "name": "Done Conditions Error Msg",
+              "name": "Condition | __Done Conditions Error Msg__",
               "required": null,
-              "description": "$text Friendly text to present when conditions are not met",
-              "configuration": {
-                "description": "Friendly text to present when conditions are not met",
-                "keys": {},
-                "extensions": {
-                  "$text": {}
-                }
-              },
-              "condition": null,
-              "visibilityCondition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 40,
-              "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "On Done",
-              "required": null,
-              "description": "$text",
+              "description": " $group $style[subgrupo]",
               "configuration": {
                 "description": null,
-                "keys": {},
+                "keys": {
+                  "Group": {}
+                },
                 "extensions": {
-                  "$text": {}
+                  "$style": {
+                    "args": [
+                      "subgrupo"
+                    ]
+                  }
                 }
               },
               "condition": null,
               "visibilityCondition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 41,
+              "duplicable": true,
+              "fields": [
+                {
+                  "id": null,
+                  "name": "Done Conditions",
+                  "required": null,
+                  "description": "$text Conditions that need to be met in order for Done to be possible",
+                  "configuration": {
+                    "description": "Conditions that need to be met in order for Done to be possible",
+                    "keys": {},
+                    "extensions": {
+                      "$text": {}
+                    }
+                  },
+                  "condition": null,
+                  "visibilityCondition": null,
+                  "duplicable": false,
+                  "fields": [],
+                  "order": 41,
+                  "rootField": false,
+                  "duplicablePath": true,
+                  "restricted": false,
+                  "defaultValue": null
+                },
+                {
+                  "id": null,
+                  "name": "Done Conditions Error Msg",
+                  "required": null,
+                  "description": "$text Friendly text to present when conditions are not met",
+                  "configuration": {
+                    "description": "Friendly text to present when conditions are not met",
+                    "keys": {},
+                    "extensions": {
+                      "$text": {}
+                    }
+                  },
+                  "condition": null,
+                  "visibilityCondition": null,
+                  "duplicable": false,
+                  "fields": [],
+                  "order": 42,
+                  "rootField": false,
+                  "duplicablePath": true,
+                  "restricted": false,
+                  "defaultValue": null
+                }
+              ],
+              "order": 40,
               "rootField": false,
-              "duplicablePath": false,
+              "duplicablePath": true,
               "restricted": false,
               "defaultValue": null
             },
@@ -1378,7 +1407,7 @@
               },
               "duplicable": false,
               "fields": [],
-              "order": 42,
+              "order": 43,
               "rootField": false,
               "duplicablePath": false,
               "restricted": false,
@@ -1408,7 +1437,7 @@
               },
               "duplicable": false,
               "fields": [],
-              "order": 43,
+              "order": 44,
               "rootField": false,
               "duplicablePath": false,
               "restricted": false,
@@ -1480,14 +1509,14 @@
           "visibilityCondition": null,
           "duplicable": false,
           "fields": [],
-          "order": 51,
+          "order": 46,
           "rootField": false,
           "duplicablePath": false,
           "restricted": true,
           "defaultValue": null
         }
       ],
-      "order": 50,
+      "order": 45,
       "rootField": true,
       "duplicablePath": false,
       "restricted": true,

@@ -51,6 +51,21 @@ instances:update:<def_id_work_item>:
 ### Definition Upgrades:
 
 
+#### 1.6
+
+* Work Queue
+  
+```
+NOVOS:
+(After "On Done")
+Work Specification > Possible States >  Condition | __Done Conditions Error Msg__ : $group $style[subgrupo] (Duplicable)
+
+ALTERADOS:
+(For retro-compatibility these should be MOVED, and not deleted and created again)
+Work Specification > Possible States > Condition | __Done Conditions Error Msg__ > Done Conditions 
+Work Specification > Possible States > Condition | __Done Conditions Error Msg__ > Done Conditions Error Msg
+```
+
 #### 1.5
 
 * Business Process
