@@ -20,36 +20,60 @@ if (nextState == "Done") {
 
         if (wqGet.ok()) {
             def wq = wqGet.body
-            def doneConditions = wq.value("Done Conditions")
-            def doneConditionsErrorMsg = wq.value("Done Conditions Error Msg") ?: doneConditions
 
-            if (doneConditions != null) {
+            // conditions that must be true for a work item to be completed
+            def doneConditions = wq.fields
+                    .findAll{f -> f.fieldDefinition.name.startsWith("Condition") }
+                    .collect{ f ->
+                        [ evalCode : f.fields.find{ it.fieldDefinition.name == "Done Conditions" }.value,
+                        errorMsg : f.fields.find{ it.fieldDefinition.name == "Done Conditions Error Msg" }.value] }
+                    .findAll{ it.evalCode != null }
+
+            if (doneConditions.size() > 0) {
                 def cdGet = recordm.get(wi.value('Customer Data'));
 
                 if (cdGet.ok()) {
                     def data = cdGet.body
 
-                    def binding = new Binding(data: data, recordm: recordm)
-                    try {
-                        if (!new GroovyShell(binding).evaluate(doneConditions)) {
-                            return json(406, [success: false,
-                                              error: "Done conditions returned false. <br>" +
-                                                      "<div style=\"text-wrap: balance;font-style: italic;font-size: 1.2em;padding: 5px;\">" +
-                                                      "$doneConditionsErrorMsg" +
-                                                      "</div>"])
-                        }
-                    } catch (Exception e) {
-                        log.error("Error evaluating Done Conditions {{ code: ${doneConditions} }}", e)
+                    def evaluatedErrorMessages = []
+                    def exceptionErrors = []
 
+                    for(doneCondition in doneConditions) {
+                        def conditionCode = doneCondition.evalCode
+                        def binding = new Binding(data: data, recordm: recordm)
+                        try {
+                            if (!new GroovyShell(binding).evaluate(conditionCode)) {
+                                evaluatedErrorMessages.add( doneCondition.errorMsg ?: conditionCode )
+                            }
+                        } catch (Exception e) {
+                            log.error("Error evaluating Done Conditions {{ code: ${conditionCode} }}", e)
+
+                            exceptionErrors.add([
+                                    msg: "Error evaluating 'Done Conditions': ${conditionCode} \n" + "Error: " + e.getMessage(),
+                                    code: conditionCode ])
+                        }
+                    }
+
+                    if( exceptionErrors.size() > 0 ) {
                         def previousErrors = (wi.value("Automation Errors") ? wi.value("Automation Errors") + "\n\n" : "")
                         recordm.update("Work Item", workItemId, [
                                 "State"            : "Error",
-                                "Automation Errors": previousErrors + "Error evaluating 'Done Conditions': ${doneConditions} \n" + "Error: " + e.getMessage()
+                                "Automation Errors": previousErrors + exceptionErrors.collect{ it.msg }.join("\n\n")
                         ])
 
                         return json(500, [success: false,
-                                          error: "Error evaluating 'Done Conditions': ${doneConditions} "])
+                                          error: "Error evaluating 'Done Conditions':<br> ${exceptionErrors.collect{ it.code }.join("<br>")} "])
                     }
+
+
+                    if( evaluatedErrorMessages.size() > 0) {
+                        
+                        return json(406, [success: false, error: 
+                            "Done conditions returned false. <br>" +
+                            "<div style=\"text-wrap: balance;font-style: italic;font-size: 1.2em;padding: 5px;\">" +
+                            evaluatedErrorMessages.join(' <br><br> ') +
+                            "</div>"])
+                    }            
                 }
             }
         }

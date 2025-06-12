@@ -1,7 +1,7 @@
 {
   "id": null,
-  "name": "Work Queues - teste",
-  "description": "@BPO v.1.15.0",
+  "name": "Work Queues",
+  "description": "@BPO v.1.6.0 BETA",
   "duplicable": null,
   "state": "enabled",
   "fieldDefinitions": [
@@ -112,16 +112,16 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "Reference": {
-                    "args": {
-                      "query": "*",
-                      "definition": "Business Processes"
-                    }
-                  },
                   "AutoRefField": {
                     "args": {
                       "source_field": "Business Process",
                       "field_name": "Level 1"
+                    }
+                  },
+                  "Reference": {
+                    "args": {
+                      "query": "*",
+                      "definition": "Business Processes"
                     }
                   }
                 },
@@ -145,16 +145,16 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "Reference": {
-                    "args": {
-                      "query": "*",
-                      "definition": "Business Processes"
-                    }
-                  },
                   "AutoRefField": {
                     "args": {
                       "source_field": "Business Process",
                       "field_name": "Level 2"
+                    }
+                  },
+                  "Reference": {
+                    "args": {
+                      "query": "*",
+                      "definition": "Business Processes"
                     }
                   }
                 },
@@ -178,16 +178,16 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "Reference": {
-                    "args": {
-                      "query": "*",
-                      "definition": "Business Processes"
-                    }
-                  },
                   "AutoRefField": {
                     "args": {
                       "source_field": "Business Process",
                       "field_name": "Level 3"
+                    }
+                  },
+                  "Reference": {
+                    "args": {
+                      "query": "*",
+                      "definition": "Business Processes"
                     }
                   }
                 },
@@ -211,16 +211,16 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "Reference": {
-                    "args": {
-                      "query": "*",
-                      "definition": "Business Processes"
-                    }
-                  },
                   "AutoRefField": {
                     "args": {
                       "source_field": "Business Process",
                       "field_name": "Level 4"
+                    }
+                  },
+                  "Reference": {
+                    "args": {
+                      "query": "*",
+                      "definition": "Business Processes"
                     }
                   }
                 },
@@ -244,16 +244,16 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "Reference": {
-                    "args": {
-                      "query": "*",
-                      "definition": "Business Processes"
-                    }
-                  },
                   "AutoRefField": {
                     "args": {
                       "source_field": "Business Process",
                       "field_name": "Level 5"
+                    }
+                  },
+                  "Reference": {
+                    "args": {
+                      "query": "*",
+                      "definition": "Business Processes"
                     }
                   }
                 },
@@ -399,10 +399,10 @@
       "configuration": {
         "description": null,
         "keys": {
+          "Group": {},
           "Expanded": {
             "args": {}
-          },
-          "Group": {}
+          }
         },
         "extensions": {
           "$style": {
@@ -503,7 +503,6 @@
           "configuration": {
             "description": null,
             "keys": {
-              "InstanceDescription": {},
               "Select": {
                 "args": [
                   "Human",
@@ -515,7 +514,8 @@
               },
               "Expanded": {
                 "args": {}
-              }
+              },
+              "InstanceDescription": {}
             },
             "extensions": {
               "$style": {
@@ -548,9 +548,6 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "Expanded": {
-                    "args": {}
-                  },
                   "Select": {
                     "args": [
                       "Group",
@@ -559,6 +556,9 @@
                       "User Field"
                     ],
                     "default": "Group"
+                  },
+                  "Expanded": {
+                    "args": {}
                   }
                 },
                 "extensions": {
@@ -978,9 +978,6 @@
           "configuration": {
             "description": null,
             "keys": {
-              "Expanded": {
-                "args": {}
-              },
               "Select": {
                 "args": [
                   "Group",
@@ -989,6 +986,9 @@
                   "User Field"
                 ],
                 "default": null
+              },
+              "Expanded": {
+                "args": {}
               }
             },
             "extensions": {
@@ -1235,7 +1235,6 @@
           "configuration": {
             "description": null,
             "keys": {
-              "Multiple": {},
               "Select": {
                 "args": [
                   "To Assign",
@@ -1248,6 +1247,7 @@
                 ],
                 "default": null
               },
+              "Multiple": {},
               "Expanded": {
                 "args": {}
               }
@@ -1290,45 +1290,71 @@
             },
             {
               "id": null,
-              "name": "Done Conditions",
+              "name": "Condition",
               "required": null,
-              "description": "$text Conditions that need to be met in order for Done to be possible",
+              "description": " $group $expanded",
               "configuration": {
-                "description": "Conditions that need to be met in order for Done to be possible",
-                "keys": {},
-                "extensions": {
-                  "$text": {}
-                }
+                "description": null,
+                "keys": {
+                  "Group": {},
+                  "Expanded": {
+                    "args": {}
+                  }
+                },
+                "extensions": {}
               },
               "condition": null,
               "visibilityCondition": null,
-              "duplicable": false,
-              "fields": [],
+              "duplicable": true,
+              "fields": [
+                {
+                  "id": null,
+                  "name": "Done Conditions",
+                  "required": null,
+                  "description": "$text Conditions that need to be met in order for Done to be possible",
+                  "configuration": {
+                    "description": "Conditions that need to be met in order for Done to be possible",
+                    "keys": {},
+                    "extensions": {
+                      "$text": {}
+                    }
+                  },
+                  "condition": null,
+                  "visibilityCondition": null,
+                  "duplicable": false,
+                  "fields": [],
+                  "order": 40,
+                  "rootField": false,
+                  "duplicablePath": true,
+                  "restricted": false,
+                  "defaultValue": null
+                },
+                {
+                  "id": null,
+                  "name": "Done Conditions Error Msg",
+                  "required": null,
+                  "description": "$text Friendly text to present when conditions are not met",
+                  "configuration": {
+                    "description": "Friendly text to present when conditions are not met",
+                    "keys": {},
+                    "extensions": {
+                      "$text": {}
+                    }
+                  },
+                  "condition": null,
+                  "visibilityCondition": null,
+                  "duplicable": false,
+                  "fields": [],
+                  "order": 41,
+                  "rootField": false,
+                  "duplicablePath": true,
+                  "restricted": false,
+                  "defaultValue": null
+                }
+              ],
               "order": 39,
               "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Done Conditions Error Msg",
-              "required": null,
-              "description": "$text Friendly text to present when conditions are not met",
-              "configuration": {
-                "description": "Friendly text to present when conditions are not met",
-                "keys": {},
-                "extensions": {
-                  "$text": {}
-                }
-              },
-              "condition": null,
-              "visibilityCondition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 40,
-              "rootField": false,
-              "duplicablePath": false,
+              "duplicablePath": true,
               "restricted": false,
               "defaultValue": null
             },
@@ -1348,7 +1374,7 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 41,
+              "order": 42,
               "rootField": false,
               "duplicablePath": false,
               "restricted": false,
@@ -1378,7 +1404,7 @@
               },
               "duplicable": false,
               "fields": [],
-              "order": 42,
+              "order": 43,
               "rootField": false,
               "duplicablePath": false,
               "restricted": false,
@@ -1408,7 +1434,7 @@
               },
               "duplicable": false,
               "fields": [],
-              "order": 43,
+              "order": 44,
               "rootField": false,
               "duplicablePath": false,
               "restricted": false,
@@ -1480,14 +1506,14 @@
           "visibilityCondition": null,
           "duplicable": false,
           "fields": [],
-          "order": 51,
+          "order": 46,
           "rootField": false,
           "duplicablePath": false,
           "restricted": true,
           "defaultValue": null
         }
       ],
-      "order": 50,
+      "order": 45,
       "rootField": true,
       "duplicablePath": false,
       "restricted": true,

@@ -51,6 +51,21 @@ instances:update:<def_id_work_item>:
 ### Definition Upgrades:
 
 
+#### 1.6
+
+* Work Queue
+  
+```
+NOVOS:
+(Placed in the current position of "Done Conditions" - between "Launch Condition" and "On Done")
+Work Specification > Possible States >  Condition : $group $expanded (Duplicable)
+
+ALTERADOS:
+(For retro-compatibility these should be MOVED, and not deleted and created again)
+Work Specification > Possible States > Condition > Done Conditions : $text Conditions that need to be met in order for Done to be possible
+Work Specification > Possible States > Condition > Done Conditions Error Msg : $text Friendly text to present when conditions are not met
+```
+
 #### 1.5
 
 * Business Process
