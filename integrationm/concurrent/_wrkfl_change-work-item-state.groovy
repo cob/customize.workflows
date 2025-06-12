@@ -36,8 +36,9 @@ if (nextState == "Done") {
                     def data = cdGet.body
 
                     def evaluatedErrorMessages = []
+                    def exceptionErrors = []
 
-                    doneConditions.forEach { doneCondition ->
+                    for(doneCondition in doneConditions) {
                         def conditionCode = doneCondition.evalCode
                         def binding = new Binding(data: data, recordm: recordm)
                         try {
@@ -47,15 +48,21 @@ if (nextState == "Done") {
                         } catch (Exception e) {
                             log.error("Error evaluating Done Conditions {{ code: ${conditionCode} }}", e)
 
-                            def previousErrors = (wi.value("Automation Errors") ? wi.value("Automation Errors") + "\n\n" : "")
-                            recordm.update("Work Item", workItemId, [
-                                    "State"            : "Error",
-                                    "Automation Errors": previousErrors + "Error evaluating 'Done Conditions': ${conditionCode} \n" + "Error: " + e.getMessage()
-                            ])
-
-                            return json(500, [success: false,
-                                            error: "Error evaluating 'Done Conditions': ${conditionCode} "])
+                            exceptionErrors.add([
+                                    msg: "Error evaluating 'Done Conditions': ${conditionCode} \n" + "Error: " + e.getMessage(),
+                                    code: conditionCode ])
                         }
+                    }
+
+                    if( exceptionErrors.size() > 0 ) {
+                        def previousErrors = (wi.value("Automation Errors") ? wi.value("Automation Errors") + "\n\n" : "")
+                        recordm.update("Work Item", workItemId, [
+                                "State"            : "Error",
+                                "Automation Errors": previousErrors + exceptionErrors.collect{ it.msg }.join("\n\n")
+                        ])
+
+                        return json(500, [success: false,
+                                          error: "Error evaluating 'Done Conditions':<br> ${exceptionErrors.collect{ it.code }.join("<br>")} "])
                     }
 
 
