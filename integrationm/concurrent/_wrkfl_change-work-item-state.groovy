@@ -21,14 +21,15 @@ if (nextState == "Done") {
         if (wqGet.ok()) {
             def wq = wqGet.body
 
-            def conditions = wq.fields
+            // conditions that must be true for a work item to be completed
+            def doneConditions = wq.fields
                     .findAll{f -> f.fieldDefinition.name.startsWith("Condition") }
                     .collect{ f ->
                         [ evalCode : f.fields.find{ it.fieldDefinition.name == "Done Conditions" }.value,
                         errorMsg : f.fields.find{ it.fieldDefinition.name == "Done Conditions Error Msg" }.value] }
                     .findAll{ it.evalCode != null }
 
-            if (conditions.size() > 0) {
+            if (doneConditions.size() > 0) {
                 def cdGet = recordm.get(wi.value('Customer Data'));
 
                 if (cdGet.ok()) {
@@ -36,12 +37,12 @@ if (nextState == "Done") {
 
                     def evaluatedErrorMessages = []
 
-                    conditions.forEach { condition ->
-                        def conditionCode = condition.evalCode
+                    doneConditions.forEach { doneCondition ->
+                        def conditionCode = doneCondition.evalCode
                         def binding = new Binding(data: data, recordm: recordm)
                         try {
                             if (!new GroovyShell(binding).evaluate(conditionCode)) {
-                                evaluatedErrorMessages.add( condition.errorMsg ?: conditionCode )
+                                evaluatedErrorMessages.add( doneCondition.errorMsg ?: conditionCode )
                             }
                         } catch (Exception e) {
                             log.error("Error evaluating Done Conditions {{ code: ${conditionCode} }}", e)
