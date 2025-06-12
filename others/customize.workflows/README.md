@@ -58,12 +58,12 @@ instances:update:<def_id_work_item>:
 ```
 NOVOS:
 (After "On Done")
-Work Specification > Possible States >  Condition | __Done Conditions Error Msg__ : $group $style[subgrupo] (Duplicable)
+Work Specification > Possible States >  Condition : $group $style[subgrupo] (Duplicable)
 
 ALTERADOS:
 (For retro-compatibility these should be MOVED, and not deleted and created again)
-Work Specification > Possible States > Condition | __Done Conditions Error Msg__ > Done Conditions 
-Work Specification > Possible States > Condition | __Done Conditions Error Msg__ > Done Conditions Error Msg
+Work Specification > Possible States > Condition > Done Conditions 
+Work Specification > Possible States > Condition > Done Conditions Error Msg
 ```
 
 #### 1.5
