@@ -373,6 +373,10 @@ cob.custom.customize.push(async function(core, utils, ui) {
 
         const taskList = document.querySelector(`.js-task-list-${fieldId}-${instance.getId()}`)
 
+        if(!taskList) {
+            return 
+        }
+
         wis.forEach(wi => {
             const workQueueStates = wi._source["#_work_queue_states"]
 
