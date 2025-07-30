@@ -41,8 +41,9 @@ if (nextState == "Done") {
                     for(doneCondition in doneConditions) {
                         def conditionCode = doneCondition.evalCode
                         def binding = new Binding(data: data, recordm: recordm)
+                        def classLoader = this.class.classLoader
                         try {
-                            if (!new GroovyShell(binding).evaluate(conditionCode)) {
+                            if (!new GroovyShell(classLoader, binding).evaluate(conditionCode)) {
                                 evaluatedErrorMessages.add( doneCondition.errorMsg ?: conditionCode )
                             }
                         } catch (Exception e) {
