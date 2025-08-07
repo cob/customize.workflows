@@ -1,5 +1,5 @@
 import org.codehaus.jettison.json.JSONObject
-import com.google.common.cache.*
+import com.google.common.cache.CacheBuilder
 
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
@@ -14,12 +14,13 @@ import java.math.RoundingMode
 if (msg.product == "recordm" && msg.type == "Work Queues") {
     log.info("Invalidating WorkQueues cache")
     workQueuesCache.invalidateAll()
+    return
 }
 
 
 if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete") {
 
-    def workQueue = recordm.get(msg.value("Work Queue")).getBody()
+    def workQueue = getWorkQueueInstance(msg.value('Work Queue'))
 
     if (msg.action == "add") {
 
