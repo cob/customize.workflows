@@ -28,35 +28,40 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
 
         switch (workQueue.value("Agent Type")) {
             case "RPA":
-                executor.execute {
-                    def concurrent = workQueue.value("Concurrent")
+                def updateMap = [:]
+
+                def concurrent = workQueue.value("Concurrent")
+                if (concurrent != null) {
                     log.info("The new workm item is a RPA Action {{concurrent: ${concurrent} }}")
 
-                    def start = System.currentTimeMillis()
-                    def actionResponse = actionPacks.imRest.post("/concurrent/${concurrent}", [id: msg.value("Customer Data")], "cob-bot")
-                    def stop = System.currentTimeMillis()
-
-                    def updateMap
+                    def actionResponse = actionPacks.imRest.post(
+                            "/concurrent/${concurrent}",
+                            [id: msg.value("Customer Data")],
+                            "cob-bot"
+                    )
 
                     try {
                         JSONObject responseMap = new JSONObject(actionResponse)
                         updateMap = [
                                 "State"            : responseMap.getString("success") == "true" ? "Done" : "Error",
-                                "Automation Errors": responseMap.optString("message"),
-                                "Time of Execution": getDiifHOurs(start, stop)
+                                "Automation Errors": responseMap.optString("message")
                         ]
-                    } catch (Exception ignored) {
+                    } catch (Exception e) {
                         updateMap = [
                                 "State"            : "Error",
-                                "Automation Errors": "Internal Server Error. Error executing RPA.",
-                                "Time of Execution": getDiifHOurs(start, stop)
+                                "Automation Errors": "Internal Server Error. Error executing RPA."
                         ]
                     }
-
-                    recordm.update("Work Item", msg.id, updateMap, "cob-bot")
+                } else {
+                    updateMap = [
+                            "State"            : "Done",
+                            "Automation Errors": ""
+                    ]
                 }
 
-                break
+                recordm.update("Work Item", msg.id, updateMap, "cob-bot")
+                return
+
             case "Human":
                 def humanType = msg.value("Human Type")
                 switch (humanType) {
@@ -132,7 +137,7 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                     def customerData = recordm.get(msg.value("Customer Data")).getBody()
                     def group = customerData.value(fieldWithGroupValue)
                     if (group != null) {
-                        wiUpdates["Visibility Group"] =  group
+                        wiUpdates["Visibility Group"] = group
                     }
                 }
                 break
