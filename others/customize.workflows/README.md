@@ -4,6 +4,18 @@
 
 `cob-cli customize workflow`
 
+---
+
+## Warning
+
+Up until version 1.5.0, this customization imported axios and make it globally available to all JS customizations in the machine. The way this dependency is imported has been changed, so when updating workflows on older machines, we recommend
+loading the axios dependency inside a `cob.custom.customize.push` with the following snippet:
+```
+utils.loadScript("localresource/js/lib/axios.min.js", function() {});
+```
+
+---
+
 ## Setup:
 
 ### IntegrationM
