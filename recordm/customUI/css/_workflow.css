@@ -28,3 +28,20 @@ div[class^='js-task-list'] {
   /* md */ @container (min-width: 800px)  { grid-template-columns: repeat(3, minmax(0, 1fr));  }
   /* lg */ @container (min-width: 1024px) { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
+
+.bpo-def-modal .info-dialog-body {
+  max-height: 600px !important;
+}
+
+.bpo-def-modal  {
+  width: 50% !important;
+  transform: translate(-25%, -50%);
+}
+
+#mermaid .custom-mermaid-block.node rect {
+  fill: unset
+}
+
+#mermaid .custom-mermaid-block.node span {
+  color: unset
+}
