@@ -102,14 +102,14 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
     for(const [i, state] of states.entries()) {
         const idx = toStateId(i)
 
-        diagram.push({ type: 'state', v: `${idx} : ${state}`, id: idx });
+        diagram.push({ type: 'state', v: `${idx} : ${state}`, id: idx, name: state });
         const stateColor = statesColors?.find(c => c.state == state) || "none";
 
         if(activeState && state == activeState)
             diagram.push({ type: 'stateColor', v: `class ${idx} Highlighted `})
         
         if (stateColor ) 
-            diagram.push({ type: 'stateColor', v: `class ${idx} ${stateColor.color}` });
+            diagram.push({ type: 'stateColor', v: `class ${idx} ${stateColor.color} custom-mermaid-block` });
 
     };
 
@@ -149,9 +149,13 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
 
         const startState = launchMatches[1]
 
-        const startStateIdx = states.findIndex(s => s == startState);
-        if (startStateIdx < 0) 
-            showError(`Cannot find state "${startState}", in "launch" condition of work queue code:${wq['code']}`)
+        let startStateIdx = states.findIndex(s => s == startState);
+        if (startStateIdx < 0) {
+            states.push( startState )            
+            startStateIdx = states.length - 1
+            const diagramID = toStateId(startStateIdx)
+            diagram.push({ type: 'state', v: `${diagramID} : ${startState}`, id: diagramID,  name: startState});
+        }
         
         // identificar estado final
         const mudaEstadoRE = new RegExp(`^updates\\[["']${stateField}["']\\]\\s*=\\s*["']([^"']+)["']`);
@@ -199,8 +203,12 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
             }
 
             let endStateIdx = states.findIndex(s => s == endState);
-            if (endStateIdx < 0 && endState) 
-                showError(`Cannot find state "${endState}", in on done condition of work queue code:${wq['code']}`)
+            if (endStateIdx < 0 && endState) {
+                states.push(endState)
+                endStateIdx = states.length - 1
+                const diagramID = toStateId(endStateIdx)
+                diagram.push({ type: 'state', v: `${diagramID} : ${endState}`, id: diagramID,  name: endState });
+            }
 
             if (startStateIdx >= 0 && endStateIdx >= 0) {
                 if (eDecisao) {
@@ -342,5 +350,14 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
     
     const defId = (await axios.get(`/recordm/recordm/definitions/search?def=Work Item&size=1&q=*`)).data.hits.hits[0]._source.definitionId
     merElem.querySelectorAll("a").forEach( elem => elem.id in queueData ? elem.href = `/#/definitions/${defId}/q=${queueData[elem.id].query}` : "")
+    
+    const usedStateNames = diagram.filter(l => l.type == "state").filter(s => diagram.find(l => s.id == l.to || s.id == l.from)).map(l => l.name) ?? []
+    const unusedStateNames = diagram.filter(l => l.type == "state").filter(s => diagram.find(l => s.id == l.to || s.id == l.from) == undefined).map(l => l.name) ?? []
+    const colors = statesColors?.reduce( (p, curr) => { p[curr.state] = curr.color; return p }, {}) ?? {}
+    return {
+        usedStateNames,
+        unusedStateNames,
+        colors
+    }
 
 }
