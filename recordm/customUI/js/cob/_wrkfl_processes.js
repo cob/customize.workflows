@@ -11,6 +11,28 @@ const toText = (classes) => {
     }
 }
 
+export const CLASS_OPTIONS= [
+                "BgRed",
+                "BgGreen",
+                "BgBlue",
+                "BgOrange",
+                "BgGray",
+                "BgDimRed",
+                "BgDimGreen",
+                "BgDimBlue",
+                "BgDimOrange",
+                "BgDimGray",
+                "DimGreen",
+                "DimRed",
+                "DimOrange",
+                "DimGray",
+                "Red",
+                "Green",
+                "Blue",
+                "Orange",
+                "Gray"
+            ]
+
 export default function embedMermaid(bpid, stateDef, stateField, targetElement,
     {activeState = undefined, linkClasses ='ml-3.5', mermaidClasses='!ml-3.5', errorClasses="text-red-900 ml-3.5", linkToBP = true} = {}) {
         const showError = (message) => targetElement.append(`<div class="${toText(errorClasses)}">${message}</div>`)
@@ -108,8 +130,11 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
         if(activeState && state == activeState)
             diagram.push({ type: 'stateColor', v: `class ${idx} Highlighted `})
         
+        const isCustomColor = !CLASS_OPTIONS.includes(stateColor)
+        const customFlag = isCustomColor ? 'custom-mermaid-block' : ''
+
         if (stateColor ) 
-            diagram.push({ type: 'stateColor', v: `class ${idx} ${stateColor.color} custom-mermaid-block` });
+            diagram.push({ type: 'stateColor', v: `class ${idx} ${stateColor.color} ${customFlag}` });
 
     };
 

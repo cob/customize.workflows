@@ -1,4 +1,6 @@
 import embedMermaid from "./_wrkfl_processes.js"
+import { CLASS_OPTIONS } from "./_wrkfl_processes.js"
+
 window.embedMermaid = embedMermaid
 
 cob.custom.customize.push(async function (core, utils, ui) {
@@ -16,27 +18,6 @@ cob.custom.customize.push(async function (core, utils, ui) {
         </div>
     `
 
-    const CLASS_OPTIONS= [
-                "BgRed",
-                "BgGreen",
-                "BgBlue",
-                "BgOrange",
-                "BgGray",
-                "BgDimRed",
-                "BgDimGreen",
-                "BgDimBlue",
-                "BgDimOrange",
-                "BgDimGray",
-                "DimGreen",
-                "DimRed",
-                "DimOrange",
-                "DimGray",
-                "Red",
-                "Green",
-                "Blue",
-                "Orange",
-                "Gray"
-            ]
 
     function stateSelect(stateName, defaultClass) {
 
