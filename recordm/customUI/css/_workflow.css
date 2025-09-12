@@ -23,8 +23,8 @@
 } */
 
 div[class^='js-task-list'] {
-  /* xs */ @container (min-width: 512px)  { grid-template-columns: repeat(1, minmax(0, 1fr));  } 
-  /* sm */ @container (min-width: 640px)  { grid-template-columns: repeat(2, minmax(0, 1fr));  }  
+  /* xs */ @container (min-width: 512px)  { grid-template-columns: repeat(1, minmax(0, 1fr));  }
+  /* sm */ @container (min-width: 640px)  { grid-template-columns: repeat(2, minmax(0, 1fr));  }
   /* md */ @container (min-width: 800px)  { grid-template-columns: repeat(3, minmax(0, 1fr));  }
   /* lg */ @container (min-width: 1024px) { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
@@ -40,8 +40,4 @@ div[class^='js-task-list'] {
 
 #mermaid .custom-mermaid-block.node rect {
   fill: unset
-}
-
-#mermaid .custom-mermaid-block.node span {
-  color: unset
 }
