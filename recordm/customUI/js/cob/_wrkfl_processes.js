@@ -130,7 +130,7 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
         if(activeState && state == activeState)
             diagram.push({ type: 'stateColor', v: `class ${idx} Highlighted `})
         
-        const isCustomColor = !CLASS_OPTIONS.includes(stateColor)
+        const isCustomColor = !CLASS_OPTIONS.includes(stateColor.color)
         const customFlag = isCustomColor ? 'custom-mermaid-block' : ''
 
         if (stateColor ) 
