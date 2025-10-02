@@ -5,6 +5,8 @@ window.embedMermaid = embedMermaid
 
 cob.custom.customize.push(async function (core, utils, ui) {
 
+    utils.loadScript("localresource/js/lib/axios.min.js", function() {});
+
     const DEFINITION = "Business Processes";
 
     const COLOR_SELECTOR = `

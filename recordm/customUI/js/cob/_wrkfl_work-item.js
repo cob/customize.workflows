@@ -1,6 +1,7 @@
-import axios from "https://cdn.jsdelivr.net/npm/axios@1.1.2/+esm"
 
 cob.custom.customize.push(async function(core, utils, ui) {
+
+    utils.loadScript("localresource/js/lib/axios.min.js", function() {});
 
     const DEFINITION = "Work Item";
     const WI_WORK_QUEUE_FIELD = "Work Queue";

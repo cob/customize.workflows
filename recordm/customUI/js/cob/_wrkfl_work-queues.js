@@ -1,6 +1,14 @@
-import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10.5.0/+esm";
 
-mermaid.initialize({ startOnLoad: false });
+let mermaid = null;
+
+(async () => {
+  try {
+    const module = await import("https://cdn.jsdelivr.net/npm/mermaid@10.5.0/+esm");
+    mermaid = module.default; // mermaid is usually exported as default
+  } catch (err) {
+    console.warn("Mermaid failed to load, continuing without it.", err);
+  }
+})();
 
 cob.custom.customize.push(async function(core, utils, ui) {
 
@@ -45,22 +53,28 @@ cob.custom.customize.push(async function(core, utils, ui) {
         `;
 
   async function updateMermaid(states) {
-    const impossibleStates = STATES_DEFINITION.filter(s => states.indexOf(s.label) === -1)
-        .map(s => s.number);
-
-    const actualProcess = FULL_PROCESS.split("\n")
-        .filter(l => impossibleStates.every(i => l.indexOf(" " + i) === -1))
-        .join("\n");
-
-    const { svg } = await mermaid.render("mermaid-container", actualProcess);
-    document.getElementById("diagram-container").innerHTML = svg;
+    if(mermaid) {
+      const impossibleStates = STATES_DEFINITION.filter(s => states.indexOf(s.label) === -1)
+      .map(s => s.number);
+      
+      const actualProcess = FULL_PROCESS.split("\n")
+      .filter(l => impossibleStates.every(i => l.indexOf(" " + i) === -1))
+      .join("\n");
+      
+      const { svg } = await mermaid.render("mermaid-container", actualProcess);
+      document.getElementById("diagram-container").innerHTML = svg;
+    }
   }
 
   core.customizeInstances(DEFINITION, async (instance, presenter) => {
+    mermaid?.initialize({ startOnLoad: false });
+
     const workQueueStateFP = presenter.findFieldPs(fp => fp.field.fieldDefinition.name === WQ_STATES_FIELD)?.[0];
 
     workQueueStateFP.content().find("input[type=checkbox]").on("change", function() {
-      updateMermaid(workQueueStateFP.getValue().split("\u0000"));
+      if(workQueueStateFP.getValue()) {
+        updateMermaid(workQueueStateFP.getValue().split("\u0000"));
+      }
     });
 
     let lastSimbling = workQueueStateFP.content().find(".radiogroup");

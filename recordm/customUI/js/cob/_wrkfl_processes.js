@@ -1,5 +1,14 @@
-import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.5.0/+esm'
-import axios from 'https://cdn.jsdelivr.net/npm/axios@1.1.2/+esm'
+
+let mermaid = null;
+
+(async () => {
+  try {
+    const module = await import("https://cdn.jsdelivr.net/npm/mermaid@10.5.0/+esm");
+    mermaid = module.default; // mermaid is usually exported as default
+  } catch (err) {
+    console.warn("Mermaid failed to load, continuing without it.", err);
+  }
+})();
 
 const toText = (classes) => {
     if (Array.isArray(classes)){
@@ -38,7 +47,11 @@ export default function embedMermaid(bpid, stateDef, stateField, targetElement,
         const showError = (message) => targetElement.append(`<div class="${toText(errorClasses)}">${message}</div>`)
 
     try {
-        return catchAll(bpid, stateDef, stateField, targetElement, activeState, showError, linkClasses, mermaidClasses, linkToBP)
+        if(mermaid) {
+            return catchAll(bpid, stateDef, stateField, targetElement, activeState, showError, linkClasses, mermaidClasses, linkToBP)
+        } else {
+            showError("Mermaid not loaded")
+        }
     } catch (e) {
         showError("Something went wrong")
         showError(e)
