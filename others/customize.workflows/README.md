@@ -62,6 +62,14 @@ instances:update:<def_id_work_item>:
 
 ### Definition Upgrades:
 
+#### 1.12
+
+* Work Queue
+  
+```
+NOVOS:
+Execution Info > Execution Output : $text
+```
 
 #### 1.6
 
