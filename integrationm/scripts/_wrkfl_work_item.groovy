@@ -169,11 +169,12 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
 
                     def defName = wq.value("Specific Data")
                     def cdInstance = recordm.get(msg.value('Customer Data'))?.getBody()
+                    def wiUpdates = [output: '']
 
                     if (cdInstance != null) {
                         Map updates = [:]
 
-                        def binding = new Binding(data: cdInstance, updates: updates, recordm: recordm)
+                        def binding = new Binding(data: cdInstance, updates: updates, recordm: recordm, wi: wiUpdates )
 
                         try {
                             new GroovyShell(binding).evaluate(code)
@@ -195,6 +196,9 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                         }
 
                         recordm.update(defName, msg.value('Customer Data'), updates, rmOptions)
+                        if(wiUpdates.output != '') {
+                            recordm.update('Work Item', msg.id, ['Execution Output' : wiUpdates.output] , rmOptions)
+                        }
                     }
                 }
             }
