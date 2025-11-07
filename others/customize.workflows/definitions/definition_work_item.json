@@ -1,7 +1,7 @@
 {
   "id": null,
   "name": "Work Item",
-  "description": "@BPO v.1.5",
+  "description": "@BPO v.1.5.0",
   "duplicable": null,
   "state": "enabled",
   "fieldDefinitions": [
@@ -13,12 +13,12 @@
       "configuration": {
         "description": null,
         "keys": {
+          "Group": {},
           "Expanded": {
             "args": {
               "condition": "id!=-1"
             }
-          },
-          "Group": {}
+          }
         },
         "extensions": {
           "$style": {
@@ -41,16 +41,16 @@
           "configuration": {
             "description": null,
             "keys": {
-              "EditForGroup": {
-                "args": [
-                  "System"
-                ]
-              },
               "AutoRefField": {
                 "args": {
                   "source_field": "Customer Data",
                   "field_name": "definitionName"
                 }
+              },
+              "EditForGroup": {
+                "args": [
+                  "System"
+                ]
               }
             },
             "extensions": {
@@ -67,8 +67,8 @@
           "fields": [],
           "order": 1,
           "rootField": false,
-          "duplicablePath": false,
           "restricted": false,
+          "duplicablePath": false,
           "defaultValue": null
         },
         {
@@ -79,17 +79,17 @@
           "configuration": {
             "description": null,
             "keys": {
-              "InstanceDescription": {},
-              "EditForGroup": {
-                "args": [
-                  "System"
-                ]
-              },
               "Reference": {
                 "args": {
                   "query": "*",
                   "definition": "Work Queues"
                 }
+              },
+              "InstanceDescription": {},
+              "EditForGroup": {
+                "args": [
+                  "System"
+                ]
               }
             },
             "extensions": {
@@ -111,8 +111,8 @@
           "fields": [],
           "order": 2,
           "rootField": false,
-          "duplicablePath": false,
           "restricted": false,
+          "duplicablePath": false,
           "defaultValue": null
         },
         {
@@ -154,8 +154,8 @@
           "fields": [],
           "order": 3,
           "rootField": false,
-          "duplicablePath": false,
           "restricted": false,
+          "duplicablePath": false,
           "defaultValue": null
         },
         {
@@ -166,7 +166,6 @@
           "configuration": {
             "description": null,
             "keys": {
-              "InstanceDescription": {},
               "Select": {
                 "args": [
                   "To Assign",
@@ -178,7 +177,8 @@
                   "Canceled"
                 ],
                 "default": null
-              }
+              },
+              "InstanceDescription": {}
             },
             "extensions": {
               "$groupEdit": {},
@@ -201,8 +201,8 @@
           "fields": [],
           "order": 4,
           "rootField": false,
-          "duplicablePath": false,
           "restricted": false,
+          "duplicablePath": false,
           "defaultValue": null
         },
         {
@@ -213,17 +213,17 @@
           "configuration": {
             "description": null,
             "keys": {
-              "InstanceDescription": {},
-              "EditForGroup": {
-                "args": [
-                  "System"
-                ]
-              },
               "ExternalReference": {
                 "args": {
                   "product": "userm",
                   "query": "/userm/user/search?q={{this}}*"
                 }
+              },
+              "InstanceDescription": {},
+              "EditForGroup": {
+                "args": [
+                  "System"
+                ]
               }
             },
             "extensions": {
@@ -262,15 +262,15 @@
               "fields": [],
               "order": 6,
               "rootField": false,
-              "duplicablePath": true,
               "restricted": false,
+              "duplicablePath": true,
               "defaultValue": null
             }
           ],
           "order": 5,
           "rootField": false,
-          "duplicablePath": true,
           "restricted": false,
+          "duplicablePath": true,
           "defaultValue": null
         },
         {
@@ -281,16 +281,16 @@
           "configuration": {
             "description": null,
             "keys": {
+              "EditForGroup": {
+                "args": [
+                  "System"
+                ]
+              },
               "ExternalReference": {
                 "args": {
                   "product": "userm",
                   "query": "/userm/group/search?q={{this}}"
                 }
-              },
-              "EditForGroup": {
-                "args": [
-                  "System"
-                ]
               }
             },
             "extensions": {}
@@ -322,15 +322,15 @@
               "fields": [],
               "order": 8,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             }
           ],
           "order": 7,
           "rootField": false,
-          "duplicablePath": false,
           "restricted": false,
+          "duplicablePath": false,
           "defaultValue": null
         },
         {
@@ -341,16 +341,16 @@
           "configuration": {
             "description": null,
             "keys": {
+              "EditForGroup": {
+                "args": [
+                  "System"
+                ]
+              },
               "ExternalReference": {
                 "args": {
                   "product": "userm",
                   "query": "/userm/user/search?q={{this}}*"
                 }
-              },
-              "EditForGroup": {
-                "args": [
-                  "System"
-                ]
               }
             },
             "extensions": {
@@ -384,15 +384,15 @@
               "fields": [],
               "order": 10,
               "rootField": false,
-              "duplicablePath": true,
               "restricted": false,
+              "duplicablePath": true,
               "defaultValue": null
             }
           ],
           "order": 9,
           "rootField": false,
-          "duplicablePath": true,
           "restricted": false,
+          "duplicablePath": true,
           "defaultValue": null
         },
         {
@@ -403,16 +403,16 @@
           "configuration": {
             "description": null,
             "keys": {
+              "EditForGroup": {
+                "args": [
+                  "System"
+                ]
+              },
               "ExternalReference": {
                 "args": {
                   "product": "userm",
                   "query": "/userm/group/search?q={{this}}"
                 }
-              },
-              "EditForGroup": {
-                "args": [
-                  "System"
-                ]
               }
             },
             "extensions": {}
@@ -444,15 +444,15 @@
               "fields": [],
               "order": 12,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             }
           ],
           "order": 11,
           "rootField": false,
-          "duplicablePath": false,
           "restricted": false,
+          "duplicablePath": false,
           "defaultValue": null
         },
         {
@@ -488,15 +488,15 @@
           "fields": [],
           "order": 13,
           "rootField": false,
-          "duplicablePath": false,
           "restricted": false,
+          "duplicablePath": false,
           "defaultValue": null
         }
       ],
       "order": 0,
       "rootField": true,
-      "duplicablePath": false,
       "restricted": false,
+      "duplicablePath": false,
       "defaultValue": null
     },
     {
@@ -507,12 +507,12 @@
       "configuration": {
         "description": null,
         "keys": {
+          "Group": {},
           "Expanded": {
             "args": {
               "condition": "id=-1"
             }
-          },
-          "Group": {}
+          }
         },
         "extensions": {
           "$style": {
@@ -534,17 +534,17 @@
           "configuration": {
             "description": null,
             "keys": {
-              "InstanceDescription": {},
-              "EditForGroup": {
-                "args": [
-                  "System"
-                ]
-              },
               "Reference": {
                 "args": {
                   "query": "specific_data:__Customer Data Definition__",
                   "definition": "Work Queues"
                 }
+              },
+              "InstanceDescription": {},
+              "EditForGroup": {
+                "args": [
+                  "System"
+                ]
               }
             },
             "extensions": {}
@@ -576,8 +576,8 @@
               "fields": [],
               "order": 16,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             },
             {
@@ -647,15 +647,15 @@
                   "fields": [],
                   "order": 18,
                   "rootField": false,
-                  "duplicablePath": false,
                   "restricted": false,
+                  "duplicablePath": false,
                   "defaultValue": null
                 }
               ],
               "order": 17,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             },
             {
@@ -666,14 +666,14 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "Expanded": {
-                    "args": {}
-                  },
                   "AutoRefField": {
                     "args": {
                       "source_field": "Work Queue",
                       "field_name": "Visibility Type"
                     }
+                  },
+                  "Expanded": {
+                    "args": {}
                   }
                 },
                 "extensions": {}
@@ -684,8 +684,8 @@
               "fields": [],
               "order": 19,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             },
             {
@@ -696,13 +696,13 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "InstanceDescription": {},
                   "AutoRefField": {
                     "args": {
                       "source_field": "Work Queue",
                       "field_name": "Description"
                     }
-                  }
+                  },
+                  "InstanceDescription": {}
                 },
                 "extensions": {
                   "$markdown": {},
@@ -719,15 +719,15 @@
               "fields": [],
               "order": 20,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             }
           ],
           "order": 15,
           "rootField": false,
-          "duplicablePath": false,
           "restricted": false,
+          "duplicablePath": false,
           "defaultValue": null
         },
         {
@@ -738,17 +738,17 @@
           "configuration": {
             "description": null,
             "keys": {
+              "Reference": {
+                "args": {
+                  "query": "*",
+                  "definition": "Business Processes"
+                }
+              },
               "InstanceDescription": {},
               "AutoRefField": {
                 "args": {
                   "source_field": "Work Queue",
                   "field_name": "Business Process"
-                }
-              },
-              "Reference": {
-                "args": {
-                  "query": "*",
-                  "definition": "Business Processes"
                 }
               }
             },
@@ -781,8 +781,8 @@
               "fields": [],
               "order": 22,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             },
             {
@@ -808,8 +808,8 @@
               "fields": [],
               "order": 23,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             },
             {
@@ -820,16 +820,16 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "Reference": {
-                    "args": {
-                      "query": "*",
-                      "definition": "Business Processes"
-                    }
-                  },
                   "AutoRefField": {
                     "args": {
                       "source_field": "Business Process",
                       "field_name": "Level 1"
+                    }
+                  },
+                  "Reference": {
+                    "args": {
+                      "query": "*",
+                      "definition": "Business Processes"
                     }
                   }
                 },
@@ -841,8 +841,8 @@
               "fields": [],
               "order": 24,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             },
             {
@@ -853,16 +853,16 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "Reference": {
-                    "args": {
-                      "query": "*",
-                      "definition": "Business Processes"
-                    }
-                  },
                   "AutoRefField": {
                     "args": {
                       "source_field": "Business Process",
                       "field_name": "Level 2"
+                    }
+                  },
+                  "Reference": {
+                    "args": {
+                      "query": "*",
+                      "definition": "Business Processes"
                     }
                   }
                 },
@@ -874,8 +874,8 @@
               "fields": [],
               "order": 25,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             },
             {
@@ -886,16 +886,16 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "Reference": {
-                    "args": {
-                      "query": "*",
-                      "definition": "Business Processes"
-                    }
-                  },
                   "AutoRefField": {
                     "args": {
                       "source_field": "Business Process",
                       "field_name": "Level 3"
+                    }
+                  },
+                  "Reference": {
+                    "args": {
+                      "query": "*",
+                      "definition": "Business Processes"
                     }
                   }
                 },
@@ -907,8 +907,8 @@
               "fields": [],
               "order": 26,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             },
             {
@@ -919,16 +919,16 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "Reference": {
-                    "args": {
-                      "query": "*",
-                      "definition": "Business Processes"
-                    }
-                  },
                   "AutoRefField": {
                     "args": {
                       "source_field": "Business Process",
                       "field_name": "Level 4"
+                    }
+                  },
+                  "Reference": {
+                    "args": {
+                      "query": "*",
+                      "definition": "Business Processes"
                     }
                   }
                 },
@@ -940,8 +940,8 @@
               "fields": [],
               "order": 27,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             },
             {
@@ -952,16 +952,16 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "Reference": {
-                    "args": {
-                      "query": "*",
-                      "definition": "Business Processes"
-                    }
-                  },
                   "AutoRefField": {
                     "args": {
                       "source_field": "Business Process",
                       "field_name": "Level 5"
+                    }
+                  },
+                  "Reference": {
+                    "args": {
+                      "query": "*",
+                      "definition": "Business Processes"
                     }
                   }
                 },
@@ -973,8 +973,8 @@
               "fields": [],
               "order": 28,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             },
             {
@@ -1000,15 +1000,15 @@
               "fields": [],
               "order": 29,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             }
           ],
           "order": 21,
           "rootField": false,
-          "duplicablePath": false,
           "restricted": false,
+          "duplicablePath": false,
           "defaultValue": null
         },
         {
@@ -1019,10 +1019,11 @@
           "configuration": {
             "description": null,
             "keys": {
-              "EditForGroup": {
-                "args": [
-                  "System"
-                ]
+              "Reference": {
+                "args": {
+                  "query": "*",
+                  "definition": "Business Processes"
+                }
               },
               "AutoRefField": {
                 "args": {
@@ -1030,11 +1031,10 @@
                   "field_name": "Level 1"
                 }
               },
-              "Reference": {
-                "args": {
-                  "query": "*",
-                  "definition": "Business Processes"
-                }
+              "EditForGroup": {
+                "args": [
+                  "System"
+                ]
               }
             },
             "extensions": {}
@@ -1045,8 +1045,8 @@
           "fields": [],
           "order": 30,
           "rootField": false,
-          "duplicablePath": false,
           "restricted": false,
+          "duplicablePath": false,
           "defaultValue": null
         },
         {
@@ -1057,7 +1057,6 @@
           "configuration": {
             "description": null,
             "keys": {
-              "Multiple": {},
               "Select": {
                 "args": [
                   "To Assign",
@@ -1071,6 +1070,7 @@
                 ],
                 "default": null
               },
+              "Multiple": {},
               "AutoRefField": {
                 "args": {
                   "source_field": "Work Queue",
@@ -1093,15 +1093,15 @@
           "fields": [],
           "order": 31,
           "rootField": false,
-          "duplicablePath": false,
           "restricted": false,
+          "duplicablePath": false,
           "defaultValue": null
         }
       ],
       "order": 14,
       "rootField": true,
-      "duplicablePath": false,
       "restricted": false,
+      "duplicablePath": false,
       "defaultValue": null
     },
     {
@@ -1129,16 +1129,44 @@
       "fields": [
         {
           "id": null,
+          "name": "Execution Output",
+          "required": null,
+          "description": "$text $editForGroup(System) ",
+          "configuration": {
+            "description": null,
+            "keys": {
+              "EditForGroup": {
+                "args": [
+                  "System"
+                ]
+              }
+            },
+            "extensions": {
+              "$text": {}
+            }
+          },
+          "condition": null,
+          "visibilityCondition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 33,
+          "rootField": false,
+          "restricted": false,
+          "duplicablePath": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
           "name": "Users",
           "required": null,
           "description": "$group $expanded $style[subgroup]",
           "configuration": {
             "description": null,
             "keys": {
+              "Group": {},
               "Expanded": {
                 "args": {}
-              },
-              "Group": {}
+              }
             },
             "extensions": {
               "$style": {
@@ -1160,16 +1188,16 @@
               "configuration": {
                 "description": null,
                 "keys": {
+                  "EditForGroup": {
+                    "args": [
+                      "System"
+                    ]
+                  },
                   "ExternalReference": {
                     "args": {
                       "product": "userm",
                       "query": "/userm/user/search?q={{this}}*"
                     }
-                  },
-                  "EditForGroup": {
-                    "args": [
-                      "System"
-                    ]
                   }
                 },
                 "extensions": {
@@ -1185,10 +1213,10 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 34,
+              "order": 35,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             },
             {
@@ -1199,50 +1227,17 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "EditForGroup": {
-                    "args": [
-                      "System"
-                    ]
-                  },
                   "Select": {
                     "args": [
                       "Yes",
                       "No"
                     ],
                     "default": null
-                  }
-                },
-                "extensions": {}
-              },
-              "condition": null,
-              "visibilityCondition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 35,
-              "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Self Assigned",
-              "required": null,
-              "description": "$[Yes,No] $editForGroup(System) ",
-              "configuration": {
-                "description": null,
-                "keys": {
+                  },
                   "EditForGroup": {
                     "args": [
                       "System"
                     ]
-                  },
-                  "Select": {
-                    "args": [
-                      "Yes",
-                      "No"
-                    ],
-                    "default": null
                   }
                 },
                 "extensions": {}
@@ -1253,15 +1248,48 @@
               "fields": [],
               "order": 36,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
+              "defaultValue": null
+            },
+            {
+              "id": null,
+              "name": "Self Assigned",
+              "required": null,
+              "description": "$[Yes,No] $editForGroup(System) ",
+              "configuration": {
+                "description": null,
+                "keys": {
+                  "Select": {
+                    "args": [
+                      "Yes",
+                      "No"
+                    ],
+                    "default": null
+                  },
+                  "EditForGroup": {
+                    "args": [
+                      "System"
+                    ]
+                  }
+                },
+                "extensions": {}
+              },
+              "condition": null,
+              "visibilityCondition": null,
+              "duplicable": false,
+              "fields": [],
+              "order": 37,
+              "rootField": false,
+              "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             }
           ],
-          "order": 33,
+          "order": 34,
           "rootField": false,
-          "duplicablePath": false,
           "restricted": false,
+          "duplicablePath": false,
           "defaultValue": null
         },
         {
@@ -1272,10 +1300,10 @@
           "configuration": {
             "description": null,
             "keys": {
+              "Group": {},
               "Expanded": {
                 "args": {}
-              },
-              "Group": {}
+              }
             },
             "extensions": {
               "$style": {
@@ -1297,18 +1325,18 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "Default": {
-                    "args": {
-                      "value": "now"
-                    }
-                  },
                   "InstanceDescription": {},
                   "EditForGroup": {
                     "args": [
                       "System"
                     ]
                   },
-                  "DateTime": {}
+                  "DateTime": {},
+                  "Default": {
+                    "args": {
+                      "value": "now"
+                    }
+                  }
                 },
                 "extensions": {
                   "$style": {
@@ -1322,11 +1350,11 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 38,
+              "order": 39,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
-              "defaultValue": "1747735725143"
+              "duplicablePath": false,
+              "defaultValue": "1762532393223"
             },
             {
               "id": null,
@@ -1336,17 +1364,17 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "Default": {
-                    "args": {
-                      "value": "now"
-                    }
-                  },
                   "EditForGroup": {
                     "args": [
                       "System"
                     ]
                   },
-                  "DateTime": {}
+                  "DateTime": {},
+                  "Default": {
+                    "args": {
+                      "value": "now"
+                    }
+                  }
                 },
                 "extensions": {}
               },
@@ -1354,11 +1382,11 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 39,
+              "order": 40,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
-              "defaultValue": "1747735725143"
+              "duplicablePath": false,
+              "defaultValue": "1762532393223"
             },
             {
               "id": null,
@@ -1381,10 +1409,10 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 40,
+              "order": 41,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             },
             {
@@ -1408,10 +1436,10 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 41,
+              "order": 42,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             },
             {
@@ -1435,10 +1463,10 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 42,
+              "order": 43,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             },
             {
@@ -1462,10 +1490,10 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 43,
+              "order": 44,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             },
             {
@@ -1489,10 +1517,10 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 44,
+              "order": 45,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             },
             {
@@ -1516,17 +1544,17 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 45,
+              "order": 46,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             }
           ],
-          "order": 37,
+          "order": 38,
           "rootField": false,
-          "duplicablePath": false,
           "restricted": false,
+          "duplicablePath": false,
           "defaultValue": null
         },
         {
@@ -1537,10 +1565,10 @@
           "configuration": {
             "description": null,
             "keys": {
+              "Group": {},
               "Expanded": {
                 "args": {}
-              },
-              "Group": {}
+              }
             },
             "extensions": {
               "$style": {
@@ -1579,10 +1607,10 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 47,
+              "order": 48,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             },
             {
@@ -1610,10 +1638,10 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 48,
+              "order": 49,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             },
             {
@@ -1641,10 +1669,10 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 49,
+              "order": 50,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             },
             {
@@ -1672,10 +1700,10 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 50,
+              "order": 51,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": null
             },
             {
@@ -1686,9 +1714,9 @@
               "configuration": {
                 "description": null,
                 "keys": {
-                  "Default": {
+                  "Number": {
                     "args": {
-                      "value": "0"
+                      "decimal_places": "3"
                     }
                   },
                   "EditForGroup": {
@@ -1696,9 +1724,9 @@
                       "System"
                     ]
                   },
-                  "Number": {
+                  "Default": {
                     "args": {
-                      "decimal_places": "3"
+                      "value": "0"
                     }
                   }
                 },
@@ -1708,17 +1736,17 @@
               "visibilityCondition": null,
               "duplicable": false,
               "fields": [],
-              "order": 51,
+              "order": 52,
               "rootField": false,
-              "duplicablePath": false,
               "restricted": false,
+              "duplicablePath": false,
               "defaultValue": "0"
             }
           ],
-          "order": 46,
+          "order": 47,
           "rootField": false,
-          "duplicablePath": false,
           "restricted": false,
+          "duplicablePath": false,
           "defaultValue": null
         },
         {
@@ -1743,17 +1771,17 @@
           "visibilityCondition": null,
           "duplicable": false,
           "fields": [],
-          "order": 52,
+          "order": 53,
           "rootField": false,
-          "duplicablePath": false,
           "restricted": false,
+          "duplicablePath": false,
           "defaultValue": null
         }
       ],
       "order": 32,
       "rootField": true,
-      "duplicablePath": false,
       "restricted": false,
+      "duplicablePath": false,
       "defaultValue": null
     }
   ],

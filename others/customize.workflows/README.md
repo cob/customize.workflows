@@ -68,7 +68,7 @@ instances:update:<def_id_work_item>:
   
 ```
 NOVOS:
-Execution Info > Execution Output : $text
+Execution Info > Execution Output : $text $editForGroup(System) 
 ```
 
 #### 1.6
