@@ -14,6 +14,8 @@ loading the axios dependency inside a `cob.custom.customize.push` with the follo
 utils.loadScript("localresource/js/lib/axios.min.js", function() {});
 ```
 
+NOTE: As of version 1.13.0, workflows no longer rely on axios and instead use the built in fetch function.
+
 ---
 
 ## Setup:
