@@ -1,8 +1,6 @@
 
 cob.custom.customize.push(async function(core, utils, ui) {
 
-    utils.loadScript("localresource/js/lib/axios.min.js", function() {});
-
     const DEFINITION = "Work Item";
     const WI_WORK_QUEUE_FIELD = "Work Queue";
     const WI_TARGET_STATE_FIELD = "State";
@@ -55,7 +53,7 @@ cob.custom.customize.push(async function(core, utils, ui) {
 
     function loadWorkQueueInfo(workQueueId) {
         const query = `/recordm/recordm/definitions/search/name/Work Queues?from=0&size=1&q=id.raw:${workQueueId}`;
-        return axios.get(query);
+        return fetch(query).then(res => res.json());
     }
 
     core.customizeInstances(DEFINITION, async (instance, presenter) => {
@@ -118,8 +116,19 @@ cob.custom.customize.push(async function(core, utils, ui) {
     });
 
     const callChangeWiStateConcurrent = function(workItemId, nextState) {
-        axios.post("/integrationm/concurrent/_wrkfl_change-work-item-state", {workItemId, nextState})
-            .then(() => {
+        fetch("/integrationm/concurrent/_wrkfl_change-work-item-state", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({workItemId, nextState}),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(errorData => {
+                        throw { response: { data: errorData } };
+                    });
+                }
                 setTimeout(() => {
                     $(".js-form-search").find(".btn-search").click()
                     $(".js-references-refresh-btn").click()
@@ -351,9 +360,9 @@ cob.custom.customize.push(async function(core, utils, ui) {
         const params = new URLSearchParams({
             q: `customer_data.raw:"${instance.getId()}" ${filter} `,
             def: "Work Item"
-        }).toString()        
-        const wis = (await axios.get(uri + params)).data.hits.hits
-        
+        }).toString()
+        const wis = (await fetch(uri + params).then(res => res.json())).hits.hits
+
         const fieldHTML = fieldToInject.content()[0]
 
        if(wis.length == 0){

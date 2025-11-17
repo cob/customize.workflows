@@ -99,8 +99,8 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
 
 
     // obter estados possíveis
-    const specificDataDef = await axios.get(`/recordm/recordm/definitions/name/${stateDef}`)
-        .then( resp => resp.data )
+    const specificDataDef = await fetch(`/recordm/recordm/definitions/name/${stateDef}`)
+        .then( resp => resp.json() )
         .catch( _ => showError(`Definition "${stateDef}" does not exist!`) )
 
     if(!specificDataDef.fieldDefinitions)
@@ -157,9 +157,9 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
     // **************
     // obter WQs relevantes
     const wqsQuery = `business_process:${bpid}`;
-    const wqs = (await axios.get(
+    const wqs = (await fetch(
         `/recordm/recordm/definitions/search?def=Work Queues&size=50&sort=code:asc&q=${wqsQuery}`
-    )).data.hits.hits.map((hit) => hit._source);
+    ).then(res => res.json())).hits.hits.map((hit) => hit._source);
 
     for(const wq of wqs) {
         const name = wq['name'][0];
@@ -272,8 +272,9 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
 
             // Contar items desta queue
             const wiQuery = `work_queue:${wq['id']} (-state.raw:Done) (-state.raw:Error) (-state.raw:Canceled)`;
-            const promise = axios.get(`/recordm/recordm/definitions/search?def=Work Item&size=0&q=${wiQuery}`)
-                .then(r => r.data.hits.total.value )
+            const promise = fetch(`/recordm/recordm/definitions/search?def=Work Item&size=0&q=${wiQuery}`)
+                .then(r => r.json())
+                .then(data => data.hits.total.value)
                 .then( total => queueData[name] = { total : total, query : wiQuery })
                 .catch( error => console.error("DC count", error))
             allWIRequests.push(promise)
@@ -386,7 +387,7 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
     
     merElem.innerHTML = svg
     
-    const defId = (await axios.get(`/recordm/recordm/definitions/search?def=Work Item&size=1&q=*`)).data.hits.hits[0]._source.definitionId
+    const defId = (await fetch(`/recordm/recordm/definitions/search?def=Work Item&size=1&q=*`).then(res => res.json())).hits.hits[0]._source.definitionId
     merElem.querySelectorAll("a").forEach( elem => elem.id in queueData ? elem.href = `/#/definitions/${defId}/q=${queueData[elem.id].query}` : "")
     
     const usedStateNames = diagram.filter(l => l.type == "state").filter(s => diagram.find(l => s.id == l.to || s.id == l.from)).map(l => l.name) ?? []
