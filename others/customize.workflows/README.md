@@ -66,7 +66,7 @@ instances:update:<def_id_work_item>:
 
 #### 1.12
 
-* Work Queue
+* Work Items
   
 ```
 NOVOS:
