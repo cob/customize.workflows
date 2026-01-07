@@ -40,7 +40,7 @@ if (nextState == "Done") {
 
                     for(doneCondition in doneConditions) {
                         def conditionCode = doneCondition.evalCode
-                        def binding = new Binding(data: data, recordm: recordm)
+                        def binding = new Binding(data: data, recordm: recordm, log: log)
                         def classLoader = this.class.classLoader
                         try {
                             if (!new GroovyShell(classLoader, binding).evaluate(conditionCode)) {
@@ -68,13 +68,13 @@ if (nextState == "Done") {
 
 
                     if( evaluatedErrorMessages.size() > 0) {
-                        
-                        return json(406, [success: false, error: 
+
+                        return json(406, [success: false, error:
                             "Done conditions returned false. <br>" +
                             "<div style=\"text-wrap: balance;font-style: italic;font-size: 1.2em;padding: 5px;\">" +
                             evaluatedErrorMessages.join(' <br><br> ') +
                             "</div>"])
-                    }            
+                    }
                 }
             }
         }
