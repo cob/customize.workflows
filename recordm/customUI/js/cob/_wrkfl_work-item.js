@@ -259,7 +259,7 @@ cob.custom.customize.push(async function(core, utils, ui) {
                         type="button"
                         data-workitem-id="${esDoc.instanceId}"
                         data-next-state="${s}"
-                        data-customer-data-id="${worItemCustomerDataId}"a
+                        data-customer-data-id="${worItemCustomerDataId}"
                         class="js-change-state px-3 py-0 text-xs text-center text-white rounded-md focus:ring-4 bg-sky-400 hover:bg-blue-600"
                     >
                         <span rel="[localize=buttons.${ACTIONS[currentState.label + " -> " + s]}]"></span>
