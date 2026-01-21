@@ -16,39 +16,39 @@ cob.custom.customize.push(async function(core, utils, ui) {
     ];
 
     const ACTIONS = {
-        "To Assign -> To Do": "Assign",
-        "To Do -> Pending": "Suspend",
-        "To Do -> In Progress": "Start",
-        "To Do -> Canceled": "Cancel",
-        "To Do -> Done": "Complete",
-        "To Do -> Error": "Fail",
-        "In Progress -> Pending": "Suspend",
-        "In Progress -> Canceled": "Cancel",
-        "In Progress -> Done": "Complete",
-        "In Progress -> Error": "Fail",
-        "Pending -> To Do": "Resume",
-        "Pending -> Canceled": "Cancel",
-        "Pending -> Error": "Fail"
+        "To Assign -> To Do": "assign",
+        "To Do -> Pending": "suspend",
+        "To Do -> In Progress": "start",
+        "To Do -> Canceled": "cancel",
+        "To Do -> Done": "save-complete",
+        "To Do -> Error": "fail",
+        "In Progress -> Pending": "suspend",
+        "In Progress -> Canceled": "cancel",
+        "In Progress -> Error": "fail",
+        "In Progress -> Done": "save-complete",
+        "Pending -> To Do": "resume",
+        "Pending -> Canceled": "cancel",
+        "Pending -> Error": "fail"
     }
 
     const ACTION_ICONS = {
-        "Assign": "fa-solid fa-user-plus",
-        "Suspend": "fa-solid fa-pause",
-        "Start": "fa-solid fa-play",
-        "Cancel" : "fa-solid fa-xmark",
-        "Complete" : "fa-regular fa-circle-check",
-        "Fail" : "fa-solid fa-exclamation",
-        "Resume" : "fa-solid fa-play",
+        "assign": "fa-solid fa-user-plus",
+        "suspend": "fa-solid fa-pause",
+        "start": "fa-solid fa-play",
+        "cancel" : "fa-solid fa-xmark",
+        "save-complete" : "fa-regular fa-circle-check",
+        "fail" : "fa-solid fa-exclamation",
+        "resume" : "fa-solid fa-play",
     }
 
     const ACTION_CLASSES = {
-        "Assign": "btn-info btn btn-mini",
-        "Suspend": "btn-info btn btn-mini ",
-        "Start": "btn-success btn btn-mini ",
-        "Cancel" : "underline text-red-600",
-        "Complete" : "btn-success btn btn-mini ",
-        "Fail" : "btn-fail btn btn-mini ",
-        "Resume" : "btn-success btn btn-mini ",
+        "assign": "btn-info btn btn-mini",
+        "suspend": "btn-info btn btn-mini ",
+        "start": "btn-success btn btn-mini ",
+        "cancel" : "underline text-red-600",
+        "save-complete" : "btn-success btn btn-mini ",
+        "fail" : "btn-fail btn btn-mini ",
+        "resume" : "btn-success btn btn-mini ",
     }
 
     function loadWorkQueueInfo(workQueueId) {
@@ -137,7 +137,7 @@ cob.custom.customize.push(async function(core, utils, ui) {
                         //Refresh the enclosing instance if there is one and there is a refresh button
                         $(".js-refresh-instance").click()
                     }
-                }, 1000)
+                }, 3000)
 
                 setTimeout(() => {
                     $(".js-references-refresh-btn").click()
@@ -186,7 +186,7 @@ cob.custom.customize.push(async function(core, utils, ui) {
 
             if (nextState === "Done" ||nextState === "In Progress" ||nextState === "Pending" || nextState === "Canceled") {
                 if (isCorrectInstance) {
-                    ui.notification.showInfo("Saving <b>" + instance.data.jsonDefinition.name + "</b> and completing work item...", false);
+                    ui.notification.showInfo("Saving <b>" + instance.data.jsonDefinition.name + "</b> and completing work item, wait 3s...", false);
                 } else {
                     ui.notification.showInfo("Saving <b>" + instance.data.jsonDefinition.name + "</b>", false);
                 }
@@ -259,10 +259,10 @@ cob.custom.customize.push(async function(core, utils, ui) {
                         type="button"
                         data-workitem-id="${esDoc.instanceId}"
                         data-next-state="${s}"
-                        data-customer-data-id="${worItemCustomerDataId}"
+                        data-customer-data-id="${worItemCustomerDataId}"a
                         class="js-change-state px-3 py-0 text-xs text-center text-white rounded-md focus:ring-4 bg-sky-400 hover:bg-blue-600"
                     >
-                        ${ACTIONS[currentState.label + " -> " + s]}
+                        <span rel="[localize=buttons.${ACTIONS[currentState.label + " -> " + s]}]"></span>
                     </button>`)
                     .join("")
                 : []
@@ -343,15 +343,16 @@ cob.custom.customize.push(async function(core, utils, ui) {
         }
 
     }
+
     const keyword = '$businessProcessWorkItems'
 
     const fieldsToInject = presenter.findFieldPs( fp => getExtension(fp, keyword))
     
     if(fieldsToInject.length == 0){
         return
-    }
+    }    
 
-    fieldsToInject.forEach( async fieldToInject => {
+    const promises = fieldsToInject.map( async fieldToInject => {
         
         const extension = getExtension(fieldToInject, keyword)
         const filter = extension && extension.args ? extension.args[0] : '*'
@@ -408,7 +409,12 @@ cob.custom.customize.push(async function(core, utils, ui) {
                 return;
             }
 
+            const currentUser = core.getCurrentLoggedInUser()
 
+            const canComplete =
+                ( wi._source.username != null && wi._source.username.includes(currentUser) ) ||
+                core.userHasGroup('System') ||
+                ( wi._source.assigned_group_name != null && core.userHasGroup(wi._source.assigned_group_name[0]) )
 
             const nextStateActions =
                 wi._source.agent_type[0] !== 'Human' ? ''
@@ -416,20 +422,14 @@ cob.custom.customize.push(async function(core, utils, ui) {
                     .map(s => {
                         const action = ACTIONS[currentState.label + " -> " + s]
 
-                        const currentUser = core.getCurrentLoggedInUser()
-
-                        console.log(core)
-                        const canComplete =
-                            ( wi._source.username != null && wi._source.username.includes(currentUser) ) ||
-                            ( wi._source.assigned_group_name != null && core.userHasGroup(wi._source.assigned_group_name[0]) )
-
                         return `
                             <button
                                 data-workitem-id="${wi._id}"
                                 data-next-state="${s}"
                                 type="button"
                                 class="js-fancy-task inline-flex items-center ${ACTION_CLASSES[action]} ${ !canComplete ? 'disabled' : ''}">
-                                    <i class="${ACTION_ICONS[action]}"></i> ${action}
+                                    <i class="${ACTION_ICONS[action]}"></i> <span rel="localize[wrkfl.buttons.${ACTIONS[currentState.label + " -> " + s]}]"></span><br>
+                                    <span class="text-[10px] italic wq-name">"${wi._source.work_queue_reference}"</span>
                             </button>`
                         }).join("")
 
@@ -443,43 +443,53 @@ cob.custom.customize.push(async function(core, utils, ui) {
             // classes para estado / agente
 
             let atribuicao =` <div className="inline-flex flex-row gap-x-1 justify-start items-center">
-                <strong>Atribuído a:</strong> ${wi._source.user_reference ?? (wi._source.assigned_group_name ?? '')}
-            </div>
-            
-            `
+                <span class='font-bold' rel="localize[wrkfl.labels.assigned-to]">Assigned to:</span> ${wi._source.user_reference ?? (wi._source.assigned_group_name ?? '')}
+            </div>`
+
+            let showState = wi._source.state[0] != "To Do" || wi._source.agent_type[0] != "Wait"
+            let stateTag =  wi._source.state[0].toLowerCase().replace(' ', '-')
+
             taskList.insertAdjacentHTML("beforeend", `
-                <div class="bpo-${wi._source.state[0]} bpo-${wi._source.agent_type[0]} flex w-full flex-col border h-full border-gray-300 rounded-md p-3 bg-white">
+                <div class="bpo-task-box bpo-${wi._source.state[0]} bpo-${wi._source.agent_type[0]} flex w-full flex-col border h-full border-gray-300 rounded-md p-3 bg-white">
                     <span class="flex justify-between text-sm font-semibold text-gray-900 min-h-6 ">
-                    <a href="/recordm/#/instance/${wi._source.business_process}" class="!text-gray-900 mt-1" > ${wi._source.work_queue_reference} </a>
-                    <span class="inline-flex items-center whitespace-nowrap flex-row justify-center gap-1 h-6 rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
-                    <i class="flex-grow text-xs ${agentIcon(wi._source.agent_type[0])}"></i> 
-                    ${ wi._source.state == "To Do" && wi._source.agent_type[0] == "Wait" ?  '' : wi._source.state } 
-                    </span>
+                        <a href="/recordm/#/instance/${wi._source.business_process}" class="!text-gray-900 mt-1" > ${wi._source.work_queue_reference} </a>
+                        <span class="inline-flex items-center whitespace-nowrap flex-row justify-center gap-1 h-6 rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+                            <i class="flex-grow text-xs ${agentIcon(wi._source.agent_type[0])}"></i> 
+                            ${showState ? `<span rel="localize[wrkfl.states.${stateTag}]">${wi._source.state}</span>` : '' }
+                        </span>
                     </span>
                     <div class="text-xs flex flex-col gap-y-1 text-gray-500 flex-grow">
-                    <div class="mb-2 italic">${wi._source.work_queue_description ?? ''}</div> 
-                    <div><strong>Criado em:</strong> ${(new Date(parseInt(wi._source.date_of_request))).toLocaleDateString('pt-PT')}</div>
-                    <div>
-                    ${
-                        wi._source.user_reference && wi._source.assigned_group_name ? "<strong>Quem:</strong>" : ''
-                    }
-                    ${wi._source.agent_type[0] !== "Wait" ? atribuicao : ''}                    
-                        
-                    </div>      
+                        <div class="mb-2 italic">${wi._source.work_queue_description ?? ''}</div> 
+                        <div>
+                            <span class='font-bold' rel="localize[wrkfl.labels.created-on]">Created on:</span> ${(new Date(parseInt(wi._source.date_of_request))).toLocaleDateString('pt-PT')}
+                        </div>
+                        <div>
+                            ${wi._source.agent_type[0] !== "Wait" ? atribuicao : ''}                    
+                        </div>      
                     </div>
                     <div class="w-full flex gap-2 justify-end mt-1 -mt-1 items-end  ">
-                    ${nextStateActions ?? ''}
+                        ${nextStateActions ?? ''}
                     </div>
                 </div>
-                `)
+            `)
 
-                document.querySelectorAll("button.js-fancy-task:not(.disabled)").forEach( e => e.addEventListener('click', onStateChanged ))
-
-
+            const displayButtonInSidebar = extension.args[1] == 'true'
+            if(canComplete && displayButtonInSidebar) {
+                document.querySelector(".js-sidenav-btn-container").insertAdjacentHTML("beforeend", nextStateActions)
+                document.querySelector(".js-save-instance").classList.remove('btn-success')
+            }
+            
+            document.querySelectorAll("button.js-fancy-task:not(.disabled)").forEach( e => e.addEventListener('click', onStateChanged ))
           })
     
-        })
+    })
+
+    Promise.all(promises).then( 
+        () => core.translate('_wrkfl', '.js-recordm-instance', false, null, 'localresource/i18n')
+    )
+        
     });
+
 
 
 });

@@ -1,0 +1,26 @@
+{
+	"wrkfl" :{
+		"buttons" : {
+			"save-complete" : "Guardar e Completar",
+			"assign": "Atribuir",
+			"suspend": "Suspender",
+			"start": "Começar",
+			"cancel": "Cancelar",
+			"fail": "Falha",
+			"resume": "Resumir"
+		},
+		"labels" : {
+			"assigned-to" : "Atribuido a:",
+			"created-on"  : "Criado em:" 
+		},
+		"states" : {
+			"to-do" : "Para Fazer",
+			"to-assign" : "Para Atribuir",
+        	"pensing": "Em Pausa",
+        	"in-progress": "A Decorrer",
+        	"canceled": "Cancelado",
+        	"done": "Completado",
+        	"error": "Erro"
+		}
+	}
+}

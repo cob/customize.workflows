@@ -45,3 +45,10 @@ div[class^='js-task-list'] {
 #mermaid .custom-mermaid-block.node span {
   color: unset
 }
+
+.btn.js-fancy-task {
+  height: unset !important
+}
+.bpo-task-box .btn.js-fancy-task span.wq-name {
+  display: none;
+}

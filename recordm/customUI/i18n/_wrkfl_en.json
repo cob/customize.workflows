@@ -1,0 +1,26 @@
+{
+	"wrkfl" :{
+		"buttons" : {
+            "save-complete" : "Save and Complete",
+            "assign": "Assign",
+            "suspend": "Suspend",
+            "start": "Start",
+            "cancel": "Cancel",
+            "fail": "Fail",
+            "resume": "Resume"
+        },
+		"labels" : {
+			"assigned-to" : "Assigned to:",
+			"created-on"  : "Created on:" 
+		},
+		"states" : {
+			"to-do" : "To Do",
+			"to-assign" : "To Assign",
+        	"pensing": "Pending",
+        	"in-progress": "In Progress",
+        	"canceled": "Cancelled",
+        	"done": "Done",
+        	"error": "Error"
+		}
+    }
+}
