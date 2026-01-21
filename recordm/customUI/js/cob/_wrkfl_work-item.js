@@ -137,7 +137,7 @@ cob.custom.customize.push(async function(core, utils, ui) {
                         //Refresh the enclosing instance if there is one and there is a refresh button
                         $(".js-refresh-instance").click()
                     }
-                }, 3000)
+                }, 1000)
 
                 setTimeout(() => {
                     $(".js-references-refresh-btn").click()
@@ -186,7 +186,7 @@ cob.custom.customize.push(async function(core, utils, ui) {
 
             if (nextState === "Done" ||nextState === "In Progress" ||nextState === "Pending" || nextState === "Canceled") {
                 if (isCorrectInstance) {
-                    ui.notification.showInfo("Saving <b>" + instance.data.jsonDefinition.name + "</b> and completing work item, wait 3s...", false);
+                    ui.notification.showInfo("Saving <b>" + instance.data.jsonDefinition.name + "</b> and completing work item", false);
                 } else {
                     ui.notification.showInfo("Saving <b>" + instance.data.jsonDefinition.name + "</b>", false);
                 }
