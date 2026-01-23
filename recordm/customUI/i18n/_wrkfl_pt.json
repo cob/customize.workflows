@@ -16,7 +16,7 @@
 		"states" : {
 			"to-do" : "Para Fazer",
 			"to-assign" : "Para Atribuir",
-        	"pensing": "Em Pausa",
+        	"pending": "Em Pausa",
         	"in-progress": "A Decorrer",
         	"canceled": "Cancelado",
         	"done": "Completado",

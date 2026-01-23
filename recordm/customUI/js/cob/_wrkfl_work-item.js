@@ -41,6 +41,16 @@ cob.custom.customize.push(async function(core, utils, ui) {
         "resume" : "fa-solid fa-play",
     }
 
+    const DEFAULT_LABELS = {
+        "save-complete" : "Save and eomplete",
+        "assign": "Assign",
+        "suspend": "Suspend",
+        "start": "Start",
+        "cancel": "Cancel",
+        "fail": "Fail",
+        "resume": "Resume"
+    }
+
     const ACTION_CLASSES = {
         "assign": "btn-info btn btn-mini",
         "suspend": "btn-info btn btn-mini ",
@@ -186,7 +196,7 @@ cob.custom.customize.push(async function(core, utils, ui) {
 
             if (nextState === "Done" ||nextState === "In Progress" ||nextState === "Pending" || nextState === "Canceled") {
                 if (isCorrectInstance) {
-                    ui.notification.showInfo("Saving <b>" + instance.data.jsonDefinition.name + "</b> and completing work item", false);
+                    ui.notification.showInfo("Saving <b>" + instance.data.jsonDefinition.name + "</b> and completing work item, wait 3s...", false);
                 } else {
                     ui.notification.showInfo("Saving <b>" + instance.data.jsonDefinition.name + "</b>", false);
                 }
@@ -413,7 +423,6 @@ cob.custom.customize.push(async function(core, utils, ui) {
 
             const canComplete =
                 ( wi._source.username != null && wi._source.username.includes(currentUser) ) ||
-                core.userHasGroup('System') ||
                 ( wi._source.assigned_group_name != null && core.userHasGroup(wi._source.assigned_group_name[0]) )
 
             const nextStateActions =
@@ -428,7 +437,7 @@ cob.custom.customize.push(async function(core, utils, ui) {
                                 data-next-state="${s}"
                                 type="button"
                                 class="js-fancy-task inline-flex items-center ${ACTION_CLASSES[action]} ${ !canComplete ? 'disabled' : ''}">
-                                    <i class="${ACTION_ICONS[action]}"></i> <span rel="localize[wrkfl.buttons.${ACTIONS[currentState.label + " -> " + s]}]"></span><br>
+                                    <i class="${ACTION_ICONS[action]}"></i> <span rel="localize[wrkfl.buttons.${action}]">${DEFAULT_LABELS[action]}</span><br>
                                     <span class="text-[10px] italic wq-name">"${wi._source.work_queue_reference}"</span>
                             </button>`
                         }).join("")

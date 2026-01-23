@@ -16,9 +16,9 @@
 		"states" : {
 			"to-do" : "To Do",
 			"to-assign" : "To Assign",
-        	"pensing": "Pending",
+        	"pending": "Pending",
         	"in-progress": "In Progress",
-        	"canceled": "Cancelled",
+        	"canceled": "Canceled",
         	"done": "Done",
         	"error": "Error"
 		}
