@@ -179,7 +179,8 @@ cob.custom.customize.push(async function(core, utils, ui) {
                 return
             }
 
-            const workItemInstance = $(ev.target)
+            // the target might be the span inside the button
+            const workItemInstance = $(ev.target).closest('button')
             const workItemId = workItemInstance.attr("data-workitem-id")
             const nextState = workItemInstance.attr("data-next-state")
             const workItemCustomerDataId = workItemInstance.attr("data-customer-data-id")
