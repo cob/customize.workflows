@@ -16,6 +16,14 @@ utils.loadScript("localresource/js/lib/axios.min.js", function() {});
 
 NOTE: As of version 1.13.0, workflows no longer rely on axios and instead use the built in fetch function.
 
+## Sorting Definitions
+
+Use [jq](https://jqlang.org/) for formatting the definitions JSONs.
+
+```
+jq -S . definition_.json > definition_.json
+```
+
 ---
 
 ## Setup:
