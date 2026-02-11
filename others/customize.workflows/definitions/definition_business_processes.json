@@ -1,92 +1,95 @@
 {
-  "id": null,
-  "name": "Business Processes",
-  "description": "@BPO v.1.15.0",
+  "description": "@BPO v.1.15",
   "duplicable": null,
-  "state": "enabled",
   "fieldDefinitions": [
     {
-      "id": null,
-      "name": "Details: __Full Name__",
-      "required": null,
-      "description": "$group $style[grupo]",
+      "condition": null,
       "configuration": {
         "description": null,
-        "keys": {
-          "Group": {}
-        },
         "extensions": {
           "$style": {
             "args": [
               "grupo"
             ]
           }
+        },
+        "keys": {
+          "Expanded": {
+            "args": {}
+          },
+          "Group": {}
         }
       },
-      "condition": null,
-      "visibilityCondition": null,
+      "defaultValue": null,
+      "description": "$group $style[grupo] $expanded ",
       "duplicable": false,
+      "duplicablePath": false,
       "fields": [
         {
+          "condition": null,
+          "configuration": {
+            "description": null,
+            "extensions": {},
+            "keys": {}
+          },
+          "defaultValue": null,
+          "description": null,
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
           "id": null,
           "name": "Name",
-          "required": "mandatory",
-          "description": null,
-          "configuration": {
-            "description": null,
-            "keys": {},
-            "extensions": {}
-          },
-          "condition": null,
-          "visibilityCondition": null,
-          "duplicable": false,
-          "fields": [],
           "order": 1,
-          "rootField": false,
-          "duplicablePath": false,
+          "required": "mandatory",
           "restricted": false,
-          "defaultValue": null
+          "rootField": false,
+          "visibilityCondition": null
         },
         {
-          "id": null,
-          "name": "Enclosing Business Process Full Name",
-          "required": null,
-          "description": "$auto.ref(Enclosing Business Process).field(Full Name) $style[hide]",
+          "condition": null,
           "configuration": {
             "description": null,
-            "keys": {
-              "AutoRefField": {
-                "args": {
-                  "source_field": "Enclosing Business Process",
-                  "field_name": "Full Name"
-                }
-              }
-            },
             "extensions": {
               "$style": {
                 "args": [
                   "hide"
                 ]
               }
+            },
+            "keys": {
+              "AutoRefField": {
+                "args": {
+                  "field_name": "Full Name",
+                  "source_field": "Enclosing Business Process"
+                }
+              }
             }
           },
-          "condition": null,
-          "visibilityCondition": null,
+          "defaultValue": null,
+          "description": "$auto.ref(Enclosing Business Process).field(Full Name) $style[hide]",
           "duplicable": false,
-          "fields": [],
-          "order": 2,
-          "rootField": false,
           "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Enclosing Business Process Full Name",
+          "order": 2,
+          "required": null,
           "restricted": false,
-          "defaultValue": null
+          "rootField": false,
+          "visibilityCondition": null
         },
         {
-          "id": null,
-          "name": "Enclosing Business Process",
-          "required": null,
-          "description": "$ref(Business Processes,*) $groupEdit $style[hide-inline]  $help[leave empty for <br> First Level]",
+          "condition": null,
           "configuration": {
             "description": null,
+            "extensions": {
+              "$groupEdit": {},
+              "$style": {
+                "args": [
+                  "hide-inline"
+                ]
+              }
+            },
             "keys": {
               "Help": {
                 "args": [
@@ -95,172 +98,167 @@
               },
               "Reference": {
                 "args": {
-                  "query": "*",
-                  "definition": "Business Processes"
+                  "definition": "Business Processes",
+                  "query": "*"
                 }
               }
-            },
-            "extensions": {
-              "$style": {
-                "args": [
-                  "hide-inline"
-                ]
-              },
-              "$groupEdit": {}
             }
           },
-          "condition": null,
-          "visibilityCondition": null,
+          "defaultValue": null,
+          "description": "$ref(Business Processes,*) $groupEdit $style[hide-inline]  $help[leave empty for <br> First Level]",
           "duplicable": false,
-          "fields": [],
-          "order": 3,
-          "rootField": false,
           "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Enclosing Business Process",
+          "order": 3,
+          "required": null,
           "restricted": false,
-          "defaultValue": null
+          "rootField": false,
+          "visibilityCondition": null
         },
         {
-          "id": null,
-          "name": "Full Name",
-          "required": null,
-          "description": "$instanceLabel $auto.text(Enclosing Business Process Full Name,Name).join(Enclosing Business Process Full Name,' . ',Name) $style[hide] ",
+          "condition": null,
           "configuration": {
             "description": null,
-            "keys": {
-              "InstanceLabel": {},
-              "AutoTextJoin": {
-                "args": [
-                  "Enclosing Business Process Full Name",
-                  "' . '",
-                  "Name"
-                ]
-              }
-            },
             "extensions": {
               "$style": {
                 "args": [
                   "hide"
                 ]
               }
+            },
+            "keys": {
+              "AutoTextJoin": {
+                "args": [
+                  "Enclosing Business Process Full Name",
+                  "' . '",
+                  "Name"
+                ]
+              },
+              "InstanceLabel": {}
             }
           },
-          "condition": null,
-          "visibilityCondition": null,
+          "defaultValue": null,
+          "description": "$instanceLabel $auto.text(Enclosing Business Process Full Name,Name).join(Enclosing Business Process Full Name,' . ',Name) $style[hide] ",
           "duplicable": false,
-          "fields": [],
-          "order": 4,
-          "rootField": false,
           "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Full Name",
+          "order": 4,
+          "required": null,
           "restricted": false,
-          "defaultValue": null
+          "rootField": false,
+          "visibilityCondition": null
         },
         {
-          "id": null,
-          "name": "Specific Data",
-          "required": null,
-          "description": "$help[Definition Name for the associated data]",
+          "condition": null,
           "configuration": {
             "description": null,
+            "extensions": {},
             "keys": {
               "Help": {
                 "args": [
                   "Definition Name for the associated data"
                 ]
               }
-            },
-            "extensions": {}
+            }
           },
-          "condition": null,
-          "visibilityCondition": null,
+          "defaultValue": null,
+          "description": "$help[Definition Name for the associated data]",
           "duplicable": false,
-          "fields": [],
-          "order": 5,
-          "rootField": false,
           "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Specific Data",
+          "order": 5,
+          "required": null,
           "restricted": false,
-          "defaultValue": null
+          "rootField": false,
+          "visibilityCondition": null
         },
         {
-          "id": null,
-          "name": "State Field",
-          "required": null,
-          "description": "$help[Name of the field in the Specific Data Definition that is used as a state by the process]",
+          "condition": null,
           "configuration": {
             "description": null,
+            "extensions": {},
             "keys": {
               "Help": {
                 "args": [
                   "Name of the field in the Specific Data Definition that is used as a state by the process"
                 ]
               }
-            },
-            "extensions": {}
+            }
           },
-          "condition": null,
-          "visibilityCondition": null,
+          "defaultValue": null,
+          "description": "$help[Name of the field in the Specific Data Definition that is used as a state by the process]",
           "duplicable": false,
-          "fields": [],
-          "order": 6,
-          "rootField": false,
           "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "State Field",
+          "order": 6,
+          "required": null,
           "restricted": false,
-          "defaultValue": null
+          "rootField": false,
+          "visibilityCondition": null
         },
         {
-          "id": null,
-          "name": "Specific Data Main Customer Data Field",
-          "required": null,
-          "description": "$help[In case of sub-data definitions which field references the main Specific Data ]",
+          "condition": null,
           "configuration": {
             "description": null,
+            "extensions": {},
             "keys": {
               "Help": {
                 "args": [
                   "In case of sub-data definitions which field references the main Specific Data"
                 ]
               }
-            },
-            "extensions": {}
-          },
-          "condition": null,
-          "visibilityCondition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 7,
-          "rootField": false,
-          "duplicablePath": false,
-          "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Observations",
-          "required": null,
-          "description": "$text ",
-          "configuration": {
-            "description": null,
-            "keys": {},
-            "extensions": {
-              "$text": {}
             }
           },
-          "condition": null,
-          "visibilityCondition": null,
+          "defaultValue": null,
+          "description": "$help[In case of sub-data definitions which field references the main Specific Data ]",
           "duplicable": false,
-          "fields": [],
-          "order": 8,
-          "rootField": false,
           "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Specific Data Main Customer Data Field",
+          "order": 7,
+          "required": null,
           "restricted": false,
-          "defaultValue": null
+          "rootField": false,
+          "visibilityCondition": null
         },
         {
-          "id": null,
-          "name": "Groups",
-          "required": null,
-          "description": "$extRef(userm,/userm/group/search?q={{this}}) $help[The Groups that can see this business process]",
+          "condition": null,
           "configuration": {
             "description": null,
+            "extensions": {
+              "$text": {}
+            },
+            "keys": {}
+          },
+          "defaultValue": null,
+          "description": "$text ",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Observations",
+          "order": 8,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": null
+        },
+        {
+          "condition": null,
+          "configuration": {
+            "description": null,
+            "extensions": {
+              "$groupEdit": {}
+            },
             "keys": {
               "ExternalReference": {
                 "args": {
@@ -273,99 +271,91 @@
                   "The Groups that can see this business process"
                 ]
               }
-            },
-            "extensions": {}
+            }
           },
-          "condition": null,
-          "visibilityCondition": null,
+          "defaultValue": null,
+          "description": "$extRef(userm,/userm/group/search?q={{this}}) $groupEdit $help[The Groups that can see this business process]",
           "duplicable": false,
+          "duplicablePath": false,
           "fields": [
             {
-              "id": null,
-              "name": "Group Name",
-              "required": null,
-              "description": "$auto.ref(Groups).field(name) $style[hide]",
+              "condition": null,
               "configuration": {
                 "description": null,
-                "keys": {
-                  "AutoRefField": {
-                    "args": {
-                      "source_field": "Groups",
-                      "field_name": "name"
-                    }
-                  }
-                },
                 "extensions": {
                   "$style": {
                     "args": [
                       "hide"
                     ]
                   }
+                },
+                "keys": {
+                  "AutoRefField": {
+                    "args": {
+                      "field_name": "name",
+                      "source_field": "Groups"
+                    }
+                  }
                 }
               },
-              "condition": null,
-              "visibilityCondition": null,
+              "defaultValue": null,
+              "description": "$auto.ref(Groups).field(name) $style[hide]",
               "duplicable": false,
-              "fields": [],
-              "order": 10,
-              "rootField": false,
               "duplicablePath": false,
+              "fields": [],
+              "id": null,
+              "name": "Group Name",
+              "order": 10,
+              "required": null,
               "restricted": false,
-              "defaultValue": null
+              "rootField": false,
+              "visibilityCondition": null
             }
           ],
+          "id": null,
+          "name": "Groups",
           "order": 9,
-          "rootField": false,
-          "duplicablePath": false,
+          "required": null,
           "restricted": false,
-          "defaultValue": null
+          "rootField": false,
+          "visibilityCondition": null
         }
       ],
+      "id": null,
+      "name": "Details: __Full Name__",
       "order": 0,
-      "rootField": true,
-      "duplicablePath": false,
+      "required": null,
       "restricted": false,
-      "defaultValue": null
+      "rootField": true,
+      "visibilityCondition": null
     },
     {
-      "id": null,
-      "name": "Sub-Business Processes",
-      "required": null,
-      "description": "$group $style[grupo,use-reference-count,hide] ",
+      "condition": null,
       "configuration": {
         "description": null,
-        "keys": {
-          "Group": {}
-        },
         "extensions": {
           "$style": {
             "args": [
-              "grupo",
+              "subgroup",
               "use-reference-count",
-              "hide"
+              "grupo",
+              "hide-in-new-instance"
             ]
           }
+        },
+        "keys": {
+          "Group": {}
         }
       },
-      "condition": null,
-      "visibilityCondition": null,
+      "defaultValue": null,
+      "description": "$group $style[subgroup,use-reference-count,grupo,hide-in-new-instance] ",
       "duplicable": false,
+      "duplicablePath": false,
       "fields": [
         {
-          "id": null,
-          "name": "Level of Parent",
-          "required": null,
-          "description": "$auto.ref(Enclosing Business Process).field(Level) $style[hide] $var.parent_level",
+          "condition": null,
           "configuration": {
             "description": null,
-            "keys": {
-              "AutoRefField": {
-                "args": {
-                  "source_field": "Enclosing Business Process",
-                  "field_name": "Level"
-                }
-              }
-            },
             "extensions": {
               "$style": {
                 "args": [
@@ -373,55 +363,60 @@
                 ]
               },
               "$var.parent_level": {}
-            }
-          },
-          "condition": null,
-          "visibilityCondition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 12,
-          "rootField": false,
-          "duplicablePath": false,
-          "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Level 1 Name",
-          "required": null,
-          "description": "$auto.ref(Level 1).field(Name)",
-          "configuration": {
-            "description": null,
+            },
             "keys": {
               "AutoRefField": {
                 "args": {
-                  "source_field": "Level 1",
-                  "field_name": "Name"
+                  "field_name": "Level",
+                  "source_field": "Enclosing Business Process"
                 }
               }
-            },
-            "extensions": {}
+            }
           },
-          "condition": null,
-          "visibilityCondition": null,
+          "defaultValue": null,
+          "description": "$auto.ref(Enclosing Business Process).field(Level) $style[hide] $var.parent_level",
           "duplicable": false,
-          "fields": [],
-          "order": 13,
-          "rootField": false,
           "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Level of Parent",
+          "order": 12,
+          "required": null,
           "restricted": false,
-          "defaultValue": null
+          "rootField": false,
+          "visibilityCondition": null
         },
         {
-          "id": null,
-          "name": "Level",
-          "required": null,
-          "description": "$calc.sum(var.parent_level,1) $instanceDescription",
+          "condition": null,
           "configuration": {
             "description": null,
+            "extensions": {},
             "keys": {
-              "InstanceDescription": {}
-            },
+              "AutoRefField": {
+                "args": {
+                  "field_name": "Name",
+                  "source_field": "Level 1"
+                }
+              }
+            }
+          },
+          "defaultValue": null,
+          "description": "$auto.ref(Level 1).field(Name)",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Level 1 Name",
+          "order": 13,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": null
+        },
+        {
+          "condition": null,
+          "configuration": {
+            "description": null,
             "extensions": {
               "$calc.sum": {
                 "args": [
@@ -429,463 +424,474 @@
                   "1"
                 ]
               }
+            },
+            "keys": {
+              "InstanceDescription": {}
             }
           },
-          "condition": null,
-          "visibilityCondition": null,
+          "defaultValue": null,
+          "description": "$calc.sum(var.parent_level,1) $instanceDescription",
           "duplicable": false,
-          "fields": [],
-          "order": 14,
-          "rootField": false,
           "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Level",
+          "order": 14,
+          "required": null,
           "restricted": false,
-          "defaultValue": null
+          "rootField": false,
+          "visibilityCondition": null
         },
         {
-          "id": null,
-          "name": "Level 1",
-          "required": null,
-          "description": "$ref(Business Processes,*) $auto.text(id).join(id) $instanceDescription",
+          "condition": "Level=1",
           "configuration": {
             "description": null,
+            "extensions": {},
             "keys": {
-              "InstanceDescription": {},
-              "Reference": {
-                "args": {
-                  "query": "*",
-                  "definition": "Business Processes"
-                }
-              },
               "AutoTextJoin": {
                 "args": [
                   "id"
                 ]
+              },
+              "InstanceDescription": {},
+              "Reference": {
+                "args": {
+                  "definition": "Business Processes",
+                  "query": "*"
+                }
               }
-            },
-            "extensions": {}
+            }
           },
-          "condition": "Level=1",
+          "defaultValue": null,
+          "description": "$ref(Business Processes,*) $auto.text(id).join(id) $instanceDescription",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Level 1",
+          "order": 15,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
           "visibilityCondition": {
+            "matcher": {
+              "name": "Level",
+              "type": "Name"
+            },
             "type": "Equal",
             "value": [
               "1"
-            ],
-            "matcher": {
-              "type": "Name",
-              "name": "Level"
-            }
-          },
-          "duplicable": false,
-          "fields": [],
-          "order": 15,
-          "rootField": false,
-          "duplicablePath": false,
-          "restricted": false,
-          "defaultValue": null
+            ]
+          }
         },
         {
-          "id": null,
-          "name": "Level 1",
-          "required": null,
-          "description": "$ref(Business Processes,*) $auto.ref(Enclosing Business Process).field(Level 1)",
+          "condition": "Level>1",
           "configuration": {
             "description": null,
+            "extensions": {},
             "keys": {
-              "Reference": {
-                "args": {
-                  "query": "*",
-                  "definition": "Business Processes"
-                }
-              },
               "AutoRefField": {
                 "args": {
-                  "source_field": "Enclosing Business Process",
-                  "field_name": "Level 1"
-                }
-              }
-            },
-            "extensions": {}
-          },
-          "condition": "Level>1",
-          "visibilityCondition": {
-            "type": "HigherThan",
-            "value": "1",
-            "matcher": {
-              "type": "Name",
-              "name": "Level"
-            }
-          },
-          "duplicable": false,
-          "fields": [],
-          "order": 16,
-          "rootField": false,
-          "duplicablePath": false,
-          "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Level 2",
-          "required": null,
-          "description": "$ref(Business Processes,*) $auto.text(id).join(id) $instanceDescription",
-          "configuration": {
-            "description": null,
-            "keys": {
-              "InstanceDescription": {},
-              "Reference": {
-                "args": {
-                  "query": "*",
-                  "definition": "Business Processes"
+                  "field_name": "Level 1",
+                  "source_field": "Enclosing Business Process"
                 }
               },
+              "Reference": {
+                "args": {
+                  "definition": "Business Processes",
+                  "query": "*"
+                }
+              }
+            }
+          },
+          "defaultValue": null,
+          "description": "$ref(Business Processes,*) $auto.ref(Enclosing Business Process).field(Level 1)",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Level 1",
+          "order": 16,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": {
+            "matcher": {
+              "name": "Level",
+              "type": "Name"
+            },
+            "type": "HigherThan",
+            "value": "1"
+          }
+        },
+        {
+          "condition": "Level=2",
+          "configuration": {
+            "description": null,
+            "extensions": {},
+            "keys": {
               "AutoTextJoin": {
                 "args": [
                   "id"
                 ]
+              },
+              "InstanceDescription": {},
+              "Reference": {
+                "args": {
+                  "definition": "Business Processes",
+                  "query": "*"
+                }
               }
-            },
-            "extensions": {}
+            }
           },
-          "condition": "Level=2",
+          "defaultValue": null,
+          "description": "$ref(Business Processes,*) $auto.text(id).join(id) $instanceDescription",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Level 2",
+          "order": 17,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
           "visibilityCondition": {
+            "matcher": {
+              "name": "Level",
+              "type": "Name"
+            },
             "type": "Equal",
             "value": [
               "2"
-            ],
-            "matcher": {
-              "type": "Name",
-              "name": "Level"
-            }
-          },
-          "duplicable": false,
-          "fields": [],
-          "order": 17,
-          "rootField": false,
-          "duplicablePath": false,
-          "restricted": false,
-          "defaultValue": null
+            ]
+          }
         },
         {
-          "id": null,
-          "name": "Level 2",
-          "required": null,
-          "description": "$ref(Business Processes,*) $auto.ref(Enclosing Business Process).field(Level 2)",
+          "condition": "Level>2",
           "configuration": {
             "description": null,
+            "extensions": {},
             "keys": {
-              "Reference": {
-                "args": {
-                  "query": "*",
-                  "definition": "Business Processes"
-                }
-              },
               "AutoRefField": {
                 "args": {
-                  "source_field": "Enclosing Business Process",
-                  "field_name": "Level 2"
-                }
-              }
-            },
-            "extensions": {}
-          },
-          "condition": "Level>2",
-          "visibilityCondition": {
-            "type": "HigherThan",
-            "value": "2",
-            "matcher": {
-              "type": "Name",
-              "name": "Level"
-            }
-          },
-          "duplicable": false,
-          "fields": [],
-          "order": 18,
-          "rootField": false,
-          "duplicablePath": false,
-          "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Level 3",
-          "required": null,
-          "description": "$ref(Business Processes,*) $auto.text(id).join(id) $instanceDescription",
-          "configuration": {
-            "description": null,
-            "keys": {
-              "InstanceDescription": {},
-              "Reference": {
-                "args": {
-                  "query": "*",
-                  "definition": "Business Processes"
+                  "field_name": "Level 2",
+                  "source_field": "Enclosing Business Process"
                 }
               },
+              "Reference": {
+                "args": {
+                  "definition": "Business Processes",
+                  "query": "*"
+                }
+              }
+            }
+          },
+          "defaultValue": null,
+          "description": "$ref(Business Processes,*) $auto.ref(Enclosing Business Process).field(Level 2)",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Level 2",
+          "order": 18,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": {
+            "matcher": {
+              "name": "Level",
+              "type": "Name"
+            },
+            "type": "HigherThan",
+            "value": "2"
+          }
+        },
+        {
+          "condition": "Level=3",
+          "configuration": {
+            "description": null,
+            "extensions": {},
+            "keys": {
               "AutoTextJoin": {
                 "args": [
                   "id"
                 ]
+              },
+              "InstanceDescription": {},
+              "Reference": {
+                "args": {
+                  "definition": "Business Processes",
+                  "query": "*"
+                }
               }
-            },
-            "extensions": {}
+            }
           },
-          "condition": "Level=3",
+          "defaultValue": null,
+          "description": "$ref(Business Processes,*) $auto.text(id).join(id) $instanceDescription",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Level 3",
+          "order": 19,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
           "visibilityCondition": {
+            "matcher": {
+              "name": "Level",
+              "type": "Name"
+            },
             "type": "Equal",
             "value": [
               "3"
-            ],
-            "matcher": {
-              "type": "Name",
-              "name": "Level"
-            }
-          },
-          "duplicable": false,
-          "fields": [],
-          "order": 19,
-          "rootField": false,
-          "duplicablePath": false,
-          "restricted": false,
-          "defaultValue": null
+            ]
+          }
         },
         {
-          "id": null,
-          "name": "Level 3",
-          "required": null,
-          "description": "$ref(Business Processes,*) $auto.ref(Enclosing Business Process).field(Level 3)",
+          "condition": "Level>3",
           "configuration": {
             "description": null,
+            "extensions": {},
             "keys": {
-              "Reference": {
-                "args": {
-                  "query": "*",
-                  "definition": "Business Processes"
-                }
-              },
               "AutoRefField": {
                 "args": {
-                  "source_field": "Enclosing Business Process",
-                  "field_name": "Level 3"
-                }
-              }
-            },
-            "extensions": {}
-          },
-          "condition": "Level>3",
-          "visibilityCondition": {
-            "type": "HigherThan",
-            "value": "3",
-            "matcher": {
-              "type": "Name",
-              "name": "Level"
-            }
-          },
-          "duplicable": false,
-          "fields": [],
-          "order": 20,
-          "rootField": false,
-          "duplicablePath": false,
-          "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Level 4",
-          "required": null,
-          "description": "$ref(Business Processes,*) $auto.text(id).join(id) $instanceDescription",
-          "configuration": {
-            "description": null,
-            "keys": {
-              "InstanceDescription": {},
-              "Reference": {
-                "args": {
-                  "query": "*",
-                  "definition": "Business Processes"
+                  "field_name": "Level 3",
+                  "source_field": "Enclosing Business Process"
                 }
               },
+              "Reference": {
+                "args": {
+                  "definition": "Business Processes",
+                  "query": "*"
+                }
+              }
+            }
+          },
+          "defaultValue": null,
+          "description": "$ref(Business Processes,*)  $auto.ref(Enclosing Business Process).field(Level 3)",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Level 3",
+          "order": 20,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": {
+            "matcher": {
+              "name": "Level",
+              "type": "Name"
+            },
+            "type": "HigherThan",
+            "value": "3"
+          }
+        },
+        {
+          "condition": "Level=4",
+          "configuration": {
+            "description": null,
+            "extensions": {},
+            "keys": {
               "AutoTextJoin": {
                 "args": [
                   "id"
                 ]
+              },
+              "InstanceDescription": {},
+              "Reference": {
+                "args": {
+                  "definition": "Business Processes",
+                  "query": "*"
+                }
               }
-            },
-            "extensions": {}
+            }
           },
-          "condition": "Level=4",
+          "defaultValue": null,
+          "description": "$ref(Business Processes,*) $auto.text(id).join(id) $instanceDescription",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Level 4",
+          "order": 21,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
           "visibilityCondition": {
+            "matcher": {
+              "name": "Level",
+              "type": "Name"
+            },
             "type": "Equal",
             "value": [
               "4"
-            ],
-            "matcher": {
-              "type": "Name",
-              "name": "Level"
-            }
-          },
-          "duplicable": false,
-          "fields": [],
-          "order": 21,
-          "rootField": false,
-          "duplicablePath": false,
-          "restricted": false,
-          "defaultValue": null
+            ]
+          }
         },
         {
-          "id": null,
-          "name": "Level 4",
-          "required": null,
-          "description": "$ref(Business Processes,*) $auto.ref(Enclosing Business Process).field(Level 4)",
+          "condition": "Level>4",
           "configuration": {
             "description": null,
+            "extensions": {},
             "keys": {
-              "Reference": {
-                "args": {
-                  "query": "*",
-                  "definition": "Business Processes"
-                }
-              },
               "AutoRefField": {
                 "args": {
-                  "source_field": "Enclosing Business Process",
-                  "field_name": "Level 4"
-                }
-              }
-            },
-            "extensions": {}
-          },
-          "condition": "Level>4",
-          "visibilityCondition": {
-            "type": "HigherThan",
-            "value": "4",
-            "matcher": {
-              "type": "Name",
-              "name": "Level"
-            }
-          },
-          "duplicable": false,
-          "fields": [],
-          "order": 22,
-          "rootField": false,
-          "duplicablePath": false,
-          "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Level 5",
-          "required": null,
-          "description": "$ref(Business Processes,*) $auto.text(id).join(id) $instanceDescription",
-          "configuration": {
-            "description": null,
-            "keys": {
-              "InstanceDescription": {},
-              "Reference": {
-                "args": {
-                  "query": "*",
-                  "definition": "Business Processes"
+                  "field_name": "Level 4",
+                  "source_field": "Enclosing Business Process"
                 }
               },
+              "Reference": {
+                "args": {
+                  "definition": "Business Processes",
+                  "query": "*"
+                }
+              }
+            }
+          },
+          "defaultValue": null,
+          "description": "$ref(Business Processes,*)  $auto.ref(Enclosing Business Process).field(Level 4)",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Level 4",
+          "order": 22,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": {
+            "matcher": {
+              "name": "Level",
+              "type": "Name"
+            },
+            "type": "HigherThan",
+            "value": "4"
+          }
+        },
+        {
+          "condition": "Level=5",
+          "configuration": {
+            "description": null,
+            "extensions": {},
+            "keys": {
               "AutoTextJoin": {
                 "args": [
                   "id"
                 ]
+              },
+              "InstanceDescription": {},
+              "Reference": {
+                "args": {
+                  "definition": "Business Processes",
+                  "query": "*"
+                }
               }
-            },
-            "extensions": {}
+            }
           },
-          "condition": "Level=5",
+          "defaultValue": null,
+          "description": "$ref(Business Processes,*) $auto.text(id).join(id) $instanceDescription",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Level 5",
+          "order": 23,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
           "visibilityCondition": {
+            "matcher": {
+              "name": "Level",
+              "type": "Name"
+            },
             "type": "Equal",
             "value": [
               "5"
-            ],
-            "matcher": {
-              "type": "Name",
-              "name": "Level"
-            }
-          },
-          "duplicable": false,
-          "fields": [],
-          "order": 23,
-          "rootField": false,
-          "duplicablePath": false,
-          "restricted": false,
-          "defaultValue": null
+            ]
+          }
         },
         {
-          "id": null,
-          "name": "Sub-Business Processes",
-          "required": null,
-          "description": "$references(Business Processes,Enclosing Business Process)",
+          "condition": "Level>0",
           "configuration": {
             "description": null,
+            "extensions": {},
             "keys": {
               "References": {
                 "args": {
-                  "field": "Enclosing Business Process",
-                  "definition": "Business Processes"
+                  "definition": "Business Processes",
+                  "field": "Enclosing Business Process"
                 }
               }
-            },
-            "extensions": {}
-          },
-          "condition": "Level>0",
-          "visibilityCondition": {
-            "type": "HigherThan",
-            "value": "0",
-            "matcher": {
-              "type": "Name",
-              "name": "Level"
             }
           },
+          "defaultValue": null,
+          "description": "$references(Business Processes,Enclosing Business Process) ",
           "duplicable": false,
-          "fields": [],
-          "order": 24,
-          "rootField": false,
           "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Sub-Business Processes",
+          "order": 24,
+          "required": null,
           "restricted": false,
-          "defaultValue": null
+          "rootField": false,
+          "visibilityCondition": {
+            "matcher": {
+              "name": "Level",
+              "type": "Name"
+            },
+            "type": "HigherThan",
+            "value": "0"
+          }
         }
       ],
+      "id": null,
+      "name": "Sub-Business Processes",
       "order": 11,
-      "rootField": true,
-      "duplicablePath": false,
+      "required": null,
       "restricted": false,
-      "defaultValue": null
+      "rootField": true,
+      "visibilityCondition": null
     },
     {
-      "id": null,
-      "name": "Work Queues",
-      "required": null,
-      "description": "$references(Work Queues,Business Process,[view:vBusinessProcess]) $style[workQueues]",
+      "condition": null,
       "configuration": {
         "description": null,
-        "keys": {
-          "References": {
-            "args": {
-              "field": "Business Process",
-              "options": "[view:vBusinessProcess]",
-              "definition": "Work Queues"
-            }
-          }
-        },
         "extensions": {
           "$style": {
             "args": [
               "workQueues"
             ]
           }
+        },
+        "keys": {
+          "References": {
+            "args": {
+              "definition": "Work Queues",
+              "field": "Business Process",
+              "options": "[view:vBusinessProcess]"
+            }
+          }
         }
       },
-      "condition": null,
-      "visibilityCondition": null,
+      "defaultValue": null,
+      "description": "$references(Work Queues,Business Process,[view:vBusinessProcess]) $style[workQueues]",
       "duplicable": false,
-      "fields": [],
-      "order": 25,
-      "rootField": true,
       "duplicablePath": false,
+      "fields": [],
+      "id": null,
+      "name": "Work Queues",
+      "order": 25,
+      "required": null,
       "restricted": false,
-      "defaultValue": null
+      "rootField": true,
+      "visibilityCondition": null
     }
   ],
+  "id": null,
+  "name": "Business Processes",
+  "state": "enabled",
   "version": null
 }

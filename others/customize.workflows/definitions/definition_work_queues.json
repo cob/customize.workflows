@@ -1,20 +1,11 @@
 {
-  "id": null,
-  "name": "Work Queues",
-  "description": "@BPO v.1.6.0 BETA",
+  "description": "@BPO v.1.6",
   "duplicable": null,
-  "state": "enabled",
   "fieldDefinitions": [
     {
-      "id": null,
-      "name": "Work Scope: __Business Process Name__ | __Specific Data__",
-      "required": null,
-      "description": "$group $style[grupo,hide-inline]",
+      "condition": null,
       "configuration": {
-        "description": null,
-        "keys": {
-          "Group": {}
-        },
+        "description": "Work Scope: __Business Process Name__ | __Specific Data__ :",
         "extensions": {
           "$style": {
             "args": [
@@ -22,962 +13,535 @@
               "hide-inline"
             ]
           }
+        },
+        "keys": {
+          "Group": {}
         }
       },
-      "condition": null,
-      "visibilityCondition": null,
+      "defaultValue": null,
+      "description": "Work Scope: __Business Process Name__ | __Specific Data__ : $group $style[grupo,hide-inline]",
       "duplicable": false,
-      "fields": [
-        {
-          "id": null,
-          "name": "Business Process",
-          "required": "mandatory",
-          "description": "$ref(Business Processes,*)  $instanceDescription",
-          "configuration": {
-            "description": null,
-            "keys": {
-              "InstanceDescription": {},
-              "Reference": {
-                "args": {
-                  "query": "*",
-                  "definition": "Business Processes"
-                }
-              }
-            },
-            "extensions": {}
-          },
-          "condition": null,
-          "visibilityCondition": null,
-          "duplicable": false,
-          "fields": [
-            {
-              "id": null,
-              "name": "Level",
-              "required": null,
-              "description": "$auto.ref(Business Process).field(Level)",
-              "configuration": {
-                "description": null,
-                "keys": {
-                  "AutoRefField": {
-                    "args": {
-                      "source_field": "Business Process",
-                      "field_name": "Level"
-                    }
-                  }
-                },
-                "extensions": {}
-              },
-              "condition": null,
-              "visibilityCondition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 2,
-              "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Business Process Name",
-              "required": null,
-              "description": "$auto.ref(Business Process).field(Enclosing Business Process Full Name)",
-              "configuration": {
-                "description": null,
-                "keys": {
-                  "AutoRefField": {
-                    "args": {
-                      "source_field": "Business Process",
-                      "field_name": "Enclosing Business Process Full Name"
-                    }
-                  }
-                },
-                "extensions": {}
-              },
-              "condition": null,
-              "visibilityCondition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 3,
-              "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Level 1",
-              "required": null,
-              "description": "$auto.ref(Business Process).field(Level 1) $ref(Business Processes,*)",
-              "configuration": {
-                "description": null,
-                "keys": {
-                  "AutoRefField": {
-                    "args": {
-                      "source_field": "Business Process",
-                      "field_name": "Level 1"
-                    }
-                  },
-                  "Reference": {
-                    "args": {
-                      "query": "*",
-                      "definition": "Business Processes"
-                    }
-                  }
-                },
-                "extensions": {}
-              },
-              "condition": null,
-              "visibilityCondition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 4,
-              "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Level 2",
-              "required": null,
-              "description": "$auto.ref(Business Process).field(Level 2) $ref(Business Processes,*)",
-              "configuration": {
-                "description": null,
-                "keys": {
-                  "AutoRefField": {
-                    "args": {
-                      "source_field": "Business Process",
-                      "field_name": "Level 2"
-                    }
-                  },
-                  "Reference": {
-                    "args": {
-                      "query": "*",
-                      "definition": "Business Processes"
-                    }
-                  }
-                },
-                "extensions": {}
-              },
-              "condition": null,
-              "visibilityCondition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 5,
-              "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Level 3",
-              "required": null,
-              "description": "$auto.ref(Business Process).field(Level 3) $ref(Business Processes,*)",
-              "configuration": {
-                "description": null,
-                "keys": {
-                  "AutoRefField": {
-                    "args": {
-                      "source_field": "Business Process",
-                      "field_name": "Level 3"
-                    }
-                  },
-                  "Reference": {
-                    "args": {
-                      "query": "*",
-                      "definition": "Business Processes"
-                    }
-                  }
-                },
-                "extensions": {}
-              },
-              "condition": null,
-              "visibilityCondition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 6,
-              "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Level 4",
-              "required": null,
-              "description": "$auto.ref(Business Process).field(Level 4) $ref(Business Processes,*)",
-              "configuration": {
-                "description": null,
-                "keys": {
-                  "AutoRefField": {
-                    "args": {
-                      "source_field": "Business Process",
-                      "field_name": "Level 4"
-                    }
-                  },
-                  "Reference": {
-                    "args": {
-                      "query": "*",
-                      "definition": "Business Processes"
-                    }
-                  }
-                },
-                "extensions": {}
-              },
-              "condition": null,
-              "visibilityCondition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 7,
-              "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Level 5",
-              "required": null,
-              "description": "$auto.ref(Business Process).field(Level 5) $ref(Business Processes,*)",
-              "configuration": {
-                "description": null,
-                "keys": {
-                  "AutoRefField": {
-                    "args": {
-                      "source_field": "Business Process",
-                      "field_name": "Level 5"
-                    }
-                  },
-                  "Reference": {
-                    "args": {
-                      "query": "*",
-                      "definition": "Business Processes"
-                    }
-                  }
-                },
-                "extensions": {}
-              },
-              "condition": null,
-              "visibilityCondition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 8,
-              "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Visibility Groups",
-              "required": null,
-              "description": "$auto.ref(Business Process).field(Group Name)",
-              "configuration": {
-                "description": null,
-                "keys": {
-                  "AutoRefField": {
-                    "args": {
-                      "source_field": "Business Process",
-                      "field_name": "Group Name"
-                    }
-                  }
-                },
-                "extensions": {}
-              },
-              "condition": null,
-              "visibilityCondition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 9,
-              "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": null
-            }
-          ],
-          "order": 1,
-          "rootField": false,
-          "duplicablePath": false,
-          "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Specific Data",
-          "required": null,
-          "description": "$auto.ref(Business Process).field(Specific Data)",
-          "configuration": {
-            "description": null,
-            "keys": {
-              "AutoRefField": {
-                "args": {
-                  "source_field": "Business Process",
-                  "field_name": "Specific Data"
-                }
-              }
-            },
-            "extensions": {}
-          },
-          "condition": null,
-          "visibilityCondition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 10,
-          "rootField": false,
-          "duplicablePath": false,
-          "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "State Field",
-          "required": null,
-          "description": "$auto.ref(Business Process).field(State Field)",
-          "configuration": {
-            "description": null,
-            "keys": {
-              "AutoRefField": {
-                "args": {
-                  "source_field": "Business Process",
-                  "field_name": "State Field"
-                }
-              }
-            },
-            "extensions": {}
-          },
-          "condition": null,
-          "visibilityCondition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 11,
-          "rootField": false,
-          "duplicablePath": false,
-          "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Specific Data Main Customer Data Field",
-          "required": null,
-          "description": "$auto.ref(Business Process).field(Specific Data Main Customer Data Field)",
-          "configuration": {
-            "description": null,
-            "keys": {
-              "AutoRefField": {
-                "args": {
-                  "source_field": "Business Process",
-                  "field_name": "Specific Data Main Customer Data Field"
-                }
-              }
-            },
-            "extensions": {}
-          },
-          "condition": null,
-          "visibilityCondition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 12,
-          "rootField": false,
-          "duplicablePath": false,
-          "restricted": false,
-          "defaultValue": null
-        }
-      ],
-      "order": 0,
-      "rootField": true,
       "duplicablePath": false,
+      "fields": [],
+      "id": null,
+      "name": "Work Identification",
+      "order": 0,
+      "required": null,
       "restricted": false,
-      "defaultValue": null
+      "rootField": true,
+      "visibilityCondition": null
     },
     {
-      "id": null,
-      "name": "Work Specification",
-      "required": null,
-      "description": "$group $style[grupo] $expanded",
+      "condition": null,
       "configuration": {
         "description": null,
+        "extensions": {},
         "keys": {
-          "Group": {},
-          "Expanded": {
-            "args": {}
-          }
-        },
-        "extensions": {
-          "$style": {
-            "args": [
-              "grupo"
-            ]
+          "InstanceDescription": {},
+          "Reference": {
+            "args": {
+              "definition": "Business Processes",
+              "query": "*"
+            }
           }
         }
       },
-      "condition": null,
-      "visibilityCondition": null,
+      "defaultValue": null,
+      "description": "$ref(Business Processes,*)  $instanceDescription",
       "duplicable": false,
+      "duplicablePath": false,
       "fields": [
         {
-          "id": null,
-          "name": "Code",
-          "required": "mandatory",
-          "description": "$instanceDescription $commons.validate(uniqueValue(showLink=true))",
+          "condition": null,
           "configuration": {
             "description": null,
+            "extensions": {},
             "keys": {
-              "InstanceDescription": {}
-            },
-            "extensions": {
-              "$commons.validate": {
-                "args": [
-                  "uniqueValue(showLink=true)"
-                ]
+              "AutoRefField": {
+                "args": {
+                  "field_name": "Level",
+                  "source_field": "Business Process"
+                }
               }
             }
           },
-          "condition": null,
-          "visibilityCondition": null,
+          "defaultValue": null,
+          "description": "$auto.ref(Business Process).field(Level)",
           "duplicable": false,
-          "fields": [],
-          "order": 14,
-          "rootField": false,
           "duplicablePath": false,
-          "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Name",
-          "required": "mandatory",
-          "description": "$instanceLabel",
-          "configuration": {
-            "description": null,
-            "keys": {
-              "InstanceLabel": {}
-            },
-            "extensions": {}
-          },
-          "condition": null,
-          "visibilityCondition": null,
-          "duplicable": false,
           "fields": [],
-          "order": 15,
-          "rootField": false,
-          "duplicablePath": false,
-          "restricted": false,
-          "defaultValue": null
-        },
-        {
           "id": null,
-          "name": "Description",
+          "name": "Level",
+          "order": 2,
           "required": null,
-          "description": "$markdown $instanceDescription $style[mdPreview]",
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": null
+        },
+        {
+          "condition": null,
           "configuration": {
             "description": null,
+            "extensions": {},
             "keys": {
-              "InstanceDescription": {}
-            },
-            "extensions": {
-              "$markdown": {},
-              "$style": {
-                "args": [
-                  "mdPreview"
-                ]
+              "AutoRefField": {
+                "args": {
+                  "field_name": "Enclosing Business Process Full Name",
+                  "source_field": "Business Process"
+                }
               }
             }
           },
-          "condition": null,
-          "visibilityCondition": null,
+          "defaultValue": null,
+          "description": "$auto.ref(Business Process).field(Enclosing Business Process Full Name)",
           "duplicable": false,
-          "fields": [],
-          "order": 16,
-          "rootField": false,
           "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Business Process Name",
+          "order": 3,
+          "required": null,
           "restricted": false,
-          "defaultValue": null
+          "rootField": false,
+          "visibilityCondition": null
         },
         {
-          "id": null,
-          "name": "Agent Type",
-          "required": null,
-          "description": "$[*Human,RPA,AI,Wait]  $instanceDescription $expanded $groupEdit $styleResultColumn(Human:BgDimBlue,RPA:BgDimGreen,AI:BgDimOrange,Wait:BgGreen) $style[children-mx-0, children-border-0, children-bg-none]",
+          "condition": null,
           "configuration": {
             "description": null,
+            "extensions": {},
             "keys": {
-              "Select": {
-                "args": [
-                  "Human",
-                  "RPA",
-                  "AI",
-                  "Wait"
-                ],
-                "default": "Human"
+              "AutoRefField": {
+                "args": {
+                  "field_name": "Level 1",
+                  "source_field": "Business Process"
+                }
               },
-              "Expanded": {
-                "args": {}
+              "Reference": {
+                "args": {
+                  "definition": "Business Processes",
+                  "query": "*"
+                }
+              }
+            }
+          },
+          "defaultValue": null,
+          "description": "$auto.ref(Business Process).field(Level 1) $ref(Business Processes,*)",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Level 1",
+          "order": 4,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": null
+        },
+        {
+          "condition": null,
+          "configuration": {
+            "description": null,
+            "extensions": {},
+            "keys": {
+              "AutoRefField": {
+                "args": {
+                  "field_name": "Level 2",
+                  "source_field": "Business Process"
+                }
               },
-              "InstanceDescription": {}
-            },
+              "Reference": {
+                "args": {
+                  "definition": "Business Processes",
+                  "query": "*"
+                }
+              }
+            }
+          },
+          "defaultValue": null,
+          "description": "$auto.ref(Business Process).field(Level 2) $ref(Business Processes,*)",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Level 2",
+          "order": 5,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": null
+        },
+        {
+          "condition": null,
+          "configuration": {
+            "description": null,
+            "extensions": {},
+            "keys": {
+              "AutoRefField": {
+                "args": {
+                  "field_name": "Level 3",
+                  "source_field": "Business Process"
+                }
+              },
+              "Reference": {
+                "args": {
+                  "definition": "Business Processes",
+                  "query": "*"
+                }
+              }
+            }
+          },
+          "defaultValue": null,
+          "description": "$auto.ref(Business Process).field(Level 3) $ref(Business Processes,*)",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Level 3",
+          "order": 6,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": null
+        },
+        {
+          "condition": null,
+          "configuration": {
+            "description": null,
+            "extensions": {},
+            "keys": {
+              "AutoRefField": {
+                "args": {
+                  "field_name": "Level 4",
+                  "source_field": "Business Process"
+                }
+              },
+              "Reference": {
+                "args": {
+                  "definition": "Business Processes",
+                  "query": "*"
+                }
+              }
+            }
+          },
+          "defaultValue": null,
+          "description": "$auto.ref(Business Process).field(Level 4) $ref(Business Processes,*)",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Level 4",
+          "order": 7,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": null
+        },
+        {
+          "condition": null,
+          "configuration": {
+            "description": null,
+            "extensions": {},
+            "keys": {
+              "AutoRefField": {
+                "args": {
+                  "field_name": "Level 5",
+                  "source_field": "Business Process"
+                }
+              },
+              "Reference": {
+                "args": {
+                  "definition": "Business Processes",
+                  "query": "*"
+                }
+              }
+            }
+          },
+          "defaultValue": null,
+          "description": "$auto.ref(Business Process).field(Level 5) $ref(Business Processes,*)",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Level 5",
+          "order": 8,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": null
+        },
+        {
+          "condition": null,
+          "configuration": {
+            "description": null,
+            "extensions": {},
+            "keys": {
+              "AutoRefField": {
+                "args": {
+                  "field_name": "Group Name",
+                  "source_field": "Business Process"
+                }
+              }
+            }
+          },
+          "defaultValue": null,
+          "description": "$auto.ref(Business Process).field(Group Name)",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Visibility Groups",
+          "order": 9,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": null
+        }
+      ],
+      "id": null,
+      "name": "Business Process",
+      "order": 1,
+      "required": "mandatory",
+      "restricted": false,
+      "rootField": true,
+      "visibilityCondition": null
+    },
+    {
+      "condition": null,
+      "configuration": {
+        "description": null,
+        "extensions": {},
+        "keys": {
+          "AutoRefField": {
+            "args": {
+              "field_name": "Specific Data",
+              "source_field": "Business Process"
+            }
+          }
+        }
+      },
+      "defaultValue": null,
+      "description": "$auto.ref(Business Process).field(Specific Data)",
+      "duplicable": false,
+      "duplicablePath": false,
+      "fields": [],
+      "id": null,
+      "name": "Specific Data",
+      "order": 10,
+      "required": null,
+      "restricted": false,
+      "rootField": true,
+      "visibilityCondition": null
+    },
+    {
+      "condition": null,
+      "configuration": {
+        "description": null,
+        "extensions": {},
+        "keys": {
+          "AutoRefField": {
+            "args": {
+              "field_name": "State Field",
+              "source_field": "Business Process"
+            }
+          }
+        }
+      },
+      "defaultValue": null,
+      "description": "$auto.ref(Business Process).field(State Field)",
+      "duplicable": false,
+      "duplicablePath": false,
+      "fields": [],
+      "id": null,
+      "name": "State Field",
+      "order": 11,
+      "required": null,
+      "restricted": false,
+      "rootField": true,
+      "visibilityCondition": null
+    },
+    {
+      "condition": null,
+      "configuration": {
+        "description": null,
+        "extensions": {},
+        "keys": {
+          "AutoRefField": {
+            "args": {
+              "field_name": "Specific Data Main Customer Data Field",
+              "source_field": "Business Process"
+            }
+          }
+        }
+      },
+      "defaultValue": null,
+      "description": "$auto.ref(Business Process).field(Specific Data Main Customer Data Field)",
+      "duplicable": false,
+      "duplicablePath": false,
+      "fields": [],
+      "id": null,
+      "name": "Specific Data Main Customer Data Field",
+      "order": 12,
+      "required": null,
+      "restricted": false,
+      "rootField": true,
+      "visibilityCondition": null
+    },
+    {
+      "condition": null,
+      "configuration": {
+        "description": null,
+        "extensions": {},
+        "keys": {
+          "Group": {}
+        }
+      },
+      "defaultValue": null,
+      "description": "$group",
+      "duplicable": false,
+      "duplicablePath": false,
+      "fields": [],
+      "id": null,
+      "name": "Work Specification",
+      "order": 13,
+      "required": null,
+      "restricted": false,
+      "rootField": true,
+      "visibilityCondition": null
+    },
+    {
+      "condition": null,
+      "configuration": {
+        "description": null,
+        "extensions": {},
+        "keys": {
+          "InstanceLabel": {}
+        }
+      },
+      "defaultValue": null,
+      "description": "$instanceLabel",
+      "duplicable": false,
+      "duplicablePath": false,
+      "fields": [],
+      "id": null,
+      "name": "Name",
+      "order": 14,
+      "required": null,
+      "restricted": false,
+      "rootField": true,
+      "visibilityCondition": null
+    },
+    {
+      "condition": null,
+      "configuration": {
+        "description": null,
+        "extensions": {
+          "$commons.validate": {
+            "args": [
+              "uniqueValue(showLink=true)"
+            ]
+          }
+        },
+        "keys": {
+          "InstanceDescription": {}
+        }
+      },
+      "defaultValue": null,
+      "description": "$instanceDescription $commons.validate(uniqueValue(showLink=true))",
+      "duplicable": false,
+      "duplicablePath": false,
+      "fields": [],
+      "id": null,
+      "name": "Code",
+      "order": 15,
+      "required": null,
+      "restricted": false,
+      "rootField": true,
+      "visibilityCondition": null
+    },
+    {
+      "condition": null,
+      "configuration": {
+        "description": null,
+        "extensions": {
+          "$markdown": {}
+        },
+        "keys": {}
+      },
+      "defaultValue": null,
+      "description": "$markdown",
+      "duplicable": false,
+      "duplicablePath": false,
+      "fields": [],
+      "id": null,
+      "name": "Description",
+      "order": 16,
+      "required": null,
+      "restricted": false,
+      "rootField": true,
+      "visibilityCondition": null
+    },
+    {
+      "condition": null,
+      "configuration": {
+        "description": null,
+        "extensions": {
+          "$groupEdit": {},
+          "$style": {
+            "args": [
+              "children-mx-0",
+              "children-border-0",
+              "children-bg-none"
+            ]
+          },
+          "$styleResultColumn": {
+            "args": [
+              "Human:BgDimBlue",
+              "RPA:BgDimGreen",
+              "AI:BgDimOrange",
+              "Wait:BgGreen"
+            ]
+          }
+        },
+        "keys": {
+          "Expanded": {
+            "args": {}
+          },
+          "InstanceDescription": {},
+          "Select": {
+            "args": [
+              "Human",
+              "RPA",
+              "AI",
+              "Wait"
+            ],
+            "default": "Human"
+          }
+        }
+      },
+      "defaultValue": "Human",
+      "description": "$[*Human,RPA,AI,Wait]  $instanceDescription $expanded $groupEdit $styleResultColumn(Human:BgDimBlue,RPA:BgDimGreen,AI:BgDimOrange,Wait:BgGreen) $style[children-mx-0, children-border-0, children-bg-none]",
+      "duplicable": false,
+      "duplicablePath": false,
+      "fields": [
+        {
+          "condition": "=Human",
+          "configuration": {
+            "description": null,
             "extensions": {
+              "$groupEdit": {},
               "$style": {
                 "args": [
                   "children-mx-0",
                   "children-border-0",
                   "children-bg-none"
                 ]
-              },
-              "$groupEdit": {},
-              "$styleResultColumn": {
-                "args": [
-                  "Human:BgDimBlue",
-                  "RPA:BgDimGreen",
-                  "AI:BgDimOrange",
-                  "Wait:BgGreen"
-                ]
               }
-            }
-          },
-          "condition": null,
-          "visibilityCondition": null,
-          "duplicable": false,
-          "fields": [
-            {
-              "id": null,
-              "name": "Human Type",
-              "required": null,
-              "description": "$[*Group,Group Field,User,User Field] $expanded $groupEdit $style[children-mx-0, children-border-0, children-bg-none]",
-              "configuration": {
-                "description": null,
-                "keys": {
-                  "Select": {
-                    "args": [
-                      "Group",
-                      "Group Field",
-                      "User",
-                      "User Field"
-                    ],
-                    "default": "Group"
-                  },
-                  "Expanded": {
-                    "args": {}
-                  }
-                },
-                "extensions": {
-                  "$style": {
-                    "args": [
-                      "children-mx-0",
-                      "children-border-0",
-                      "children-bg-none"
-                    ]
-                  },
-                  "$groupEdit": {}
-                }
-              },
-              "condition": "=Human",
-              "visibilityCondition": {
-                "type": "Equal",
-                "value": [
-                  "Human"
-                ],
-                "matcher": {
-                  "type": "Parent"
-                }
-              },
-              "duplicable": false,
-              "fields": [
-                {
-                  "id": null,
-                  "name": "Group Field",
-                  "required": null,
-                  "description": "$groupEdit $help[Identifies the field with the group value from customer data instance. This field should be an \\$extRef pointing to UserM]",
-                  "configuration": {
-                    "description": null,
-                    "keys": {
-                      "Help": {
-                        "args": [
-                          "Identifies the field with the group value from customer data instance. This field should be an $extRef pointing to UserM"
-                        ]
-                      }
-                    },
-                    "extensions": {
-                      "$groupEdit": {}
-                    }
-                  },
-                  "condition": "=Group Field",
-                  "visibilityCondition": {
-                    "type": "Equal",
-                    "value": [
-                      "Group Field"
-                    ],
-                    "matcher": {
-                      "type": "Parent"
-                    }
-                  },
-                  "duplicable": false,
-                  "fields": [],
-                  "order": 19,
-                  "rootField": false,
-                  "duplicablePath": false,
-                  "restricted": false,
-                  "defaultValue": null
-                },
-                {
-                  "id": null,
-                  "name": "User Field",
-                  "required": null,
-                  "description": "$groupEdit $help[Identifies the field with the user value from customer data instance. This field should be an \\$extRef pointing to UserM]",
-                  "configuration": {
-                    "description": null,
-                    "keys": {
-                      "Help": {
-                        "args": [
-                          "Identifies the field with the user value from customer data instance. This field should be an $extRef pointing to UserM"
-                        ]
-                      }
-                    },
-                    "extensions": {
-                      "$groupEdit": {}
-                    }
-                  },
-                  "condition": "=User Field",
-                  "visibilityCondition": {
-                    "type": "Equal",
-                    "value": [
-                      "User Field"
-                    ],
-                    "matcher": {
-                      "type": "Parent"
-                    }
-                  },
-                  "duplicable": false,
-                  "fields": [],
-                  "order": 20,
-                  "rootField": false,
-                  "duplicablePath": false,
-                  "restricted": false,
-                  "defaultValue": null
-                },
-                {
-                  "id": null,
-                  "name": "User",
-                  "required": null,
-                  "description": "$extRef(userm,/userm/user/search?q={{this}}) $groupEdit",
-                  "configuration": {
-                    "description": null,
-                    "keys": {
-                      "ExternalReference": {
-                        "args": {
-                          "product": "userm",
-                          "query": "/userm/user/search?q={{this}}"
-                        }
-                      }
-                    },
-                    "extensions": {
-                      "$groupEdit": {}
-                    }
-                  },
-                  "condition": "=User",
-                  "visibilityCondition": {
-                    "type": "Equal",
-                    "value": [
-                      "User"
-                    ],
-                    "matcher": {
-                      "type": "Parent"
-                    }
-                  },
-                  "duplicable": false,
-                  "fields": [
-                    {
-                      "id": null,
-                      "name": "User Username",
-                      "required": null,
-                      "description": "$auto.ref(User).field(username) $style[hide]",
-                      "configuration": {
-                        "description": null,
-                        "keys": {
-                          "AutoRefField": {
-                            "args": {
-                              "source_field": "User",
-                              "field_name": "username"
-                            }
-                          }
-                        },
-                        "extensions": {
-                          "$style": {
-                            "args": [
-                              "hide"
-                            ]
-                          }
-                        }
-                      },
-                      "condition": null,
-                      "visibilityCondition": null,
-                      "duplicable": false,
-                      "fields": [],
-                      "order": 22,
-                      "rootField": false,
-                      "duplicablePath": false,
-                      "restricted": false,
-                      "defaultValue": null
-                    }
-                  ],
-                  "order": 21,
-                  "rootField": false,
-                  "duplicablePath": false,
-                  "restricted": false,
-                  "defaultValue": null
-                },
-                {
-                  "id": null,
-                  "name": "Group",
-                  "required": null,
-                  "description": "$extRef(userm,/userm/group/search?q={{this}}) $groupEdit",
-                  "configuration": {
-                    "description": null,
-                    "keys": {
-                      "ExternalReference": {
-                        "args": {
-                          "product": "userm",
-                          "query": "/userm/group/search?q={{this}}"
-                        }
-                      }
-                    },
-                    "extensions": {
-                      "$groupEdit": {}
-                    }
-                  },
-                  "condition": "=Group",
-                  "visibilityCondition": {
-                    "type": "Equal",
-                    "value": [
-                      "Group"
-                    ],
-                    "matcher": {
-                      "type": "Parent"
-                    }
-                  },
-                  "duplicable": false,
-                  "fields": [
-                    {
-                      "id": null,
-                      "name": "Group Name",
-                      "required": null,
-                      "description": "$auto.ref(Group).field(name) $style[hide]",
-                      "configuration": {
-                        "description": null,
-                        "keys": {
-                          "AutoRefField": {
-                            "args": {
-                              "source_field": "Group",
-                              "field_name": "name"
-                            }
-                          }
-                        },
-                        "extensions": {
-                          "$style": {
-                            "args": [
-                              "hide"
-                            ]
-                          }
-                        }
-                      },
-                      "condition": null,
-                      "visibilityCondition": null,
-                      "duplicable": false,
-                      "fields": [],
-                      "order": 24,
-                      "rootField": false,
-                      "duplicablePath": false,
-                      "restricted": false,
-                      "defaultValue": null
-                    }
-                  ],
-                  "order": 23,
-                  "rootField": false,
-                  "duplicablePath": false,
-                  "restricted": false,
-                  "defaultValue": null
-                }
-              ],
-              "order": 18,
-              "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": "Group"
             },
-            {
-              "id": null,
-              "name": "Concurrent",
-              "required": null,
-              "description": "$groupEdit",
-              "configuration": {
-                "description": null,
-                "keys": {},
-                "extensions": {
-                  "$groupEdit": {}
-                }
-              },
-              "condition": "=RPA",
-              "visibilityCondition": {
-                "type": "Equal",
-                "value": [
-                  "RPA"
-                ],
-                "matcher": {
-                  "type": "Parent"
-                }
-              },
-              "duplicable": false,
-              "fields": [],
-              "order": 25,
-              "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Fallback Group",
-              "required": null,
-              "description": null,
-              "configuration": {
-                "description": null,
-                "keys": {},
-                "extensions": {}
-              },
-              "condition": "=AI",
-              "visibilityCondition": {
-                "type": "Equal",
-                "value": [
-                  "AI"
-                ],
-                "matcher": {
-                  "type": "Parent"
-                }
-              },
-              "duplicable": false,
-              "fields": [],
-              "order": 26,
-              "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Algoritm Name",
-              "required": null,
-              "description": null,
-              "configuration": {
-                "description": null,
-                "keys": {},
-                "extensions": {}
-              },
-              "condition": "=AI",
-              "visibilityCondition": {
-                "type": "Equal",
-                "value": [
-                  "AI"
-                ],
-                "matcher": {
-                  "type": "Parent"
-                }
-              },
-              "duplicable": false,
-              "fields": [],
-              "order": 27,
-              "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Wait Work Item Query",
-              "required": null,
-              "description": "$text $help[tested against every WorkItem]",
-              "configuration": {
-                "description": null,
-                "keys": {
-                  "Help": {
-                    "args": [
-                      "tested against every WorkItem"
-                    ]
-                  }
-                },
-                "extensions": {
-                  "$text": {}
-                }
-              },
-              "condition": "=Wait",
-              "visibilityCondition": {
-                "type": "Equal",
-                "value": [
-                  "Wait"
-                ],
-                "matcher": {
-                  "type": "Parent"
-                }
-              },
-              "duplicable": false,
-              "fields": [],
-              "order": 28,
-              "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Wait Generic Condition",
-              "required": null,
-              "description": "$text $help[tested against every event]",
-              "configuration": {
-                "description": null,
-                "keys": {
-                  "Help": {
-                    "args": [
-                      "tested against every event"
-                    ]
-                  }
-                },
-                "extensions": {
-                  "$text": {}
-                }
-              },
-              "condition": "=Wait",
-              "visibilityCondition": {
-                "type": "Equal",
-                "value": [
-                  "Wait"
-                ],
-                "matcher": {
-                  "type": "Parent"
-                }
-              },
-              "duplicable": false,
-              "fields": [],
-              "order": 29,
-              "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": null
-            }
-          ],
-          "order": 17,
-          "rootField": false,
-          "duplicablePath": false,
-          "restricted": false,
-          "defaultValue": "Human"
-        },
-        {
-          "id": null,
-          "name": "Visibility Type",
-          "required": null,
-          "description": "$[Group,Group Field,User,User Field] $expanded $groupEdit $style[children-mx-0, children-border-0, children-bg-none]",
-          "configuration": {
-            "description": null,
             "keys": {
+              "Expanded": {
+                "args": {}
+              },
               "Select": {
                 "args": [
                   "Group",
@@ -985,141 +549,94 @@
                   "User",
                   "User Field"
                 ],
-                "default": null
-              },
-              "Expanded": {
-                "args": {}
+                "default": "Group"
               }
-            },
-            "extensions": {
-              "$style": {
-                "args": [
-                  "children-mx-0",
-                  "children-border-0",
-                  "children-bg-none"
-                ]
-              },
-              "$groupEdit": {}
             }
           },
-          "condition": null,
-          "visibilityCondition": null,
+          "defaultValue": "Group",
+          "description": "$[*Group,Group Field,User,User Field] $expanded $groupEdit $style[children-mx-0, children-border-0, children-bg-none]",
           "duplicable": false,
+          "duplicablePath": false,
           "fields": [
             {
-              "id": null,
-              "name": "Visibility Group",
-              "required": null,
-              "description": "$extRef(userm,/userm/group/search?q={{this}}) $groupEdit",
+              "condition": "=Group Field",
               "configuration": {
                 "description": null,
-                "keys": {
-                  "ExternalReference": {
-                    "args": {
-                      "product": "userm",
-                      "query": "/userm/group/search?q={{this}}"
-                    }
-                  }
-                },
                 "extensions": {
                   "$groupEdit": {}
-                }
-              },
-              "condition": "=Group",
-              "visibilityCondition": {
-                "type": "Equal",
-                "value": [
-                  "Group"
-                ],
-                "matcher": {
-                  "type": "Parent"
-                }
-              },
-              "duplicable": false,
-              "fields": [
-                {
-                  "id": null,
-                  "name": "Visibility Group Name",
-                  "required": null,
-                  "description": "$auto.ref(Visibility Group).field(name) $style[hide]",
-                  "configuration": {
-                    "description": null,
-                    "keys": {
-                      "AutoRefField": {
-                        "args": {
-                          "source_field": "Visibility Group",
-                          "field_name": "name"
-                        }
-                      }
-                    },
-                    "extensions": {
-                      "$style": {
-                        "args": [
-                          "hide"
-                        ]
-                      }
-                    }
-                  },
-                  "condition": null,
-                  "visibilityCondition": null,
-                  "duplicable": false,
-                  "fields": [],
-                  "order": 32,
-                  "rootField": false,
-                  "duplicablePath": false,
-                  "restricted": false,
-                  "defaultValue": null
-                }
-              ],
-              "order": 31,
-              "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Visibility Group Field",
-              "required": null,
-              "description": "$groupEdit $help[Identifies the field with the visibility group value from customer data instance. This field should be an \\$extRef pointing to UserM]",
-              "configuration": {
-                "description": null,
+                },
                 "keys": {
                   "Help": {
                     "args": [
-                      "Identifies the field with the visibility group value from customer data instance. This field should be an $extRef pointing to UserM"
+                      "Identifies the field with the group value from customer data instance. This field should be an \\$extRef pointing to UserM"
                     ]
                   }
-                },
-                "extensions": {
-                  "$groupEdit": {}
                 }
               },
-              "condition": "=Group Field",
+              "defaultValue": null,
+              "description": "$groupEdit $help[Identifies the field with the group value from customer data instance. This field should be an \\\\$extRef pointing to UserM] ",
+              "duplicable": false,
+              "duplicablePath": false,
+              "fields": [],
+              "id": null,
+              "name": "Group Field",
+              "order": 19,
+              "required": null,
+              "restricted": false,
+              "rootField": false,
               "visibilityCondition": {
+                "matcher": {
+                  "type": "Parent"
+                },
                 "type": "Equal",
                 "value": [
                   "Group Field"
-                ],
-                "matcher": {
-                  "type": "Parent"
-                }
-              },
-              "duplicable": false,
-              "fields": [],
-              "order": 33,
-              "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": null
+                ]
+              }
             },
             {
-              "id": null,
-              "name": "Visibility User",
-              "required": null,
-              "description": "$extRef(userm,/userm/user/search?q={{this}}) $groupEdit",
+              "condition": "=User Field",
               "configuration": {
                 "description": null,
+                "extensions": {
+                  "$groupEdit": {}
+                },
+                "keys": {
+                  "Help": {
+                    "args": [
+                      "Identifies the field with the user value from customer data instance. This field should be an \\$extRef pointing to UserM"
+                    ]
+                  }
+                }
+              },
+              "defaultValue": null,
+              "description": " $groupEdit $help[Identifies the field with the user value from customer data instance. This field should be an \\\\$extRef pointing to UserM]",
+              "duplicable": false,
+              "duplicablePath": false,
+              "fields": [],
+              "id": null,
+              "name": "User Field",
+              "order": 20,
+              "required": null,
+              "restricted": false,
+              "rootField": false,
+              "visibilityCondition": {
+                "matcher": {
+                  "type": "Parent"
+                },
+                "type": "Equal",
+                "value": [
+                  "User Field"
+                ]
+              }
+            },
+            {
+              "condition": "=User",
+              "configuration": {
+                "description": null,
+                "extensions": {
+                  "$groupEdit": {}
+                },
                 "keys": {
                   "ExternalReference": {
                     "args": {
@@ -1127,348 +644,799 @@
                       "query": "/userm/user/search?q={{this}}"
                     }
                   }
-                },
-                "extensions": {
-                  "$groupEdit": {}
                 }
               },
-              "condition": "=User",
-              "visibilityCondition": {
-                "type": "Equal",
-                "value": [
-                  "User"
-                ],
-                "matcher": {
-                  "type": "Parent"
-                }
-              },
+              "defaultValue": null,
+              "description": "$extRef(userm,/userm/user/search?q={{this}}) $groupEdit",
               "duplicable": false,
+              "duplicablePath": false,
               "fields": [
                 {
-                  "id": null,
-                  "name": "Visibility User Username",
-                  "required": null,
-                  "description": "$auto.ref(Visibility User).field(username) $style[hide]",
+                  "condition": null,
                   "configuration": {
                     "description": null,
-                    "keys": {
-                      "AutoRefField": {
-                        "args": {
-                          "source_field": "Visibility User",
-                          "field_name": "username"
-                        }
-                      }
-                    },
                     "extensions": {
                       "$style": {
                         "args": [
                           "hide"
                         ]
                       }
+                    },
+                    "keys": {
+                      "AutoRefField": {
+                        "args": {
+                          "field_name": "username",
+                          "source_field": "User"
+                        }
+                      }
                     }
                   },
-                  "condition": null,
-                  "visibilityCondition": null,
+                  "defaultValue": null,
+                  "description": "$auto.ref(User).field(username) $style[hide]",
                   "duplicable": false,
-                  "fields": [],
-                  "order": 35,
-                  "rootField": false,
                   "duplicablePath": false,
+                  "fields": [],
+                  "id": null,
+                  "name": "User Username",
+                  "order": 22,
+                  "required": null,
                   "restricted": false,
-                  "defaultValue": null
+                  "rootField": false,
+                  "visibilityCondition": null
                 }
               ],
-              "order": 34,
-              "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": null
-            },
-            {
               "id": null,
-              "name": "Visibility User Field",
+              "name": "User",
+              "order": 21,
               "required": null,
-              "description": "$groupEdit $help[Identifies the field with the visibility user value from customer data instance. This field should be an \\$extRef pointing to UserM]",
-              "configuration": {
-                "description": null,
-                "keys": {
-                  "Help": {
-                    "args": [
-                      "Identifies the field with the visibility user value from customer data instance. This field should be an $extRef pointing to UserM"
-                    ]
-                  }
-                },
-                "extensions": {
-                  "$groupEdit": {}
-                }
-              },
-              "condition": "=User Field",
+              "restricted": false,
+              "rootField": false,
               "visibilityCondition": {
-                "type": "Equal",
-                "value": [
-                  "User Field"
-                ],
                 "matcher": {
                   "type": "Parent"
-                }
-              },
-              "duplicable": false,
-              "fields": [],
-              "order": 36,
-              "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": null
-            }
-          ],
-          "order": 30,
-          "rootField": false,
-          "duplicablePath": false,
-          "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Possible States",
-          "required": null,
-          "description": "$[To Assign,To Do,In Progress,Done,Pending,Error,Canceled] $multiple $style[radio-1line] $expanded  $style[children-mx-0, children-border-0, children-bg-none]",
-          "configuration": {
-            "description": null,
-            "keys": {
-              "Select": {
-                "args": [
-                  "To Assign",
-                  "To Do",
-                  "In Progress",
-                  "Done",
-                  "Pending",
-                  "Error",
-                  "Canceled"
-                ],
-                "default": null
-              },
-              "Multiple": {},
-              "Expanded": {
-                "args": {}
+                },
+                "type": "Equal",
+                "value": [
+                  "User"
+                ]
               }
             },
+            {
+              "condition": "=Group",
+              "configuration": {
+                "description": null,
+                "extensions": {
+                  "$groupEdit": {}
+                },
+                "keys": {
+                  "ExternalReference": {
+                    "args": {
+                      "product": "userm",
+                      "query": "/userm/group/search?q={{this}}"
+                    }
+                  }
+                }
+              },
+              "defaultValue": null,
+              "description": "$extRef(userm,/userm/group/search?q={{this}}) $groupEdit",
+              "duplicable": false,
+              "duplicablePath": false,
+              "fields": [
+                {
+                  "condition": null,
+                  "configuration": {
+                    "description": null,
+                    "extensions": {
+                      "$style": {
+                        "args": [
+                          "hide"
+                        ]
+                      }
+                    },
+                    "keys": {
+                      "AutoRefField": {
+                        "args": {
+                          "field_name": "name",
+                          "source_field": "Group"
+                        }
+                      }
+                    }
+                  },
+                  "defaultValue": null,
+                  "description": "$auto.ref(Group).field(name) $style[hide]",
+                  "duplicable": false,
+                  "duplicablePath": false,
+                  "fields": [],
+                  "id": null,
+                  "name": "Group Name",
+                  "order": 24,
+                  "required": null,
+                  "restricted": false,
+                  "rootField": false,
+                  "visibilityCondition": null
+                }
+              ],
+              "id": null,
+              "name": "Group",
+              "order": 23,
+              "required": null,
+              "restricted": false,
+              "rootField": false,
+              "visibilityCondition": {
+                "matcher": {
+                  "type": "Parent"
+                },
+                "type": "Equal",
+                "value": [
+                  "Group"
+                ]
+              }
+            }
+          ],
+          "id": null,
+          "name": "Human Type",
+          "order": 18,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": {
+            "matcher": {
+              "type": "Parent"
+            },
+            "type": "Equal",
+            "value": [
+              "Human"
+            ]
+          }
+        },
+        {
+          "condition": "=RPA",
+          "configuration": {
+            "description": null,
             "extensions": {
-              "$style": {
+              "$groupEdit": {}
+            },
+            "keys": {}
+          },
+          "defaultValue": null,
+          "description": "$groupEdit",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Concurrent",
+          "order": 25,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": {
+            "matcher": {
+              "type": "Parent"
+            },
+            "type": "Equal",
+            "value": [
+              "RPA"
+            ]
+          }
+        },
+        {
+          "condition": "=AI",
+          "configuration": {
+            "description": null,
+            "extensions": {},
+            "keys": {}
+          },
+          "defaultValue": null,
+          "description": null,
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Fallback Group",
+          "order": 26,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": {
+            "matcher": {
+              "type": "Parent"
+            },
+            "type": "Equal",
+            "value": [
+              "AI"
+            ]
+          }
+        },
+        {
+          "condition": "=AI",
+          "configuration": {
+            "description": null,
+            "extensions": {},
+            "keys": {}
+          },
+          "defaultValue": null,
+          "description": null,
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Algoritm Name",
+          "order": 27,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": {
+            "matcher": {
+              "type": "Parent"
+            },
+            "type": "Equal",
+            "value": [
+              "AI"
+            ]
+          }
+        },
+        {
+          "condition": "=Wait",
+          "configuration": {
+            "description": null,
+            "extensions": {
+              "$text": {}
+            },
+            "keys": {
+              "Help": {
                 "args": [
-                  "children-mx-0",
-                  "children-border-0",
-                  "children-bg-none"
+                  "tested against every WorkItem"
                 ]
               }
             }
           },
-          "condition": null,
-          "visibilityCondition": null,
+          "defaultValue": null,
+          "description": "$text $help[tested against every WorkItem]",
           "duplicable": false,
-          "fields": [
-            {
-              "id": null,
-              "name": "Launch Condition",
-              "required": null,
-              "description": "$text Conditions that if met will create a new Work Item for the <b>Specific Data</b>",
-              "configuration": {
-                "description": "Conditions that if met will create a new Work Item for the <b>Specific Data</b>",
-                "keys": {},
-                "extensions": {
-                  "$text": {}
-                }
-              },
-              "condition": null,
-              "visibilityCondition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 38,
-              "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Condition",
-              "required": null,
-              "description": " $group $expanded",
-              "configuration": {
-                "description": null,
-                "keys": {
-                  "Group": {},
-                  "Expanded": {
-                    "args": {}
-                  }
-                },
-                "extensions": {}
-              },
-              "condition": null,
-              "visibilityCondition": null,
-              "duplicable": true,
-              "fields": [
-                {
-                  "id": null,
-                  "name": "Done Conditions",
-                  "required": null,
-                  "description": "$text Conditions that need to be met in order for Done to be possible",
-                  "configuration": {
-                    "description": "Conditions that need to be met in order for Done to be possible",
-                    "keys": {},
-                    "extensions": {
-                      "$text": {}
-                    }
-                  },
-                  "condition": null,
-                  "visibilityCondition": null,
-                  "duplicable": false,
-                  "fields": [],
-                  "order": 40,
-                  "rootField": false,
-                  "duplicablePath": true,
-                  "restricted": false,
-                  "defaultValue": null
-                },
-                {
-                  "id": null,
-                  "name": "Done Conditions Error Msg",
-                  "required": null,
-                  "description": "$text Friendly text to present when conditions are not met",
-                  "configuration": {
-                    "description": "Friendly text to present when conditions are not met",
-                    "keys": {},
-                    "extensions": {
-                      "$text": {}
-                    }
-                  },
-                  "condition": null,
-                  "visibilityCondition": null,
-                  "duplicable": false,
-                  "fields": [],
-                  "order": 41,
-                  "rootField": false,
-                  "duplicablePath": true,
-                  "restricted": false,
-                  "defaultValue": null
-                }
-              ],
-              "order": 39,
-              "rootField": false,
-              "duplicablePath": true,
-              "restricted": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "On Done",
-              "required": null,
-              "description": "$text",
-              "configuration": {
-                "description": null,
-                "keys": {},
-                "extensions": {
-                  "$text": {}
-                }
-              },
-              "condition": null,
-              "visibilityCondition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 42,
-              "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "On Error",
-              "required": null,
-              "description": "$text",
-              "configuration": {
-                "description": null,
-                "keys": {},
-                "extensions": {
-                  "$text": {}
-                }
-              },
-              "condition": "=Error",
-              "visibilityCondition": {
-                "type": "Equal",
-                "value": [
-                  "Error"
-                ],
-                "matcher": {
-                  "type": "Parent"
-                }
-              },
-              "duplicable": false,
-              "fields": [],
-              "order": 43,
-              "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "On Canceled",
-              "required": null,
-              "description": "$text",
-              "configuration": {
-                "description": null,
-                "keys": {},
-                "extensions": {
-                  "$text": {}
-                }
-              },
-              "condition": "=Canceled",
-              "visibilityCondition": {
-                "type": "Equal",
-                "value": [
-                  "Canceled"
-                ],
-                "matcher": {
-                  "type": "Parent"
-                }
-              },
-              "duplicable": false,
-              "fields": [],
-              "order": 44,
-              "rootField": false,
-              "duplicablePath": false,
-              "restricted": false,
-              "defaultValue": null
-            }
-          ],
-          "order": 37,
-          "rootField": false,
           "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Wait Work Item Query",
+          "order": 28,
+          "required": null,
           "restricted": false,
-          "defaultValue": null
-        }
-      ],
-      "order": 13,
-      "rootField": true,
-      "duplicablePath": false,
-      "restricted": false,
-      "defaultValue": null
-    },
-    {
-      "id": null,
-      "name": "Work Items",
-      "required": null,
-      "description": "$group $style[use-reference-count,hide-in-new-instance,grupo] $restricted(System)",
-      "configuration": {
-        "description": null,
-        "keys": {
-          "Group": {},
-          "Restricted": {
-            "args": [
-              "System"
+          "rootField": false,
+          "visibilityCondition": {
+            "matcher": {
+              "type": "Parent"
+            },
+            "type": "Equal",
+            "value": [
+              "Wait"
             ]
           }
         },
+        {
+          "condition": "=Wait",
+          "configuration": {
+            "description": null,
+            "extensions": {
+              "$text": {}
+            },
+            "keys": {
+              "Help": {
+                "args": [
+                  "tested against every event"
+                ]
+              }
+            }
+          },
+          "defaultValue": null,
+          "description": "$text $help[tested against every event]",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Wait Generic Condition",
+          "order": 29,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": {
+            "matcher": {
+              "type": "Parent"
+            },
+            "type": "Equal",
+            "value": [
+              "Wait"
+            ]
+          }
+        }
+      ],
+      "id": null,
+      "name": "Agent Type",
+      "order": 17,
+      "required": null,
+      "restricted": false,
+      "rootField": true,
+      "visibilityCondition": null
+    },
+    {
+      "condition": null,
+      "configuration": {
+        "description": null,
+        "extensions": {
+          "$groupEdit": {},
+          "$style": {
+            "args": [
+              "children-mx-0",
+              "children-border-0",
+              "children-bg-none"
+            ]
+          }
+        },
+        "keys": {
+          "Expanded": {
+            "args": {}
+          },
+          "Select": {
+            "args": [
+              "Group",
+              "Group Field",
+              "User",
+              "User Field"
+            ],
+            "default": null
+          }
+        }
+      },
+      "defaultValue": null,
+      "description": "$groupEdit $[Group,Group Field,User,User Field] $expanded $groupEdit $style[children-mx-0, children-border-0, children-bg-none]",
+      "duplicable": false,
+      "duplicablePath": false,
+      "fields": [
+        {
+          "condition": "=Group",
+          "configuration": {
+            "description": null,
+            "extensions": {
+              "$groupEdit": {}
+            },
+            "keys": {
+              "ExternalReference": {
+                "args": {
+                  "product": "userm",
+                  "query": "/userm/group/search?q={{this}}"
+                }
+              }
+            }
+          },
+          "defaultValue": null,
+          "description": "$extRef(userm,/userm/group/search?q={{this}}) $groupEdit ",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [
+            {
+              "condition": null,
+              "configuration": {
+                "description": null,
+                "extensions": {
+                  "$style": {
+                    "args": [
+                      "hide"
+                    ]
+                  }
+                },
+                "keys": {
+                  "AutoRefField": {
+                    "args": {
+                      "field_name": "name",
+                      "source_field": "Visibility Group"
+                    }
+                  }
+                }
+              },
+              "defaultValue": null,
+              "description": "$auto.ref(Visibility Group).field(name) $style[hide]",
+              "duplicable": false,
+              "duplicablePath": false,
+              "fields": [],
+              "id": null,
+              "name": "Visibility Group Name",
+              "order": 32,
+              "required": null,
+              "restricted": false,
+              "rootField": false,
+              "visibilityCondition": null
+            }
+          ],
+          "id": null,
+          "name": "Visibility Group",
+          "order": 31,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": {
+            "matcher": {
+              "type": "Parent"
+            },
+            "type": "Equal",
+            "value": [
+              "Group"
+            ]
+          }
+        },
+        {
+          "condition": "=Group Field",
+          "configuration": {
+            "description": null,
+            "extensions": {
+              "$groupEdit": {}
+            },
+            "keys": {
+              "Help": {
+                "args": [
+                  "Identifies the field with the visibility group value from customer data instance. This field should be an \\$extRef pointing to UserM"
+                ]
+              }
+            }
+          },
+          "defaultValue": null,
+          "description": "$groupEdit $help[Identifies the field with the visibility group value from customer data instance. This field should be an \\\\$extRef pointing to UserM]",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Visibility Group Field",
+          "order": 33,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": {
+            "matcher": {
+              "type": "Parent"
+            },
+            "type": "Equal",
+            "value": [
+              "Group Field"
+            ]
+          }
+        },
+        {
+          "condition": "=User",
+          "configuration": {
+            "description": null,
+            "extensions": {
+              "$groupEdit": {}
+            },
+            "keys": {
+              "ExternalReference": {
+                "args": {
+                  "product": "userm",
+                  "query": "/userm/user/search?q={{this}}"
+                }
+              }
+            }
+          },
+          "defaultValue": null,
+          "description": "$extRef(userm,/userm/user/search?q={{this}}) $groupEdit",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [
+            {
+              "condition": null,
+              "configuration": {
+                "description": null,
+                "extensions": {
+                  "$style": {
+                    "args": [
+                      "hide"
+                    ]
+                  }
+                },
+                "keys": {
+                  "AutoRefField": {
+                    "args": {
+                      "field_name": "username",
+                      "source_field": "Visibility User"
+                    }
+                  }
+                }
+              },
+              "defaultValue": null,
+              "description": "$auto.ref(Visibility User).field(username) $style[hide]",
+              "duplicable": false,
+              "duplicablePath": false,
+              "fields": [],
+              "id": null,
+              "name": "Visibility User Username",
+              "order": 35,
+              "required": null,
+              "restricted": false,
+              "rootField": false,
+              "visibilityCondition": null
+            }
+          ],
+          "id": null,
+          "name": "Visibility User",
+          "order": 34,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": {
+            "matcher": {
+              "type": "Parent"
+            },
+            "type": "Equal",
+            "value": [
+              "User"
+            ]
+          }
+        },
+        {
+          "condition": "=User Field",
+          "configuration": {
+            "description": null,
+            "extensions": {
+              "$groupEdit": {}
+            },
+            "keys": {
+              "Help": {
+                "args": [
+                  "Identifies the field with the visibility user value from customer data instance. This field should be an \\$extRef pointing to UserM"
+                ]
+              }
+            }
+          },
+          "defaultValue": null,
+          "description": "$groupEdit $help[Identifies the field with the visibility user value from customer data instance. This field should be an \\\\$extRef pointing to UserM]",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Visibility User Field",
+          "order": 36,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": {
+            "matcher": {
+              "type": "Parent"
+            },
+            "type": "Equal",
+            "value": [
+              "User Field"
+            ]
+          }
+        }
+      ],
+      "id": null,
+      "name": "Visibility Type",
+      "order": 30,
+      "required": null,
+      "restricted": false,
+      "rootField": true,
+      "visibilityCondition": null
+    },
+    {
+      "condition": null,
+      "configuration": {
+        "description": null,
+        "extensions": {
+          "$style": {
+            "args": [
+              "children-mx-0",
+              "children-border-0",
+              "children-bg-none"
+            ]
+          }
+        },
+        "keys": {
+          "Expanded": {
+            "args": {}
+          },
+          "Multiple": {},
+          "Select": {
+            "args": [
+              "To Assign",
+              "To Do",
+              "In Progress",
+              "Done",
+              "Pending",
+              "Error",
+              "Canceled"
+            ],
+            "default": null
+          }
+        }
+      },
+      "defaultValue": null,
+      "description": "$[To Assign,To Do,In Progress,Done,Pending,Error,Canceled] $multiple $style[radio-1line] $expanded  $style[children-mx-0, children-border-0, children-bg-none]",
+      "duplicable": false,
+      "duplicablePath": false,
+      "fields": [
+        {
+          "condition": null,
+          "configuration": {
+            "description": "Conditions that if met will create a new Work Item for the <b>Specific Data</b>",
+            "extensions": {
+              "$text": {}
+            },
+            "keys": {}
+          },
+          "defaultValue": null,
+          "description": "$text Conditions that if met will create a new Work Item for the <b>Specific Data</b>",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Launch Condition",
+          "order": 38,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": null
+        },
+        {
+          "condition": null,
+          "configuration": {
+            "description": null,
+            "extensions": {},
+            "keys": {
+              "Expanded": {
+                "args": {}
+              },
+              "Group": {}
+            }
+          },
+          "defaultValue": null,
+          "description": "$group $expanded",
+          "duplicable": true,
+          "duplicablePath": true,
+          "fields": [
+            {
+              "condition": null,
+              "configuration": {
+                "description": "Conditions that need to be met in order for Done to be possible",
+                "extensions": {
+                  "$text": {}
+                },
+                "keys": {}
+              },
+              "defaultValue": null,
+              "description": "$text Conditions that need to be met in order for Done to be possible",
+              "duplicable": false,
+              "duplicablePath": true,
+              "fields": [],
+              "id": null,
+              "name": "Done Conditions",
+              "order": 40,
+              "required": null,
+              "restricted": false,
+              "rootField": false,
+              "visibilityCondition": null
+            },
+            {
+              "condition": null,
+              "configuration": {
+                "description": "Friendly text to present when conditions are not met",
+                "extensions": {
+                  "$text": {}
+                },
+                "keys": {}
+              },
+              "defaultValue": null,
+              "description": "$text Friendly text to present when conditions are not met",
+              "duplicable": false,
+              "duplicablePath": true,
+              "fields": [],
+              "id": null,
+              "name": "Done Conditions Error Msg",
+              "order": 41,
+              "required": null,
+              "restricted": false,
+              "rootField": false,
+              "visibilityCondition": null
+            }
+          ],
+          "id": null,
+          "name": "Condition",
+          "order": 39,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": null
+        },
+        {
+          "condition": null,
+          "configuration": {
+            "description": null,
+            "extensions": {
+              "$text": {}
+            },
+            "keys": {}
+          },
+          "defaultValue": null,
+          "description": "$text",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "On Done",
+          "order": 42,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": null
+        },
+        {
+          "condition": "=Error",
+          "configuration": {
+            "description": null,
+            "extensions": {
+              "$text": {}
+            },
+            "keys": {}
+          },
+          "defaultValue": null,
+          "description": "$text",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "On Error",
+          "order": 43,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": {
+            "matcher": {
+              "type": "Parent"
+            },
+            "type": "Equal",
+            "value": [
+              "Error"
+            ]
+          }
+        },
+        {
+          "condition": "=Canceled",
+          "configuration": {
+            "description": null,
+            "extensions": {
+              "$text": {}
+            },
+            "keys": {}
+          },
+          "defaultValue": null,
+          "description": "$text",
+          "duplicable": false,
+          "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "On Canceled",
+          "order": 44,
+          "required": null,
+          "restricted": false,
+          "rootField": false,
+          "visibilityCondition": {
+            "matcher": {
+              "type": "Parent"
+            },
+            "type": "Equal",
+            "value": [
+              "Canceled"
+            ]
+          }
+        }
+      ],
+      "id": null,
+      "name": "Possible States",
+      "order": 37,
+      "required": null,
+      "restricted": false,
+      "rootField": true,
+      "visibilityCondition": null
+    },
+    {
+      "condition": null,
+      "configuration": {
+        "description": null,
         "extensions": {
           "$style": {
             "args": [
@@ -1477,48 +1445,62 @@
               "grupo"
             ]
           }
+        },
+        "keys": {
+          "Group": {},
+          "Restricted": {
+            "args": [
+              "System"
+            ]
+          }
         }
       },
-      "condition": null,
-      "visibilityCondition": null,
+      "defaultValue": null,
+      "description": "$group $style[use-reference-count,hide-in-new-instance,grupo] $restricted(System)",
       "duplicable": false,
+      "duplicablePath": false,
       "fields": [
         {
-          "id": null,
-          "name": "Work Items",
-          "required": null,
-          "description": "$references(Work Item,Work Queue,[view:vWorkQueue,showActions:true],[Queue:count()])",
+          "condition": null,
           "configuration": {
             "description": null,
+            "extensions": {},
             "keys": {
               "References": {
                 "args": {
-                  "field": "Work Queue",
-                  "options": "[view:vWorkQueue,showActions:true]",
+                  "aggs": "[Queue:count()]",
                   "definition": "Work Item",
-                  "aggs": "[Queue:count()]"
+                  "field": "Work Queue",
+                  "options": "[view:default]"
                 }
               }
-            },
-            "extensions": {}
+            }
           },
-          "condition": null,
-          "visibilityCondition": null,
+          "defaultValue": null,
+          "description": "$references(Work Item,Work Queue,[view:default],[Queue:count()])",
           "duplicable": false,
-          "fields": [],
-          "order": 46,
-          "rootField": false,
           "duplicablePath": false,
+          "fields": [],
+          "id": null,
+          "name": "Work Items",
+          "order": 46,
+          "required": null,
           "restricted": true,
-          "defaultValue": null
+          "rootField": false,
+          "visibilityCondition": null
         }
       ],
+      "id": null,
+      "name": "Work Items",
       "order": 45,
-      "rootField": true,
-      "duplicablePath": false,
+      "required": null,
       "restricted": true,
-      "defaultValue": null
+      "rootField": true,
+      "visibilityCondition": null
     }
   ],
+  "id": null,
+  "name": "Work Queues",
+  "state": "enabled",
   "version": null
 }
