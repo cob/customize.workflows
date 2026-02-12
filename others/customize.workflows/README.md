@@ -80,7 +80,7 @@ instances:update:<def_id_work_item>:
   
 ```
 NOVOS:
-Execution Info > User of Done > User of Done Username : $auto.ref(User of Done).field(username) 
+Execution Info > Users > User of Done > User of Done Username : $auto.ref(User of Done).field(username) 
 ```
 
 #### 1.12
