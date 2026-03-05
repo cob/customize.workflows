@@ -22,10 +22,11 @@ class WorkflowUtils {
     }
 
     def deleteWorkItems(Integer customerDataId) {
+        log.info("Deleting work items {{Customer Data: ${customerDataId} }}")
+
         recordm.delete("Work Item"
                 , "customer_data:${customerDataId}"
                 , ['ignoreRefs': true, runAs: "cob-bot"])
     }
-
 
 }
