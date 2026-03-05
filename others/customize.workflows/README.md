@@ -72,7 +72,7 @@ instances:update:<def_id_work_item>:
 
 ### Definition Upgrades:
 
-#### 1.1
+#### 1.17
 
 * Add script that will automatically delete work items when an instance is deleted
 
