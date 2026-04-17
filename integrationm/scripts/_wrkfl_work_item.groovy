@@ -36,7 +36,7 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
 
                     def actionResponse = actionPacks.imRest.post(
                             "/concurrent/${concurrent}",
-                            [id: msg.value("Customer Data")],
+                            [id: msg.value("Customer Data"), wiId: msg.getId()],
                             "cob-bot"
                     )
 
