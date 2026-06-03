@@ -72,6 +72,15 @@ instances:update:<def_id_work_item>:
 
 ### Definition Upgrades:
 
+#### 1.19
+
+```
+NOVOS:
+(Placed directly below (not inside) "Automation Errors" field, which is inside "State=Error" condition)
+Verified : $[Yes] $groupEdit $radio $help(Just a flag field to be used for error treatment control. Choose <strong>y</strong> to mark the error as verified) $style(radio-fit-content) $groupEdit
+```
+
+
 #### 1.17
 
 * Add script that will automatically delete work items when an instance is deleted
