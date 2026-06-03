@@ -42,7 +42,7 @@ cob.custom.customize.push(async function(core, utils, ui) {
     }
 
     const DEFAULT_LABELS = {
-        "save-complete" : "Save and eomplete",
+        "save-complete" : "Save and Complete",
         "assign": "Assign",
         "suspend": "Suspend",
         "start": "Start",
