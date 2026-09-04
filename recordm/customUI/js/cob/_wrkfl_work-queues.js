@@ -1,14 +1,25 @@
+// Mermaid is served locally (lib/mermaid.10.5.0.min.js, the UMD build of mermaid 10.5.0)
+// so this customization does not depend on any external CDN. The library is loaded
+// lazily, only when a Work Queue instance is opened, and a load failure is contained
+// here: it never stops the remaining customizations from being evaluated.
+let mermaidLoading = null;
 
-let mermaid = null;
-
-(async () => {
-  try {
-    const module = await import("https://cdn.jsdelivr.net/npm/mermaid@10.5.0/+esm");
-    mermaid = module.default; // mermaid is usually exported as default
-  } catch (err) {
-    console.warn("Mermaid failed to load, continuing without it.", err);
+function loadMermaid() {
+  if (!mermaidLoading) {
+    mermaidLoading = import("../lib/mermaid.10.5.0.min.js")
+      .then(() => {
+        const mermaid = globalThis.mermaid;
+        if (!mermaid) throw new Error("mermaid global not defined after loading lib/mermaid.10.5.0.min.js");
+        mermaid.initialize({ startOnLoad: false });
+        return mermaid;
+      })
+      .catch(err => {
+        console.warn("Mermaid failed to load, continuing without it.", err);
+        return null;
+      });
   }
-})();
+  return mermaidLoading;
+}
 
 cob.custom.customize.push(async function(core, utils, ui) {
 
@@ -53,21 +64,22 @@ cob.custom.customize.push(async function(core, utils, ui) {
         `;
 
   async function updateMermaid(states) {
-    if(mermaid) {
-      const impossibleStates = STATES_DEFINITION.filter(s => states.indexOf(s.label) === -1)
-      .map(s => s.number);
-      
-      const actualProcess = FULL_PROCESS.split("\n")
-      .filter(l => impossibleStates.every(i => l.indexOf(" " + i) === -1))
-      .join("\n");
-      
-      const { svg } = await mermaid.render("mermaid-container", actualProcess);
-      document.getElementById("diagram-container").innerHTML = svg;
-    }
+    const mermaid = await loadMermaid();
+    if (!mermaid) return;
+
+    const impossibleStates = STATES_DEFINITION.filter(s => states.indexOf(s.label) === -1)
+    .map(s => s.number);
+
+    const actualProcess = FULL_PROCESS.split("\n")
+    .filter(l => impossibleStates.every(i => l.indexOf(" " + i) === -1))
+    .join("\n");
+
+    const { svg } = await mermaid.render("mermaid-container", actualProcess);
+    document.getElementById("diagram-container").innerHTML = svg;
   }
 
   core.customizeInstances(DEFINITION, async (instance, presenter) => {
-    mermaid?.initialize({ startOnLoad: false });
+    loadMermaid(); // start fetching right away; updateMermaid awaits it
 
     const workQueueStateFP = presenter.findFieldPs(fp => fp.field.fieldDefinition.name === WQ_STATES_FIELD)?.[0];
 

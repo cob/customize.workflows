@@ -16,6 +16,16 @@ utils.loadScript("localresource/js/lib/axios.min.js", function() {});
 
 NOTE: As of version 1.13.0, workflows no longer rely on axios and instead use the built in fetch function.
 
+---
+
+## Dependencies
+
+All JS dependencies are served locally from `recordm/customUI/js/lib/`; the customization does not depend on any external CDN, so it also works on machines without internet access.
+
+* `lib/mermaid.10.5.0.min.js`: [mermaid](https://github.com/mermaid-js/mermaid) v10.5.0, MIT license. It is the unmodified `dist/mermaid.min.js` (UMD build) of the `mermaid@10.5.0` npm package. Used by `_wrkfl_work-queues.js` to draw the state diagram of a Work Queue, and loaded lazily (only when a Work Queue instance is opened).
+
+  Up until version 1.19.0, mermaid was imported from `cdn.jsdelivr.net`. When that CDN was unreachable the import failed and, because ES module imports are evaluated in order, every customization imported after `_wrkfl_work-queues.js` in `customizations2.js` (from this and other customizations) was never evaluated.
+
 ## Sorting Definitions
 
 Use [jq](https://jqlang.org/) for formatting the definitions JSONs.
