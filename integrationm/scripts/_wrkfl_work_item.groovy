@@ -174,7 +174,7 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                     if (cdInstance != null) {
                         Map updates = [:]
 
-                        def binding = new Binding(data: cdInstance, updates: updates, recordm: recordm, wi: wiUpdates )
+                        def binding = new Binding(data: cdInstance, updates: updates, recordm: recordm, wi: wiUpdates, workItem: msg )
 
                         try {
                             new GroovyShell(binding).evaluate(code)
