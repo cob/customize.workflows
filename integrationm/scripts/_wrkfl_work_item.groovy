@@ -105,8 +105,12 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                 break
 
             case "AI":
-                log.info("TO BE DONE")
-
+                // Timeout and fallback
+                def fieldWithAIUserUri = workQueue.value("AI User")
+                if (fieldWithAIUserUri != null) {
+                    wiUpdates["User[0]"] = fieldWithAIUserUri
+                }
+                
                 break
         }
 
@@ -154,12 +158,16 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
 
     } else if (msg.field('State').changed()) {
         def state = msg.value('State')
-
+        Map wiUpdates = [:]
         def wq = getWorkQueueInstance(msg.value('Work Queue'))
 
         if (wq == null) {
             log.error("Work Item refers non-existing Work Queue {{workItemId:${msg.instance.id}, WorkQueueId:${msg.value('Work Queue')} }}")
 
+        } else if ( msg.value('Agent Type')  == 'AI' && state == 'Error' && msg.value('Fallback Group') != null ) {
+            wiUpdates['Assigned Group'] = msg.value('Fallback Group')
+            wiUpdates['User'] = ''
+            wiUpdates['State'] = 'To Do'
         } else {
             //Run the relevant On XXX code pieces configured on the WorkQueue (which make updates on the customer Data instance
             def code = wq.value("On " + state)
@@ -169,12 +177,12 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
 
                     def defName = wq.value("Specific Data")
                     def cdInstance = recordm.get(msg.value('Customer Data'))?.getBody()
-                    def wiUpdates = [output: '']
+                    wiUpdates = [output: '']
 
                     if (cdInstance != null) {
                         Map updates = [:]
 
-                        def binding = new Binding(data: cdInstance, updates: updates, recordm: recordm, wi: wiUpdates, workItem: msg )
+                        def binding = new Binding(data: cdInstance, updates: updates, recordm: recordm, wi: wiUpdates )
 
                         try {
                             new GroovyShell(binding).evaluate(code)
@@ -206,7 +214,6 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
 
 
         //Update Workitem dates and times
-        Map wiUpdates = [:]
         def nowDateTime = msg._timestamp_
         def oldState = msg.oldInstance.value('State')
 
