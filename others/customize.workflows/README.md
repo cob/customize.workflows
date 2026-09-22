@@ -82,6 +82,26 @@ instances:update:<def_id_work_item>:
 
 ### Definition Upgrades:
 
+#### 1.22
+
+```
+Work Queues
+RENAME:
+Algoritm Name -> AI User
+
+CHANGED:
+AI User : $extRef(userm,/userm/user/search?q={{this}}) $groupEdit
+Fallback Group : $extRef(userm,/userm/group/search?q={{this}}) $groupEdit
+
+NEW:
+Timeout : $help[Time in seconds that we wait for the AI to complete this Work Item\. If 0 or empty, there is no timeout]
+
+Work Item:
+
+NEW:
+Business Process & Work Queue > Work Queue > Agent Type [=AI] > Fallback Group : $auto.ref(Work Queue).field(Fallback Group) $extRef(userm,/userm/group/search?q={{this}}) $groupEdit
+```
+
 #### 1.19
 
 ```
