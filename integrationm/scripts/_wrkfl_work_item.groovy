@@ -105,7 +105,7 @@ if (msg.product == "recordm" && msg.type == "Work Item" && msg.action != "delete
                 break
 
             case "AI":
-                // Timeout and fallback
+
                 def fieldWithAIUserUri = workQueue.value("AI User")
                 if (fieldWithAIUserUri != null) {
                     wiUpdates["User[0]"] = fieldWithAIUserUri
