@@ -1,14 +1,8 @@
+const DEV_MODE = RegExp('dev=(1|true)').test(window.location.search);
 
-let mermaid = null;
+// utilizar o mermaid do window (que está no produto)
+const mermaid = window.mermaid;
 
-(async () => {
-  try {
-    const module = await import("https://cdn.jsdelivr.net/npm/mermaid@10.5.0/+esm");
-    mermaid = module.default; // mermaid is usually exported as default
-  } catch (err) {
-    console.warn("Mermaid failed to load, continuing without it.", err);
-  }
-})();
 
 const toText = (classes) => {
     if (Array.isArray(classes)){
@@ -61,12 +55,12 @@ export default function embedMermaid(bpid, stateDef, stateField, targetElement,
 async function catchAll(bpid, stateDef, stateField, targetElement, activeState, showError,linkClasses, mermaidClasses, linkToBP) {
 
     let diagram = [
-        { type: 'header', v: 'stateDiagram-v2' }, 
+        { type: 'header', v: 'stateDiagram-v2' },
         { type: 'style', v: 'classDef RPA         color:#99c240, padding:0px 3px, border-radius:10px, border: 1px solid gray, background-color: white, font-size: 10px' },
         { type: 'style', v: 'classDef Wait        color:#99c240, padding:0px 3px, border-radius:10px, border: 1px solid gray, background-color: white, font-size: 10px' },
         { type: 'style', v: 'classDef Human       color:#1e80ba, padding:0px 5px, border-radius:10px, border: 1px solid gray, background-color: white, font-size: 10px' },
         { type: 'style', v: 'classDef AI          color:#d15802, padding:0px 4px, border-radius:10px, border: 1px solid gray, background-color: white, font-size: 10px' },
-        
+
         { type: 'style', v: 'classDef BgRed  fill:red' },
         { type: 'style', v: 'classDef BgGreen fill:green' },
         { type: 'style', v: 'classDef BgBlue    fill:blue' },
@@ -87,7 +81,7 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
         { type: 'style', v: 'classDef Blue       color:blue,fill:white' },
         { type: 'style', v: 'classDef Orange       color:orange,fill:white' },
         { type: 'style', v: 'classDef Gray         color:gray,fill:white' },
-        
+
         { type: 'style', v: 'classDef Highlighted stroke:red,stroke-width:3px' },
     ];
 
@@ -105,7 +99,7 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
 
     if(!specificDataDef.fieldDefinitions)
         return
-    // window.console.debug('JN', specificDataDef)
+    DEV_MODE && window.console.debug('JN', specificDataDef)
     const stateFieldDef = specificDataDef.fieldDefinitions.find(fd => fd.name == stateField);
 
 
@@ -116,9 +110,9 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
     }
 
 
-    // window.console.debug('JN', stateFieldDef)
+    DEV_MODE && window.console.debug('JN', stateFieldDef)
     const states = stateFieldDef.configuration.keys.Select.args;
-    window.console.debug('JN', states);
+    DEV_MODE && window.console.debug('JN', states);
 
     const statesColors = stateFieldDef.configuration.extensions.$styleResultColumn
         && stateFieldDef
@@ -129,10 +123,10 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
             .map(c => { const [state, color] = c.split(":"); return ({ state: state, color: color }); });
 
 
-    window.console.debug('JN', statesColors); 
+    DEV_MODE && window.console.debug('JN', statesColors);
 
-    const toStateId = (i) => i < 10 ? 's_0' + i : 's_' + i 
-    const toDecisionId = (i) => i < 10 ? 'd_0' + i : 'd_' + i 
+    const toStateId = (i) => i < 10 ? 's_0' + i : 's_' + i
+    const toDecisionId = (i) => i < 10 ? 'd_0' + i : 'd_' + i
 
     for(const [i, state] of states.entries()) {
         const idx = toStateId(i)
@@ -142,11 +136,11 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
 
         if(activeState && state == activeState)
             diagram.push({ type: 'stateColor', v: `class ${idx} Highlighted `})
-        
+
         const isCustomColor = !CLASS_OPTIONS.includes(stateColor.color)
         const customFlag = isCustomColor ? 'custom-mermaid-block' : ''
 
-        if (stateColor ) 
+        if (stateColor )
             diagram.push({ type: 'stateColor', v: `class ${idx} ${stateColor.color} ${customFlag}` });
 
     };
@@ -168,13 +162,13 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
         if(!wq['launch_condition']) {
             showError(`Work queue code:${wq['code']} does not have a "launch" condition`)
             continue
-        } 
-        
+        }
+
         if(!wq['on_done']) {
             showError(`Work queue code:${wq['code']} does not have an "on done" condition`)
             continue
-        } 
-        
+        }
+
         // identificar estado inicial
         const launch_condition = wq['launch_condition'][0];
         const launchMatches = new RegExp(`\\s*msg\\.field\\(["']${stateField}['"]\\)\\.changedTo\\(["']([^"']+)['"]\\)`)
@@ -189,19 +183,19 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
 
         let startStateIdx = states.findIndex(s => s == startState);
         if (startStateIdx < 0) {
-            states.push( startState )            
+            states.push( startState )
             startStateIdx = states.length - 1
             const diagramID = toStateId(startStateIdx)
             diagram.push({ type: 'state', v: `${diagramID} : ${startState}`, id: diagramID,  name: startState});
         }
-        
+
         // identificar estado final
         const mudaEstadoRE = new RegExp(`^updates\\[["']${stateField}["']\\]\\s*=\\s*["']([^"']+)["']`);
         const linhas = wq['on_done'][0].split('\n');
         const eDecisao = linhas.length > 1;
 
         if (eDecisao) {
-            window.console.debug('JN', 'decisao', linhas);
+            DEV_MODE && window.console.debug('JN', 'decisao', linhas);
             diagram.push({ type: 'choice', v: `state ${toDecisionId(startStateIdx)} <<choice>>` });
             if (startStateIdx >= 0) {
                 diagram.push({ type: 'transition', from: toStateId(startStateIdx), to: `${toDecisionId(startStateIdx)}`, name: name, agent: agent });
@@ -214,24 +208,24 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
             let decisionName = name;
             const matchSimple = mudaEstadoRE.exec(on_done);
             if (matchSimple) {
-                window.console.debug('JN', 'matchSimple', matchSimple);
+                DEV_MODE && window.console.debug('JN', 'matchSimple', matchSimple);
                 endState = matchSimple[1];
             } else {
-                const matchIf = /^if\s*\((.*)\s*\)\s*{\s*(.*)\s*}\s*$/.exec(on_done); 
+                const matchIf = /^if\s*\((.*)\s*\)\s*{\s*(.*)\s*}\s*$/.exec(on_done);
                 if (matchIf) {
-                    window.console.debug('JN', 'matchesIF', matchIf);
-                    const endMatches = mudaEstadoRE.exec(matchIf[2]);                    
-                    
+                    DEV_MODE && window.console.debug('JN', 'matchesIF', matchIf);
+                    const endMatches = mudaEstadoRE.exec(matchIf[2]);
+
                     if(!endMatches) {
                             showError(`Error parsing conditional body at line ${i+1} in "on done" of work queue code:${wq['code']}`)
-                            return 
+                            return
                     }
 
                     endState = endMatches[1]
 
                     decisionName = matchIf[1]
                         .replaceAll(/data.value\(["']([^"']*)["']\)/g, "$1")
-                        .replaceAll("==", "=")                     
+                        .replaceAll("==", "=")
 
                 } else if(endState){
                     // An undefined endState means that it is likely a join
@@ -257,7 +251,7 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
                 }
             }
 
-            window.console.debug('JN', 'transition', name, ':', startStateIdx, startState, endStateIdx, endState);
+            DEV_MODE && window.console.debug('JN', 'transition', name, ':', startStateIdx, startState, endStateIdx, endState);
         });
     };
 
@@ -282,9 +276,9 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
         await Promise.all(allWIRequests)
     }
 
-    // **********************   
-    //    Processar Gráfico     
-    // **********************   
+    // **********************
+    //    Processar Gráfico
+    // **********************
     // transformar <<choice>> com >1 entradas num <<join>>
     const joins = diagram
         .filter(l => l.type == 'transition' && /d_/.test(l.to))
@@ -305,7 +299,7 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
             const joinedCondition = outgoingDecisions
                 .map(l => l.v.substring(commonPart.length + 1))
                 .join(" && ");
-            window.console.debug('JN', 'choices', 'decisions', `^d_${stateId} --> `, joinedCondition);
+            DEV_MODE && window.console.debug('JN', 'choices', 'decisions', `^d_${stateId} --> `, joinedCondition);
             diagram = diagram.filter(l => l.type != 'decision' || !l.v.startsWith(commonPart));
             diagram.push({ type: 'decision', v: `${commonPart}: ${joinedCondition}`, to: outgoingDecisions[0].to });
 
@@ -315,7 +309,7 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
     // Gerar transições
     const icons = { Human: 'fa-person', RPA: 'fa-robot', AI: 'fa-street-view', Wait: 'fa-clock' };
     diagram.filter(l => l.type == 'transition').forEach(t => {
- 
+
         const amount = queueData[t.name].total > 0 ? ` ${queueData[t.name].total}`: ""
         const desc = `<div class="${t.agent}"><a id="${t.name}"><i class="fa-solid ${icons[t.agent]}"></i>${amount}</a> ${t.name}</div>`;
         t.v = `${t.from} --> ${t.to}: ${desc}`;
@@ -336,10 +330,10 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
     mermaidSrc += diagram.filter(l => l.type == "state").filter(s => diagram.find(l => s.id == l.to || s.id == l.from)).map(l => l.v).join('\n') + "\n\n";
     // Adicionar só estados decisões e junções
     mermaidSrc += diagram.filter(l => l.type == "choice").map(l => l.v).join('\n') + "\n\n";
-    
-    
-    let cleanSrc = mermaidSrc 
-    
+
+
+    let cleanSrc = mermaidSrc
+
     // Adicionar o resto, transições e decisões
     mermaidSrc += diagram.filter(l => l.type == "transition" || l.type == "decision")
         .map(l => l.v).join('\n');
@@ -348,8 +342,8 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
     cleanSrc += diagram.filter(l => l.type == "transition" || l.type == "decision")
         .map(l => l.type ==  "transition" ? l.clean : l.v).join('\n');
 
-        
-    window.console.debug('JN', 'mermaidSrc', mermaidSrc);
+
+    DEV_MODE && window.console.debug('JN', 'mermaidSrc', mermaidSrc);
 
     const createLink = (src) => {
         const mermaidStringified = JSON.stringify({ code: src, mermaid: { theme: "default" } });
@@ -378,18 +372,18 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
 
     if(linkToBP)
         targetElement.append(link, bpLink, merElem)
-    else 
+    else
         targetElement.append(link, merElem)
 
-    
+
     mermaid.initialize({ startOnLoad: false })
     const {svg } = await mermaid.render('mermaid', mermaidSrc)
-    
+
     merElem.innerHTML = svg
-    
+
     const defId = (await fetch(`/recordm/recordm/definitions/search?def=Work Item&size=1&q=*`).then(res => res.json())).hits.hits[0]._source.definitionId
     merElem.querySelectorAll("a").forEach( elem => elem.id in queueData ? elem.href = `/#/definitions/${defId}/q=${queueData[elem.id].query}` : "")
-    
+
     const usedStateNames = diagram.filter(l => l.type == "state").filter(s => diagram.find(l => s.id == l.to || s.id == l.from)).map(l => l.name) ?? []
     const unusedStateNames = diagram.filter(l => l.type == "state").filter(s => diagram.find(l => s.id == l.to || s.id == l.from) == undefined).map(l => l.name) ?? []
     const colors = statesColors?.reduce( (p, curr) => { p[curr.state] = curr.color; return p }, {}) ?? {}
