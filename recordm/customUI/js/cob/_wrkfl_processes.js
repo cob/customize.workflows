@@ -1,7 +1,12 @@
 const DEV_MODE = RegExp('dev=(1|true)').test(window.location.search);
 
-// utilizar o mermaid do window (que está no produto)
-const mermaid = window.mermaid;
+async function obterMermaid(limiteMs = 10000) {
+  const fim = Date.now() + limiteMs;
+  while (!window.mermaid && Date.now() < fim) {
+    await new Promise(r => setTimeout(r, 50));
+  }
+  return window.mermaid || null;
+}
 
 
 const toText = (classes) => {
@@ -36,11 +41,12 @@ export const CLASS_OPTIONS= [
                 "Gray"
             ]
 
-export default function embedMermaid(bpid, stateDef, stateField, targetElement,
+export default async function embedMermaid(bpid, stateDef, stateField, targetElement,
     {activeState = undefined, linkClasses ='ml-3.5', mermaidClasses='!ml-3.5', errorClasses="text-red-900 ml-3.5", linkToBP = true} = {}) {
         const showError = (message) => targetElement.append(`<div class="${toText(errorClasses)}">${message}</div>`)
 
     try {
+        const mermaid = await obterMermaid();
         if(mermaid) {
             return catchAll(bpid, stateDef, stateField, targetElement, activeState, showError, linkClasses, mermaidClasses, linkToBP)
         } else {
@@ -376,6 +382,7 @@ async function catchAll(bpid, stateDef, stateField, targetElement, activeState, 
         targetElement.append(link, merElem)
 
 
+    const mermaid = window.mermaid // já garantido por obterMermaid() em embedMermaid
     mermaid.initialize({ startOnLoad: false })
     const {svg } = await mermaid.render('mermaid', mermaidSrc)
 

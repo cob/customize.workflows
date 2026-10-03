@@ -1,6 +1,11 @@
 
-// utilizar o mermaid do window (que está no produto), para não ter de importar a biblioteca
-const mermaid = window.mermaid;
+async function obterMermaid(limiteMs = 10000) {
+  const fim = Date.now() + limiteMs;
+  while (!window.mermaid && Date.now() < fim) {
+    await new Promise(r => setTimeout(r, 50));
+  }
+  return window.mermaid || null;
+}
 
 cob.custom.customize.push(async function(core, utils, ui) {
 
@@ -45,7 +50,11 @@ cob.custom.customize.push(async function(core, utils, ui) {
         `;
 
   async function updateMermaid(states) {
-    if (!mermaid) return;
+    const mermaid = await obterMermaid();
+    if (!mermaid) {
+      window.console.warn("Work Queues: mermaid não carregou, diagrama omitido");
+      return;
+    }
 
     const impossibleStates = STATES_DEFINITION.filter(s => states.indexOf(s.label) === -1)
     .map(s => s.number);
