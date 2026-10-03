@@ -26,7 +26,7 @@ cob.custom.customize.push(async function (core, utils, ui) {
         return `
             <span state="${stateName}" class="${defaultClass ?? CLASS_OPTIONS[0]} rounded-md rounded px-2 flex items-center content-start" > ${stateName} </span>
             <div class="flex" state="${stateName}">
-                <select class="js-color-select-state ${hasCustomClass ? '!w-8' : ''} !m-0"  data-state-value="${stateName}" onchange ="window.bpo.calcDesc(); window.bpo.updateStateClass('${stateName}', this.value); window.bpo.addInputIfCustom('${stateName}', this.value)"> 
+                <select class="js-color-select-state ${hasCustomClass ? '!w-8' : ''} !m-0"  data-state-value="${stateName}" onchange ="window.bpo.calcDesc(); window.bpo.updateStateClass('${stateName}', this.value); window.bpo.addInputIfCustom('${stateName}', this.value)">
                     ${CLASS_OPTIONS.map( opt => `<option value="${opt}" ${defaultClass == opt ? 'selected' : ''}>${opt}</option>`)}
                     <option ${hasCustomClass ? 'selected' : ''}>Custom</option>
                 </select>
@@ -43,12 +43,12 @@ cob.custom.customize.push(async function (core, utils, ui) {
         const queryString = `-${elastic_state}.raw:(${stateList.map(s => `"${s}"`).join(" OR ")})`
         const query = `/recordm/recordm/definitions/search?def=${def}&q=${queryString}&size=0`
 
-        const total = (await (await fetch(query)).json()).hits.total.value 
+        const total = (await (await fetch(query)).json()).hits.total.value
         const uiLink = `/recordm/#/definitions/${defId}/q=${queryString}`
         return {total, uiLink}
     }
 
-    window.bpo = {} || window.bpo 
+    window.bpo = {} || window.bpo
 
     window.bpo.copyDesc = () => {
         ui.notification.showInfo("Copiado final", false);
@@ -89,7 +89,7 @@ cob.custom.customize.push(async function (core, utils, ui) {
 
 
             colors.push( statename+ ":" + val)
-            states.push( statename ) 
+            states.push( statename )
         })
         const styleResult = `$styleResultColumn(${colors.join(', ')})`
         const select = `$[${states.join(', ')}]`
@@ -103,45 +103,46 @@ cob.custom.customize.push(async function (core, utils, ui) {
 
         if(!specificData) return;
 
-        const data = await embedMermaid(instance.data.id, specificData, stateField, document.querySelector(".custom-workQueues"), {linkToBP: false})        
+        const data = await embedMermaid(instance.data.id, specificData, stateField, document.querySelector(".custom-workQueues"), {linkToBP: false})
+        if (!data) return;   // mermaid indisponível: o embedMermaid já mostrou o erro no ecrã
 
         const updateDef = "<button class='js-update-def-btn btn btn-small btn-primary' style='margin-top: 5px;'><i class=\"fa-solid fa-highlighter mr-2\"></i><span>Update Def</span></button>";
         document.querySelector(".js-sidenav-btn-container").insertAdjacentHTML("beforeend", updateDef);
 
         const optionsString = data.usedStateNames.map( state => stateSelect(state, data.colors[state]) ).join('')
-        
+
         let desc = `
         <div class="!text-xs bg-gray-200 p-3 pb-6 rounded-md mb-2 relative">
             <span class="js-final-desc">
-                $[${data.usedStateNames.join(', ')}] 
-                $styleResultColumn(${data.usedStateNames.map(s => `${s}:${data.colors[s] ?? CLASS_OPTIONS[0]}`).join(', ')})   
+                $[${data.usedStateNames.join(', ')}]
+                $styleResultColumn(${data.usedStateNames.map(s => `${s}:${data.colors[s] ?? CLASS_OPTIONS[0]}`).join(', ')})
             </span>
             <i class="absolute right-2 bottom-2 cursor-pointer fa-regular fa-clipboard" onclick="window.bpo.copyDesc()"></i>
-        </div>   
+        </div>
         `
 
         if(data.unusedStateNames.length > 0) {
 
-            const unusedStats = await instancesWithStates(data.usedStateNames, stateField, specificData)            
+            const unusedStats = await instancesWithStates(data.usedStateNames, stateField, specificData)
 
             if(unusedStats.total > 0 ){
-                desc += ` 
+                desc += `
                 <div class="text-sm bg-red-200 p-3 rounded-md mb-2 relative">
                     <i class=" text-red-800 fa-solid fa-circle-exclamation"></i> Há <a href='${unusedStats.uiLink}'>${unusedStats.total}</a> instancias com estados que não estão presentes nos finais.
                     <br><br>
-                    <span class="text-xs js-unused-desc" data-value="$[${data.unusedStateNames.concat(data.usedStateNames).join(', ')}]"> 
-                    $[${data.unusedStateNames.map(u => `<s class="text-red-500">${u}</s>`).concat(data.usedStateNames).join(', ')}] 
+                    <span class="text-xs js-unused-desc" data-value="$[${data.unusedStateNames.concat(data.usedStateNames).join(', ')}]">
+                    $[${data.unusedStateNames.map(u => `<s class="text-red-500">${u}</s>`).concat(data.usedStateNames).join(', ')}]
                     </span>
                     <i class="absolute right-2 bottom-2 cursor-pointer fa-regular fa-clipboard" onclick="window.bpo.copyUnused()"></i>
                 </div>
                 `
             }
         }
-        
+
         document.querySelector(".js-update-def-btn").addEventListener("click", () => {
             new ui.dialogs.InfoDialog(core, {
-                "title": "Actualizar Definição", 
-                "message": COLOR_SELECTOR.replace("--OPTIONS--", optionsString).replace("--DESC--", desc), 
+                "title": "Actualizar Definição",
+                "message": COLOR_SELECTOR.replace("--OPTIONS--", optionsString).replace("--DESC--", desc),
                 "closeBtnLabel": "Fechar"
             });
             setTimeout( () => {
